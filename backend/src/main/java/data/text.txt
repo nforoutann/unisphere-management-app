@@ -1,0 +1,19 @@
+list of things admin can do:
+create teacher
+remove teacher
+create student
+remove student
+create assignment
+delete assignment
+add course
+delete a course
+add score
+add exam
+remove exam
+add term
+remove term
+
+
+deative assingment
+deactive term//archive
+deactive course//archive
