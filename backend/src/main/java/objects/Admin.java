@@ -1,3 +1,5 @@
+package objects;
+
 import java.util.Date;
 
 public class Admin{

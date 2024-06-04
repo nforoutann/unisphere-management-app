@@ -1,3 +1,5 @@
+package objects;
+
 public class Assignment {
     private boolean active=true;
     private int MaxScore;
