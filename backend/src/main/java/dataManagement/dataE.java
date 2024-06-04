@@ -3,15 +3,15 @@ package dataManagement;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DataBase {
-    private static DataBase instance;
+public class dataE {
+    private static dataE instance;
     private static String StudentPATH = "./student.txt";
     private static String TeacherPath = "./teacher.txt";
-    private DataBase(){
+    private dataE(){
 
     }
 
-    public static DataBase getInstance(){return instance==null?instance=new DataBase():instance;}
+    public static dataE getInstance(){return instance==null?instance=new dataE():instance;}
     public static Map<String, String> studentPasswordUsername(){
         return new HashMap<String, String>();
     }

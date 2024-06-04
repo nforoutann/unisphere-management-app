@@ -1,5 +1,6 @@
 package dataManagement;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Convertor {
@@ -12,6 +13,12 @@ public class Convertor {
             String value = each.substring(colon + 1);
             res.put(key, value);
         }
+        return res;
+    }
+    public static HashMap <String, HashMap <String, String>> UserArrayToMap(ArrayList<HashMap <String, String>> list) {
+        HashMap <String, HashMap <String, String>> res = new HashMap<>();
+        for (var i : list)
+            res.put(i.get("username"), i);
         return res;
     }
 }

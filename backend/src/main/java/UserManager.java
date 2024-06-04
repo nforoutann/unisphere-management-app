@@ -1,9 +1,9 @@
-import dataManagement.DataBase;
+import dataManagement.dataE;
 
 import java.util.Scanner;
 
 public class UserManager {
-    DataBase dataBase;
+    dataE dataE;
     public void start(){
         Scanner scanner = new Scanner(System.in);
         int code;
@@ -12,7 +12,7 @@ public class UserManager {
             while(true){
                 code = menu(1);
                 switch(code){
-                    case 1: Admin admin = new Admin(); break;
+                    case 1: //Admin admin = new Admin(); break;
                     case 2:
                 }
             }
@@ -62,11 +62,11 @@ public class UserManager {
             case "login":{
                 switch (role){
                     case "teacher":
-                        if(!DataBase.teacherPasswordUsername().containsValue(username)){
+                        if(!dataE.teacherPasswordUsername().containsValue(username)){
                             return "not found";
                         }
-                        if(DataBase.teacherPasswordUsername().containsKey(password)){
-                            if(DataBase.teacherPasswordUsername().get(password).equals(username)){
+                        if(dataE.teacherPasswordUsername().containsKey(password)){
+                            if(dataE.teacherPasswordUsername().get(password).equals(username)){
                                 return "done";
                             } else{
                                 return "password and username does not match";
@@ -75,11 +75,11 @@ public class UserManager {
                             return "wrong password";
                         }
                     case "student":{
-                        if(!DataBase.studentPasswordUsername().containsValue(username)){
+                        if(!dataE.studentPasswordUsername().containsValue(username)){
                             return "not found";
                         }
-                        if(DataBase.studentPasswordUsername().containsKey(password)){
-                            if(DataBase.studentPasswordUsername().get(password).equals(username)){
+                        if(dataE.studentPasswordUsername().containsKey(password)){
+                            if(dataE.studentPasswordUsername().get(password).equals(username)){
                                 return "done";
                             } else{
                                 return "password and username does not match";
@@ -93,20 +93,20 @@ public class UserManager {
             case "signup":{
                 switch (role){
                     case "teacher":{
-                        if(DataBase.teacherPasswordUsername().containsValue(username)){
+                        if(dataE.teacherPasswordUsername().containsValue(username)){
                             return "username already taken";
                         }if(PasswordCheck(password).equals("done")){
-                            DataBase.teacherPasswordUsername().put(username, password);
+                            dataE.teacherPasswordUsername().put(username, password);
                             return "success";
                         } else{
                             return PasswordCheck(password);
                         }
                     }
                     case "student":{
-                        if(DataBase.studentPasswordUsername().containsValue(username)){
+                        if(dataE.studentPasswordUsername().containsValue(username)){
                             return "username already taken";
                         } if(PasswordCheck(password).equals("done")){
-                            DataBase.studentPasswordUsername().put(username, password);
+                            dataE.studentPasswordUsername().put(username, password);
                             return "success";
                         } else{
                             return PasswordCheck(password);

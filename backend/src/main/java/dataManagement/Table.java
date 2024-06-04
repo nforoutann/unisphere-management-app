@@ -6,20 +6,13 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class Table {
-    private String studentPath;
-    private String teacherPath;
-    public Table(String studentPath, String teacherPath) {
-        this.studentPath = studentPath;
-        this.teacherPath = teacherPath;
+    private String PATH;
+    public Table(String PATH) {
+        this.PATH = PATH;
     }
-    public ArrayList<HashMap <String, String>> get(String role) {
+    public ArrayList<HashMap <String, String>> get() {
         try {
-            File file=null;
-            switch (role) {
-                case "student": file = new File(studentPath); break;
-                case "teacher": file = new File(teacherPath); break;
-                default: throw new Exception("Invalid role");
-            }
+            File file=new File(this.PATH);
             Scanner sc = new Scanner(file);
             ArrayList<HashMap<String, String>> res = new ArrayList<>();
             while (sc.hasNextLine())
