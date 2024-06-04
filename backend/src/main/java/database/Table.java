@@ -12,14 +12,14 @@ public class Table {
         this.studentPath = studentPath;
         this.teacherPath = teacherPath;
     }
-    public ArrayList<HashMap <String, String>> get(String role) throws Exception {
-        File file=null;
-        switch (role) {
-            case "student": file = new File(studentPath); break;
-            case "teacher": file = new File(teacherPath); break;
-            default: throw new Exception("Invalid role");
-        }
+    public ArrayList<HashMap <String, String>> get(String role) {
         try {
+            File file=null;
+            switch (role) {
+                case "student": file = new File(studentPath); break;
+                case "teacher": file = new File(teacherPath); break;
+                default: throw new Exception("Invalid role");
+            }
             Scanner sc = new Scanner(file);
             ArrayList<HashMap<String, String>> res = new ArrayList<>();
             while (sc.hasNextLine())
