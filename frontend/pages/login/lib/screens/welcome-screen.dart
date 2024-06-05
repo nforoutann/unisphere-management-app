@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:login/screens/login-screen.dart';
+import 'package:login/screens/signup_screen.dart';
 import 'package:login/widgets/custom-scaffold.dart';
+import 'package:login/widgets/welcome-button.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -20,6 +23,7 @@ class WelcomeScreen extends StatelessWidget {
             ),
           ),
           Flexible(
+            flex: 8,
             child: Container(
               padding: const EdgeInsets.symmetric(
                 vertical: 0,
@@ -59,9 +63,11 @@ class WelcomeScreen extends StatelessWidget {
                         ),
                       ),
                       const TextSpan(
-                        text: 'Manage your tasks in the easiest way you can!',
+                        text: 'Where learning meets efficiency',
                         style: TextStyle(
                           fontSize: 20,
+                          color: Colors.grey,
+                          fontWeight: FontWeight.w800
                         ),
                       ),
                     ],
@@ -70,8 +76,31 @@ class WelcomeScreen extends StatelessWidget {
               ),
             ),
           ),
-          Flexible(
-            child: Text('welcome'),
+          const Flexible(
+            flex: 1,
+            child: Align(
+              alignment: Alignment.bottomRight,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: WelcomeButton(
+                      buttonText: 'login',
+                      onTap: LoginScreen(),
+                      color: Colors.transparent,
+                      textColor: Colors.white,
+                    ),
+                  ),
+                  Expanded(
+                    child: WelcomeButton(
+                      buttonText: 'sign up',
+                      onTap: SignUpScreen(),
+                      color: Colors.white,
+                      textColor: Colors.red,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       ),
