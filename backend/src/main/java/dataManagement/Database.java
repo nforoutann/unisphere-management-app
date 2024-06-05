@@ -35,4 +35,15 @@ public class Database {
     public HashMap<String, HashMap<String, String>> getTeacherDataMap() {
         return teacherDataMap;
     }
+
+    public HashMap <String, String> getTotalUsernamePassword(){
+        HashMap <String, String> result = new HashMap<>();
+        for(var entry : studentDataMap.entrySet()){
+            result.put(entry.getKey(), entry.getValue().get("password"));
+        }
+        for(var entry : teacherDataMap.entrySet()){
+            result.put(entry.getKey(), entry.getValue().get("password"));
+        }
+        return result;
+    }
 }
