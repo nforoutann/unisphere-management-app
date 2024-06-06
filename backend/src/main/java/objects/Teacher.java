@@ -8,8 +8,8 @@ public class Teacher extends User {
 
     List<Course> courses;
 
-    public Teacher(String firstName, String lastName, int id) {
-        super(firstName, lastName, id);
+    public Teacher(String name, String username) {
+        super(name,username);
         courses = new ArrayList<>();
     }
 

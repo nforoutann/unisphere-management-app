@@ -11,13 +11,13 @@ public class Admin{
         Admin.id = id;
     }
 
-    public Teacher createTeacher(String firstName, String lastName, int id){
-        return new Teacher(firstName, lastName, id);
+    public Teacher createTeacher(String name, String username){
+        return new Teacher(name, username);
     }
     //todo remove teacher
 
-    public Student createStudent(String firstName, String lastName, int id){
-        return new Student(firstName, lastName, id);
+    public Student createStudent(String name, String username){
+        return new Student(name, username);
     }
     //todo remove student
     public Assignment createAssignment(int MaxScore, String title, assingmentType type, int deadline){

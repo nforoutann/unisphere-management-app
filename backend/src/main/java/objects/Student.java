@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Student extends User {
-    public Student(String firstName, String lastName, int id) {
-        super(firstName, lastName, id);
+    public Student(String name, String username) {
+        super(name, username);
         terms = new ArrayList<>();
     }
     private List<Term> terms;
@@ -68,10 +68,6 @@ public class Student extends User {
         currentTerm = terms.get(terms.size()-1);
         update();
 
-    }
-
-    public String getName(){
-        return getFirstName() + " " + getLastName();
     }
 
     public int getNumberOfCourses() throws Exception{

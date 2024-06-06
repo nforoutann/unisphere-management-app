@@ -1,21 +1,21 @@
 class User{
-  late String _firstName;
-  late String _lastName;
+  late String _name;
+  late String _username;
   late int _id;
   String? _password;
 
-  User(this._firstName, this._lastName, this._id);
+  User(this._name, this._id);
 
-  String get firstName => _firstName;
-  String get lastName => _lastName;
+  String get name => _name;
+  String get username => _username;
   int get id => _id;
   String? get password => _password;
 
-  set firstName(String firstName){
-    _firstName = firstName;
+  set name(String name){
+    _name = name;
   }
-  set lastName(String lastName){
-    _lastName = lastName;
+  set username(String username){
+    _username = username;
   }
   set id(int id){
     _id = id;

@@ -1,34 +1,32 @@
 package objects;
 
 public class User {
-    private String firstName;
-    private String lastName;
-    private int id;
+    private String name;
+    private String username;
     private String password;
     private String email;
 
-    public User(String firstName, String lastName, int id) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.id = id;
+    public User(String name, String username) {
+        this.name = name;
+        this.username = username;
     }
 
-    public int getId(){
-        return id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-    public String getLastName() {
-        return lastName;
+    public String getName() {
+        return name;
     }
     public String getPassword() {
         return password;
     }
+    public String getUsername() {
+        return username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     @Override
     public boolean equals(Object o) {
-        return this.id == ((User) o).id;
+        return this.username == ((User) o).username;
     }
 }
