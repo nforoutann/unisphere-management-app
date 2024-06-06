@@ -3,8 +3,6 @@ import objects.Course;
 import objects.Student;
 import objects.Teacher;
 
-import javax.xml.crypto.Data;
-import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class UserManager {

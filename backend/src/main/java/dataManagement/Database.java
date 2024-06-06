@@ -100,7 +100,7 @@ public class Database {
 
     }
 
-    public static void printMap(HashMap <String, HashMap <String, String>> map, String path) {
+    public static void printMap(HashMap <String, HashMap <String, String>> map, String path, String role) {
         String result="";
         int i=0;
         try{
@@ -111,7 +111,11 @@ public class Database {
                     result=result+'\n';
                     i++;
                 }
-                result=result+"username:"+entry.getKey()+",,password:"+entry.getValue().get("password:")+",,name:"+entry.getValue().get("name")+",,courses:"+entry.getValue().get("terms");
+                if(role.equals("teacher")){
+                    result=result+"username:"+entry.getKey()+",,password:"+entry.getValue().get("password:")+",,name:"+entry.getValue().get("name")+",,courses:"+entry.getValue().get("courses");
+                } else{
+                    result=result+"username:"+entry.getKey()+",,password:"+entry.getValue().get("password:")+",,name:"+entry.getValue().get("name")+",,terms:"+entry.getValue().get("terms");
+                }
             }
             writer.write(result);
             writer.flush();
@@ -121,14 +125,19 @@ public class Database {
     }
 
     public void AddCourseToTeacher(Teacher teacher, Course course){
+        String courses="";
+        String username = teacher.getUsername();
         for(var entry : getTeacherDataMap().entrySet()){
             if(entry.getKey().equals(teacher.getUsername())){
-                String courses = entry.getValue().get("courses");
+                courses = entry.getValue().get("courses");
                 courses = courses+"/id="+course.getId()+"-name="+course.getTitle();
                 entry.getValue().put("courses", courses);
+                break;
             }
         }
-        
+        teacherDataMap.get(username).put("courses", courses);
+        printMap(teacherDataMap,teachersPath ,"teacher");
+
     }
 
 }
