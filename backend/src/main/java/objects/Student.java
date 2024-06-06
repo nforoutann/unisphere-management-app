@@ -10,7 +10,7 @@ public class Student extends User {
     }
     private List<Term> terms;
     private Term currentTerm;
-    private List<Course> courses = new ArrayList<>();
+    private List<Course> courses = new ArrayList<>(); //todo to map
     private int numberOfCourses;
     private int numberOfCredits;
     private double currentGrade=0;
@@ -95,6 +95,23 @@ public class Student extends User {
             throw new Exception("Course list is empty");
 
         return courses;
+    }
+
+    public double getCourseScoreByTerm(Term term, Course course) throws Exception{
+        if(term == null){
+            throw new Exception("Term is null");
+        }
+        if(!term.getCourses().contains(course)){
+            throw new Exception("Course does not exist");
+        }
+        for(var thisTerm: terms){
+            for(var thisCourse: thisTerm.getCourses()){
+                if(thisCourse.equals(course)){
+                    return thisCourse.getGradeByStudent(this);
+                }
+            }
+        }
+        throw new Exception("Course does not exist");
     }
 
 }

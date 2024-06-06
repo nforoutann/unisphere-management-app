@@ -1,7 +1,12 @@
 package dataManagement;
 
+import objects.Course;
+import objects.Student;
+import objects.Term;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Convertor {
@@ -39,5 +44,17 @@ public class Convertor {
             e.printStackTrace();
             return "";
         }
+    }
+
+    public static String termObjectToString(Term term, Student student) { //todo how to handle the score
+        String result = "term"+term.getTermNumber()+">"+"active?"+term.isActive();
+        try{
+            for(var course : term.getCourses()){
+                result='/'+"title="+course.getTitle()+"-teacher="+course.getTeacher().getName()+"-teacherId="+course.getTeacher().getUsername()+"-score="+20;
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return result;
     }
 }

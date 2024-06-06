@@ -1,12 +1,10 @@
 package dataManagement;
+import objects.Course;
 import objects.Student;
 import objects.Teacher;
+import objects.Term;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.Writer;
-import java.util.Formatter;
+import java.io.*;
 import java.util.HashMap;
 
 public class Database {
@@ -68,6 +66,7 @@ public class Database {
         try{
             PrintWriter pw = new PrintWriter(new FileWriter(studentsPath));
             pw.println(info);
+            pw.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -77,14 +76,59 @@ public class Database {
         String password = teacher.getPassword();
         String name= teacher.getName();
         String result="";
-        result="username:"+username+",,password:"+password+",,name:"+name+",,terms:{}";
+        result="username:"+username+",,password:"+password+",,name:"+name+",,courses:{}";
         String info = Convertor.mapOfUsersToString(getTeacherDataMap());
         info = info + '\n' + result;
         try{
             PrintWriter pw = new PrintWriter(new FileWriter(teachersPath));
             pw.println(info);
+            pw.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    public void addTerm(Student student, Term term) {
+        String username = student.getUsername();
+        HashMap<String, String> info = getStudentDataMap().get(username);
+        String termStr = info.get("terms");
+        termStr=termStr+" ";
+        String currentTerm = Convertor.termObjectToString(term, student);
+        String complete = termStr + currentTerm;
+        getStudentDataMap().get(username).put("terms", complete);
+
+
+    }
+
+    public static void printMap(HashMap <String, HashMap <String, String>> map, String path) {
+        String result="";
+        int i=0;
+        try{
+            ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(path));
+            PrintWriter writer = new PrintWriter(new FileWriter(new File(path)));
+            for(var entry : map.entrySet()){
+                if(i!=0){
+                    result=result+'\n';
+                    i++;
+                }
+                result=result+"username:"+entry.getKey()+",,password:"+entry.getValue().get("password:")+",,name:"+entry.getValue().get("name")+",,courses:"+entry.getValue().get("terms");
+            }
+            writer.write(result);
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void AddCourseToTeacher(Teacher teacher, Course course){
+        for(var entry : getTeacherDataMap().entrySet()){
+            if(entry.getKey().equals(teacher.getUsername())){
+                String courses = entry.getValue().get("courses");
+                courses = courses+"/id="+course.getId()+"-name="+course.getTitle();
+                entry.getValue().put("courses", courses);
+            }
+        }
+        
+    }
+
 }

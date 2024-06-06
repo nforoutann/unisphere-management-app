@@ -1,1 +1,1 @@
-username:1234,,password:ccc,,name:harry potter,,courses:{id=1-name=magic-assignments={name?main Project~score?5|name?hw~score?2}-exams={type?quiz~score?20}/id=2-name=math-assignments={name?hw2~score?10}-exams={type?midterm~score?5}}
+courses:{id=1-name=magic-assignments={name?main Project~score?5|name?hw~score?2}-exams={type?quiz~score?20}/id=2-name=math-assignments={name?hw2~score?10}-exams={type?midterm~score?5}},,password:ccc,,name:harry potter,,username:1234

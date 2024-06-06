@@ -1,109 +1,124 @@
 import dataManagement.Database;
+import objects.Course;
 import objects.Student;
 import objects.Teacher;
 
+import javax.xml.crypto.Data;
+import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class UserManager {
     String role="";
     public void start(){
+
         Scanner scanner = new Scanner(System.in);
-        String command="first";
-        String result="";
-        try{
-            result = menu(command);
-            command = "entrance";
-            switch (result) {
-                case "1":
-                    role="admin";
-                    result = menu(command);
-                    if (result.equals("1111")) {
-
-                    }
-                    break;
-                case "2":
-                case "3":
-                    if(result.equals("2")){
-                        role="teacher";
-                    } else{
-                        role="student";
-                    }
-                    result = menu(command);
-                    String stage = result.split(" ")[0];
-                    result = result.split(" ")[1];
-                    switch (stage) {
-                        case "login":
-                            result = login(result);
-                            if(!result.equals("done")){
-                                System.out.println(result);
-                                return;
-                            }
-                            break;
-                        case "signup":
-                            result = signup(result);
-                            if(!result.equals("done")){
-                                System.out.println(result);
-                                return;
-                            }
-                            break;
-                    }
+        String result = "";
+        result = menu("first");
+        switch (result) {
+            case "1":
+                role = "admin";
+                result = menu("1");
+                switch (result) {
+                    case "1":
+                        result = menu("user");
+                        String name = result.split(" ")[0];
+                        String username = result.split(" ")[1];
+                        CreateUser("student", name, username);
+                        break;
+                    case "2":
+                        result = menu("user");
+                        name = result.split(" ")[0];
+                        username = result.split(" ")[1];
+                        CreateUser("teacher", name, username);
+                        break;
+                    case "3":
+                    case "4":
+                }
                 break;
-            }
-
-
-        }catch (Exception e){
-            e.printStackTrace();
+            case "2":
+                role = "teacher";
+                result = menu("2");
+                switch (result) {
+                    case "1": result = menu("user");
+                        String name = result.split(" ")[0];
+                        String username = result.split(" ")[1];
+                        CreateUser("student", name, username);
+                        break;
+                    case "2":
+                            result = menu("course");
+                            Teacher teacher = new Teacher(result.split(" ")[3], result.split(" ")[4]);
+                            Course course = new Course(result.split(" ")[0],teacher, Integer.parseInt(result.split(" ")[1]), Integer.parseInt(result.split(" ")[2]));
+                            Database.getInstance().AddCourseToTeacher(teacher, course);
+                            break;
+                    case "3":
+                    case "4":
+                }
         }
+
     }
 
     public String menu(String command){
-        Scanner scanner = new Scanner(System.in);
         clearConsole();
-        String result="error";
+        Scanner scanner = new Scanner(System.in);
+        String result="";
         switch (command){
             case "first":
                 System.out.println("Please choose your role:");
                 System.out.println("1. Admin");
                 System.out.println("2. Teacher");
-                System.out.println("3. Student");
                 System.out.println("4. exit");
                 result = scanner.nextLine();
-                 break;
-            case "entrance":
-                switch (role){
-                    case "admin":
-                        System.out.println("Please enter your code:");
-                        result = scanner.nextLine();
-                        break;
-                    case "teacher":
-                    case "student":
-                        System.out.println("Please login to continue.(If you do not have an account sign up first)");
-                        System.out.println("1. sign up");
-                        System.out.println("2. login");
-                        result = scanner.nextLine();
-                        if(result.equals("1")){
-                            command = "login";
-                        } else{
-                            command = "signup";
-                        }
-                        result = menu(command);
-                        result = command+" "+result;
-                }
-            case "login":
-            case "signUp":
-                System.out.println("Please enter the following information:");
-                System.out.print("name:");
-                String name = scanner.nextLine();
-                System.out.print("username:");
-                String username=scanner.nextLine();
-                System.out.print("password:");
-                String password=scanner.nextLine();
-                result = name+'$'+username+'$'+password+'$'+role;
                 break;
-
-
+            case "1":
+                System.out.println("1. create student");
+                System.out.println("2. create teacher");
+                System.out.println("3. delete student");
+                System.out.println("4. delete teacher");
+                result = scanner.nextLine();
+                break;
+            case "2":
+                System.out.println("1. add student");
+                System.out.println("2. add course");
+                System.out.println("4. remove student");
+                result = scanner.nextLine();
+                break;
+            case "user":
+                System.out.println("Please enter the following options:");
+                System.out.print("Name:");
+                result = scanner.nextLine();
+                System.out.print("username:");
+                result = result+' '+scanner.nextLine();
+                break;
+            case "course":
+                System.out.println("Please enter the following information:");
+                System.out.print("title:");
+                result = scanner.nextLine();
+                System.out.print("credit:");
+                result = result+' '+scanner.nextLine();
+                System.out.print("id:");
+                result = result+' '+scanner.nextLine();
+                System.out.println("teacher's name:");
+                result = result+' '+scanner.nextLine();
+                System.out.println("teacher's username:");
+                result = result+' '+scanner.nextLine();
+                break;
+            default: return "done";
         }
+
         return result;
+    }
+
+    public void CreateUser(String role, String name, String username){
+        switch (role){
+            case "teacher":
+                Teacher teacher = new Teacher(name, username);
+                Database.getInstance().ceateTeacher(teacher);
+                break;
+            case "student":
+                Student student = new Student(name, username);
+                Database.getInstance().ceateStudent(student);
+                break;
+        }
     }
 
     public void clearConsole() {

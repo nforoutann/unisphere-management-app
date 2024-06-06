@@ -1,6 +1,6 @@
 import 'User.dart';
 
 class Teacher extends User{
-  Teacher(String name, int id) : super(name, id);
+  Teacher(String name, String username) : super(name, username);
 
 }
