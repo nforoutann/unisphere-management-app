@@ -8,12 +8,10 @@ public class UserManager {
         int code;
 
         try{
-            while(true){
-                code = menu(1);
-                switch(code){
-                    case 1: //Admin admin = new Admin(); break;
-                    case 2:
-                }
+            code = menu(1);
+            switch(code){
+                case 1: //Admin admin = new Admin(); break;
+                case 2:
             }
 
         }  catch(Exception e){

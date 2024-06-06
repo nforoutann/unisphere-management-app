@@ -75,14 +75,14 @@ class WelcomeScreen extends StatelessWidget {
             ),
           ),
           Flexible(
-            flex: 1,
+            flex:4,
             child: Align(
               alignment: Alignment.bottomRight,
               child: Row(
                 children: [
                   const Expanded(
                     child: WelcomeButton(
-                      buttonText: 'Sign in',
+                      buttonText: 'Login',
                       onTap: LoginScreen(),
                       color: Colors.transparent,
                       textColor: Colors.white,
