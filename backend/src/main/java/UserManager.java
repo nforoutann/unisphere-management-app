@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class UserManager {
     String role="";
     public void start(){
-
+        Database database;
         Scanner scanner = new Scanner(System.in);
         String result = "";
         result = menu("first");
@@ -44,9 +44,7 @@ public class UserManager {
                 result = menu("2");
                 switch (result) {
                     case "1": result = menu("user");
-                        String name = result.split("\\$")[0];
-                        String username = result.split("\\$")[1];
-                        CreateUser("student", username);
+                        CreateUser("student", result);
                         break;
                     case "2":
                         result = menu("course");
@@ -67,9 +65,14 @@ public class UserManager {
                         course = new Course(info[4], teacher, Integer.parseInt(info[5]), Integer.parseInt(info[6]));
                         Database.getInstance().addAssignment(assignment, teacher, course);
                         break;
-                    default:
+                        case "4":
+                            result = menu("deleteCourse");
+                            teacher = new Teacher(result.split("\\$")[2], result.split("\\$")[1]);
+                            Database.getInstance().deleteCourse(teacher, result.split("\\$")[0]);
+                            break;
+                        default:
                         System.out.println("Invalid choice");
-                }
+            }
         }
 
     }
@@ -98,7 +101,6 @@ public class UserManager {
                 System.out.println("2. add course");
                 System.out.println("3. add assignment");
                 System.out.println("4. remove course");
-                System.out.println("5. remove assignment");
                 result = scanner.nextLine();
                 break;
             case "user":
@@ -152,6 +154,15 @@ public class UserManager {
                 result = result+'$'+deadline;
                 result = result+'$'+menu("course");
                 break;
+            case "deleteCourse":
+                System.out.print("Please enter the id of the course:");
+                result = scanner.nextLine();
+                System.out.print("Please enter the teacher's username:");
+                result = result+"$"+scanner.nextLine();
+                System.out.print("Please enter the teacher's name:");
+                result = result+"$"+scanner.nextLine();
+                break;
+
 
             default: return "done";
         }
@@ -246,7 +257,6 @@ public class UserManager {
             return "invalid";
         }
     }
-
 
     public static void main(String[] args){
         UserManager userManager=new UserManager();
