@@ -22,6 +22,25 @@ public class Assignment {
         this.deadline = deadline;
     }
 
+    public static assingmentType type(String type){
+        if(type.toLowerCase().equals("project")){
+            return assingmentType.PROJECT;
+        } else{
+            return assingmentType.EXERCISE;
+        }
+    }
+
+    public int getMaxScore() {
+        return MaxScore;
+    }
+
+    public assingmentType getType() {
+        return type;
+    }
+
+    public String getTitle() {
+        return title;
+    }
 }
 
 enum assingmentType{

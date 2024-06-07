@@ -1,7 +1,5 @@
 import dataManagement.Database;
-import objects.Course;
-import objects.Student;
-import objects.Teacher;
+import objects.*;
 
 import java.util.Scanner;
 
@@ -19,18 +17,26 @@ public class UserManager {
                 switch (result) {
                     case "1":
                         result = menu("user");
-                        String name = result.split(" ")[0];
-                        String username = result.split(" ")[1];
-                        CreateUser("student", name, username);
+                        CreateUser("student", result);
                         break;
                     case "2":
                         result = menu("user");
-                        name = result.split(" ")[0];
-                        username = result.split(" ")[1];
-                        CreateUser("teacher", name, username);
+                        CreateUser("teacher", result);
                         break;
                     case "3":
+                        result = menu("delete");
+                        String name = result.split("\\$")[0];
+                        String username = result.split("\\$")[1];
+                        Student student = new Student(name, username);
+                        Database.getInstance().deleteUser(student);
+                        break;
                     case "4":
+                        result = menu("delete");
+                        name = result.split("\\$")[0];
+                        username = result.split("\\$")[1];
+                        Teacher teacher = new Teacher(name, username);
+                        Database.getInstance().deleteUser(teacher);
+                        break;
                 }
                 break;
             case "2":
@@ -38,18 +44,31 @@ public class UserManager {
                 result = menu("2");
                 switch (result) {
                     case "1": result = menu("user");
-                        String name = result.split(" ")[0];
-                        String username = result.split(" ")[1];
-                        CreateUser("student", name, username);
+                        String name = result.split("\\$")[0];
+                        String username = result.split("\\$")[1];
+                        CreateUser("student", username);
                         break;
                     case "2":
                         result = menu("course");
-                        Teacher teacher = new Teacher(result.split(" ")[3], result.split(" ")[4]);
-                        Course course = new Course(result.split(" ")[0],teacher, Integer.parseInt(result.split(" ")[1]), Integer.parseInt(result.split(" ")[2]));
+                        Teacher teacher = new Teacher(result.split("\\$")[3], result.split("\\$")[4]);
+                        Course course = new Course(result.split("\\$")[0],teacher, Integer.parseInt(result.split("\\$")[1]), Integer.parseInt(result.split("\\$")[2]));
                         Database.getInstance().AddCourseToTeacher(teacher, course);
                         break;
                     case "3":
-                    case "4":
+                        result = menu("assignment");
+                        String[] info = result.split("\\$");
+                        teacher = new Teacher(info[7], info[8]);
+                        Assignment assignment;
+                        if(result.split("\\$")[1].equals("project")){
+                            assignment = new Assignment(Integer.parseInt(info[2]), info[0], Assignment.type("project"), Integer.parseInt(info[3]));
+                        } else{
+                            assignment = new Assignment(Integer.parseInt(info[2]), info[0], Assignment.type("hw"), Integer.parseInt(result.split("\\$")[3]));
+                        }
+                        course = new Course(info[4], teacher, Integer.parseInt(info[5]), Integer.parseInt(info[6]));
+                        Database.getInstance().addAssignment(assignment, teacher, course);
+                        break;
+                    default:
+                        System.out.println("Invalid choice");
                 }
         }
 
@@ -77,36 +96,72 @@ public class UserManager {
             case "2":
                 System.out.println("1. add student");
                 System.out.println("2. add course");
-                System.out.println("4. remove student");
+                System.out.println("3. add assignment");
+                System.out.println("4. remove course");
+                System.out.println("5. remove assignment");
                 result = scanner.nextLine();
                 break;
             case "user":
+                String name="", username="";
                 System.out.println("Please enter the following options:");
                 System.out.print("Name:");
-                result = scanner.nextLine();
+                name = scanner.nextLine();
                 System.out.print("username:");
-                result = result+' '+scanner.nextLine();
+                username = scanner.nextLine();
+                result = name + "$" + username;
                 break;
             case "course":
-                System.out.println("Please enter the following information:");
+                System.out.println("Please enter the following information for course:");
                 System.out.print("title:");
                 result = scanner.nextLine();
                 System.out.print("credit:");
-                result = result+' '+scanner.nextLine();
+                result = result+'$'+scanner.nextLine();
                 System.out.print("id:");
-                result = result+' '+scanner.nextLine();
+                result = result+'$'+scanner.nextLine();
                 System.out.print("your name:");
-                result = result+' '+scanner.nextLine();
+                result = result+'$'+scanner.nextLine();
                 System.out.print("your username:");
-                result = result+' '+scanner.nextLine();
+                result = result+'$'+scanner.nextLine();
                 break;
+            case "delete":
+                System.out.println("Please enter the following information:");
+                System.out.print("name:");
+                result = scanner.nextLine();
+                System.out.print("username:");
+                result = result+'$'+scanner.nextLine();
+                break;
+            case "assignment":
+                System.out.println("Please enter the following information:");
+                System.out.print("title:");
+                result = scanner.nextLine();
+                System.out.print("type: ");
+                System.out.print("1. Project  ");
+                System.out.println("2. Hw");
+                int type = scanner.nextInt();
+                if(type==1){
+                    result = result+'$'+"project";
+                } else{
+                    result = result+'$'+"hw";
+                }
+                scanner.nextLine();
+                System.out.print("the max score:");
+                String maxScore = scanner.nextLine();
+                result = result+'$'+maxScore;
+                System.out.print("deadline:");
+                String deadline = scanner.nextLine();
+                result = result+'$'+deadline;
+                result = result+'$'+menu("course");
+                break;
+
             default: return "done";
         }
 
         return result;
     }
 
-    public void CreateUser(String role, String name, String username){
+    public void CreateUser(String role, String str){
+        String name = str.split("\\$")[0];
+        String username = str.split("\\$")[1];
         switch (role){
             case "teacher":
                 Teacher teacher = new Teacher(name, username);

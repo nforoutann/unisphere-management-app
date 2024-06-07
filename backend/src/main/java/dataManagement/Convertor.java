@@ -1,5 +1,6 @@
 package dataManagement;
 
+import objects.Course;
 import objects.Student;
 import objects.Term;
 
@@ -61,6 +62,39 @@ public class Convertor {
         for (Map.Entry<String, HashMap<String, String>> entry : map.entrySet()) {
             res.put(entry.getKey(), entry.getValue());
         }
+        return res;
+    }
+
+    public static HashMap<String, HashMap<String, String>> courseToMap(String courses) {
+        if (courses.startsWith("{") && courses.endsWith("}")) {
+            courses = courses.substring(1, courses.length() - 1);
+        }
+
+        HashMap<String, HashMap<String, String>> res = new HashMap<>();
+        String[] info = courses.split("/");
+
+        for (var each : info) {
+            String[] info1 = each.split("-");
+            String id = "";
+            HashMap<String, String> map = new HashMap<>();
+
+            for (var each1 : info1) {
+                int colon = each1.indexOf('=');
+                String key = each1.substring(0, colon);
+                String value = each1.substring(colon + 1);
+
+                if (key.equals("id")) {
+                    id = value;
+                }
+
+                map.put(key, value);
+            }
+
+            if (!id.isEmpty()) {
+                res.put(id, map);
+            }
+        }
+
         return res;
     }
 

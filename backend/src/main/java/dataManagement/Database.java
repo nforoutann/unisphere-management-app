@@ -1,11 +1,10 @@
 package dataManagement;
-import objects.Course;
-import objects.Student;
-import objects.Teacher;
-import objects.Term;
+import objects.*;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class Database {
     private static Database instance;
@@ -45,6 +44,74 @@ public class Database {
         return teacherDataMap;
     }
 
+    public void deleteUser(User user) {
+        HashMap<String, HashMap<String, String>> map;
+        String filePath;
+
+        if (user instanceof Student) {
+            map = Convertor.copyHashMap(getStudentDataMap());
+            filePath = studentsPath;
+        } else {
+            map = Convertor.copyHashMap(getTeacherDataMap());
+            filePath = teachersPath;
+        }
+
+        Iterator<Map.Entry<String, HashMap<String, String>>> iterator = map.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, HashMap<String, String>> entry = iterator.next();
+            if (entry.getKey().equals(user.getUsername())) {
+                iterator.remove();
+            }
+        }
+        printMap(map, filePath);
+    }
+
+    public void addAssignment(Assignment assignment, Teacher teacher, Course course) {
+        HashMap<String, HashMap<String, String>> map = Convertor.copyHashMap(getTeacherDataMap());
+        Iterator<Map.Entry<String, HashMap<String, String>>> iterator = map.entrySet().iterator();
+        String teacherCourse;
+        String newAssignment = "name?" + assignment.getTitle() + "~type?" + assignment.getType() + "~score?" + assignment.getMaxScore();
+        String resCourses = "";
+
+        while (iterator.hasNext()) {
+            Map.Entry<String, HashMap<String, String>> entry = iterator.next();
+            if (entry.getKey().equals(teacher.getUsername())) {
+                teacherCourse = entry.getValue().get("courses").substring(1, entry.getValue().get("courses").length() - 1);
+                HashMap<String, HashMap<String, String>> courseMap = Convertor.courseToMap(teacherCourse);
+                for (Map.Entry<String, HashMap<String, String>> courseEntry : courseMap.entrySet()) {
+                    if (courseEntry.getKey().equals(String.valueOf(course.getId()))) {
+                        String assignmentsString = courseEntry.getValue().get("assignments");
+                        if (assignmentsString == null || assignmentsString.isEmpty()) {
+                            assignmentsString = "{" + newAssignment + "}";
+                        } else {
+                            assignmentsString = assignmentsString.substring(1, assignmentsString.length() - 1);
+                            assignmentsString = "{" + assignmentsString + "|" + newAssignment + "}";
+                        }
+                        courseEntry.getValue().put("assignments", assignmentsString);
+                    }
+                }
+
+                // Reconstruct the course string and update it in the map
+                StringBuilder coursesBuilder = new StringBuilder("{");
+                for (Map.Entry<String, HashMap<String, String>> courseEntry : courseMap.entrySet()) {
+                    coursesBuilder.append("id=").append(courseEntry.getKey());
+                    for (Map.Entry<String, String> detailEntry : courseEntry.getValue().entrySet()) {
+                        coursesBuilder.append("-").append(detailEntry.getKey()).append("=").append(detailEntry.getValue());
+                    }
+                    coursesBuilder.append("/");
+                }
+                // Remove the last '/' character
+                coursesBuilder.deleteCharAt(coursesBuilder.length() - 1);
+                coursesBuilder.append("}");
+
+                entry.getValue().put("courses", coursesBuilder.toString());
+                break;
+            }
+        }
+
+        printMap(map, teachersPath);
+    }
+
     public HashMap <String, String> getTotalUsernamePassword(){
         HashMap <String, String> result = new HashMap<>();
         for(var entry : getStudentDataMap().entrySet()){
@@ -65,7 +132,7 @@ public class Database {
         String info = Convertor.mapOfUsersToString(getStudentDataMap());
         info = info + '\n' + result;
         try{
-            PrintWriter pw = new PrintWriter(new FileWriter(studentsPath));
+            PrintWriter pw = new PrintWriter(new FileWriter(studentsPath, true));
             pw.println(info);
             pw.close();
         } catch (IOException e) {
@@ -89,7 +156,6 @@ public class Database {
             e.printStackTrace();
         }
     }
-
 
     public static void printMap(HashMap <String, HashMap <String, String>> map, String path) {
         String result="";
