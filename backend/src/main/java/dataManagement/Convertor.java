@@ -1,12 +1,10 @@
 package dataManagement;
 
-import objects.Course;
 import objects.Student;
 import objects.Term;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Convertor {
@@ -57,4 +55,13 @@ public class Convertor {
         }
         return result;
     }
+
+    public static HashMap<String, HashMap<String, String>> copyHashMap(HashMap<String, HashMap<String, String>> map){
+        HashMap<String, HashMap<String, String>> res = new HashMap<>();
+        for (Map.Entry<String, HashMap<String, String>> entry : map.entrySet()) {
+            res.put(entry.getKey(), entry.getValue());
+        }
+        return res;
+    }
+
 }

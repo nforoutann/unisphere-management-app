@@ -43,11 +43,11 @@ public class UserManager {
                         CreateUser("student", name, username);
                         break;
                     case "2":
-                            result = menu("course");
-                            Teacher teacher = new Teacher(result.split(" ")[3], result.split(" ")[4]);
-                            Course course = new Course(result.split(" ")[0],teacher, Integer.parseInt(result.split(" ")[1]), Integer.parseInt(result.split(" ")[2]));
-                            Database.getInstance().AddCourseToTeacher(teacher, course);
-                            break;
+                        result = menu("course");
+                        Teacher teacher = new Teacher(result.split(" ")[3], result.split(" ")[4]);
+                        Course course = new Course(result.split(" ")[0],teacher, Integer.parseInt(result.split(" ")[1]), Integer.parseInt(result.split(" ")[2]));
+                        Database.getInstance().AddCourseToTeacher(teacher, course);
+                        break;
                     case "3":
                     case "4":
                 }
@@ -95,9 +95,9 @@ public class UserManager {
                 result = result+' '+scanner.nextLine();
                 System.out.print("id:");
                 result = result+' '+scanner.nextLine();
-                System.out.println("teacher's name:");
+                System.out.print("your name:");
                 result = result+' '+scanner.nextLine();
-                System.out.println("teacher's username:");
+                System.out.print("your username:");
                 result = result+' '+scanner.nextLine();
                 break;
             default: return "done";
@@ -196,6 +196,5 @@ public class UserManager {
     public static void main(String[] args){
         UserManager userManager=new UserManager();
         userManager.start();
-
     }
 }
