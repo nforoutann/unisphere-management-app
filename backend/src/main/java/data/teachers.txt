@@ -1,3 +1,3 @@
-courses:{id=1-name=math-assignments={name?main Project~score?5|name?hw~score?2}-exams={type?quiz~score?20}/id=2-assignments={name?hw2~score?10}-exams={type?midterm~score?5}-name=math-id=2},,password:ccc,,name:harry potter,,username:1234
-courses:{id=1-name=magic-assignments={name?main Project~score?5|name?hw~score?2}-exams={type?quiz~score?20}/id=2-name=math-assignments={name?hw2~score?10}-exams={type?midterm~score?5}},,password:ccc,,name:mr,,username:5555
-courses:{id=1-name=magic-assignments={name?main Project~score?5|name?hw~score?2}-exams={type?quiz~score?20}}-exams={type?midterm~score?5}},,password:ccc,,name:mr,,username:1111
+courses:{id=1-assignments={name?main~type?PROJECT~score?5|name?hw~type?PROJECT~score?2|name?new~type?PROJECT~score?5}-exams={type?quiz~score?20}-name=math-id=1/id=2-assignments={name?hw2~type?EXERCISE~score?10}-exams={type?midterm~score?5}-name=math-id=2},,password:ccc,,name:harry potter,,username:1234
+courses:{id=1-name=magic-assignments={name?main~type?PROJECT~score?5|name?hw~type?PROJECT~score?2}-exams={type?midterm~score?5}},,password:ccc,,name:mr,,username:1111
+courses:{id=1-name=magic-assignments={name?main~type?EXERCISE~score?5|name?hw~score?2}-exams={type?quiz~score?20}/id=2-name=math-assignments={name?hw2~type?EXERCISE~score?10}-exams={type?midterm~score?5}},,password:ccc,,name:mr,,username:5555
