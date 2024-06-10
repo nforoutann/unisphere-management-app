@@ -18,12 +18,10 @@ class welcomeScreen extends StatelessWidget{
               child: ColorFiltered(
                 colorFilter: ColorFilter.mode(Colors.black, BlendMode.srcATop),
                 child: SizedBox(
-                  width: 400,
-                  height: 400,
+                  width: 200,
+                  height: 200,
                   child: Image.asset(
                     'assets/images/logo.png',
-                    height: 400,
-                    width: 400,
                   ),
                 ),
               ),
@@ -35,8 +33,8 @@ class welcomeScreen extends StatelessWidget{
               child: ColorFiltered(
                 colorFilter: ColorFilter.mode(Colors.black, BlendMode.srcATop),
                 child: SizedBox (
-                  height: 400,
-                  width: 800,
+                  height: 230,
+                  width: 230,
                   child: Image.asset(
                     'assets/images/unisphere.png',
                   ),
