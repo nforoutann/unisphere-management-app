@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:screen/widgets/custom-scaffold.dart';
 
 class SignUpScreen extends StatefulWidget{
-  SignUpScreen({super.key});
+  const SignUpScreen({super.key});
 
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
@@ -11,6 +11,12 @@ class SignUpScreen extends StatefulWidget{
 class _SignUpScreenState extends State<SignUpScreen>{
   @override
   Widget build(BuildContext context){
-    return CustomScaffold(child: child);
+    return CustomScaffold(
+      child: Column(
+        children: [
+
+        ],
+      ),
+    );
   }
 }

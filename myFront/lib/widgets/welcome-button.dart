@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class WelcomeButton extends StatelessWidget{
-  WelcomeButton({super.key, this.textColor, this.buttonText, this.color});
-  //Widget? onTap;
+  WelcomeButton({super.key, this.textColor, this.buttonText, this.color, this.onTap});
+  Widget? onTap;
   Color? color;
   String? buttonText;
   Color? textColor;
@@ -15,7 +15,14 @@ class WelcomeButton extends StatelessWidget{
         height: 60,
         width: 300, // Set a fixed width for the button
         child: ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (e) => onTap!,
+              ),
+            );
+          },
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(color!),
             foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
