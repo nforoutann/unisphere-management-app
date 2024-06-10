@@ -12,14 +12,16 @@ class welcomeScreen extends StatelessWidget{
         children: [
           Expanded(
             child: Transform.translate(
-              offset: const Offset(-40.0, -78.0), // Adjust these values to move the photo
+              offset: const Offset(-90.0, -40.0), // Adjust these values to move the photo
               child: ColorFiltered(
                 colorFilter: ColorFilter.mode(Colors.black, BlendMode.srcATop),
                 child: SizedBox(
-                  width: 300,
-                  height: 200,
+                  width: 400,
+                  height: 400,
                   child: Image.asset(
                     'assets/images/logo.png',
+                    height: 400,
+                    width: 400,
                   ),
                 ),
               ),
@@ -27,11 +29,12 @@ class welcomeScreen extends StatelessWidget{
           ),
           Expanded(
             child: Transform.translate(
-              offset: const Offset(100.0, -390.0), // Adjust these values to move the photo
+              offset: const Offset(20.0, -300.0), // Adjust these values to move the photo
               child: ColorFiltered(
                 colorFilter: ColorFilter.mode(Colors.black, BlendMode.srcATop),
-                child: Container  (
-                  width: 300,
+                child: SizedBox (
+                  height: 400,
+                  width: 700,
                   child: Image.asset(
                     'assets/images/unisphere.png',
                   ),
@@ -41,12 +44,12 @@ class welcomeScreen extends StatelessWidget{
           ),
           Expanded(
             child: Transform.translate(
-              offset: const Offset(-40.0, -480.0), // Adjust these values to move the photo
+              offset: const Offset(-100.0, -330.0), // Adjust these values to move the photo
               child: ColorFiltered(
                 colorFilter: ColorFilter.mode(Colors.black, BlendMode.srcATop),
                 child: SizedBox(
-                  height: 200,
-                  width: 300,
+                  height: 400,
+                  width: 350,
                   child: Image.asset(
                     'assets/images/hello.png',
                   ),
@@ -55,27 +58,25 @@ class welcomeScreen extends StatelessWidget{
             ),
           ),
           Flexible(
-            flex: 8,
+            flex: 0,
             child: Align(
               alignment: Alignment.bottomRight,
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Expanded(
-                    child: WelcomeButton(
-                      buttonText: 'Sign Up',
-                      //onTap: SignUpScreen(),
-                      color: Colors.blue,
-                      textColor: Colors.white,
-                    ),
+                  WelcomeButton(
+                    buttonText: 'Sign Up',
+                    //onTap: SignUpScreen(),
+                    color: Colors.blue,
+                    textColor: Colors.black,
                   ),
-                  Expanded(
-                    child: WelcomeButton(
-                      buttonText: 'Login',
-                      //onTap: LoginScreen(),
-                      color: Colors.indigoAccent,
-                      textColor: Colors.white,
-                    ),
-                  )
+                  SizedBox(height: 16),
+                  WelcomeButton(
+                    buttonText: 'Login',
+                    //onTap: LoginScreen(),
+                    color: Colors.indigoAccent,
+                    textColor: Colors.black,
+                  ),
                 ],
               ),
             ),
