@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:screen/widgets/custom-scaffold.dart';
+import 'package:screen/screens/welcome-screen.dart';
 
 void main(){
   runApp(myApp());
@@ -17,7 +17,7 @@ class myApp extends StatelessWidget{
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: CustomScaffold(),
+      home: welcomeScreen(),
     );
   }
 }
