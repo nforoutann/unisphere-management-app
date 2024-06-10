@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:screen/widgets/custom-scaffold.dart';
+import 'package:screen/widgets/welcome-button.dart';
 
 class welcomeScreen extends StatelessWidget{
   welcomeScreen({super.key});
@@ -11,7 +12,7 @@ class welcomeScreen extends StatelessWidget{
         children: [
           Expanded(
             child: Transform.translate(
-              offset: const Offset(-60.0, -140.0), // Adjust these values to move the photo
+              offset: const Offset(-40.0, -78.0), // Adjust these values to move the photo
               child: ColorFiltered(
                 colorFilter: ColorFilter.mode(Colors.black, BlendMode.srcATop),
                 child: SizedBox(
@@ -26,10 +27,10 @@ class welcomeScreen extends StatelessWidget{
           ),
           Expanded(
             child: Transform.translate(
-              offset: const Offset(100.0, -600.0), // Adjust these values to move the photo
+              offset: const Offset(100.0, -390.0), // Adjust these values to move the photo
               child: ColorFiltered(
                 colorFilter: ColorFilter.mode(Colors.black, BlendMode.srcATop),
-                child: SizedBox(
+                child: Container  (
                   width: 300,
                   child: Image.asset(
                     'assets/images/unisphere.png',
@@ -38,6 +39,47 @@ class welcomeScreen extends StatelessWidget{
               ),
             ),
           ),
+          Expanded(
+            child: Transform.translate(
+              offset: const Offset(-40.0, -480.0), // Adjust these values to move the photo
+              child: ColorFiltered(
+                colorFilter: ColorFilter.mode(Colors.black, BlendMode.srcATop),
+                child: SizedBox(
+                  height: 200,
+                  width: 300,
+                  child: Image.asset(
+                    'assets/images/hello.png',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Flexible(
+            flex: 8,
+            child: Align(
+              alignment: Alignment.bottomRight,
+              child: Column(
+                children: [
+                  Expanded(
+                    child: WelcomeButton(
+                      buttonText: 'Sign Up',
+                      //onTap: SignUpScreen(),
+                      color: Colors.blue,
+                      textColor: Colors.white,
+                    ),
+                  ),
+                  Expanded(
+                    child: WelcomeButton(
+                      buttonText: 'Login',
+                      //onTap: LoginScreen(),
+                      color: Colors.indigoAccent,
+                      textColor: Colors.white,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          )
         ],
       ),
     );
