@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:screen/widgets/custom-scaffold.dart';
 import 'package:screen/widgets/welcome-button.dart';
 
@@ -10,7 +12,7 @@ class welcomeScreen extends StatelessWidget{
     return CustomScaffold(
       child: Column(
         children: [
-          Expanded(
+          Flexible(
             child: Transform.translate(
               offset: const Offset(-90.0, -40.0), // Adjust these values to move the photo
               child: ColorFiltered(
@@ -27,14 +29,14 @@ class welcomeScreen extends StatelessWidget{
               ),
             ),
           ),
-          Expanded(
+          Flexible(
             child: Transform.translate(
               offset: const Offset(20.0, -300.0), // Adjust these values to move the photo
               child: ColorFiltered(
                 colorFilter: ColorFilter.mode(Colors.black, BlendMode.srcATop),
                 child: SizedBox (
                   height: 400,
-                  width: 700,
+                  width: 800,
                   child: Image.asset(
                     'assets/images/unisphere.png',
                   ),
@@ -42,7 +44,7 @@ class welcomeScreen extends StatelessWidget{
               ),
             ),
           ),
-          Expanded(
+          Flexible(
             child: Transform.translate(
               offset: const Offset(-100.0, -330.0), // Adjust these values to move the photo
               child: ColorFiltered(
