@@ -19,6 +19,7 @@ class WelcomeButton extends StatelessWidget{
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(color!),
             foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
+            shadowColor: MaterialStateProperty.all<Color>(Colors.black),
           ),
           child: Text(
             buttonText!,

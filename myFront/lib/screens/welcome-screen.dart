@@ -14,14 +14,14 @@ class welcomeScreen extends StatelessWidget{
         children: [
           Flexible(
             child: Transform.translate(
-              offset: const Offset(-90.0, -40.0), // Adjust these values to move the photo
+              offset: const Offset(-110.0, -80.0), // Adjust these values to move the photo
               child: ColorFiltered(
                 colorFilter: ColorFilter.mode(Colors.black, BlendMode.srcATop),
                 child: SizedBox(
-                  width: 200,
-                  height: 200,
                   child: Image.asset(
                     'assets/images/logo.png',
+                    width: 100,
+                    height: 200,
                   ),
                 ),
               ),
@@ -29,7 +29,7 @@ class welcomeScreen extends StatelessWidget{
           ),
           Flexible(
             child: Transform.translate(
-              offset: const Offset(20.0, -300.0), // Adjust these values to move the photo
+              offset: const Offset(50.0, -280.0), // Adjust these values to move the photo
               child: ColorFiltered(
                 colorFilter: ColorFilter.mode(Colors.black, BlendMode.srcATop),
                 child: SizedBox (
