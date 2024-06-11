@@ -1,103 +1,79 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/login-screen.dart';
-import 'package:frontend/screens/signup_screen.dart';
-import 'package:frontend/theme/theme.dart';
-import 'package:frontend/widgets/custom-scaffold.dart';
-import 'package:frontend/widgets/welcome-button.dart';
+import 'package:screen/widgets/custom-scaffold.dart';
+import 'package:screen/widgets/welcome-button.dart';
+import 'package:screen/screens/signup-screen.dart';
+import 'package:screen/screens/login-screen.dart';
 
-class WelcomeScreen extends StatelessWidget {
-  const WelcomeScreen({Key? key}) : super(key: key);
+class welcomeScreen extends StatelessWidget{
+  welcomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
     return CustomScaffold(
       child: Column(
         children: [
-          SizedBox(
-            width: 300.0,
-            height: 200.0,
-            child: Image.asset(
-              'assets/images/logo.png',
-              height: 250.0,
-              width: double.infinity,
-              fit: BoxFit.cover,
+          Expanded(
+            child: Transform.translate(
+              offset: const Offset(-85.0, -80.0), // Adjust these values to move the photo
+              child: ColorFiltered(
+                colorFilter:const ColorFilter.mode(Colors.black, BlendMode.srcATop),
+                child: SizedBox(
+                  child: Image.asset(
+                    'assets/images/logo.png',
+                    width: 100,
+                    height: 200,
+                  ),
+                ),
+              ),
             ),
           ),
-          Flexible(
-            flex: 8,
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                vertical: 0,
-                horizontal: 40.0,
-              ),
-              child: Center(
-                child: RichText(
-                  textAlign: TextAlign.center,
-                  text: TextSpan(
-                    children: [
-                      WidgetSpan(
-                        child: Stack(
-                          children: [
-                            Text(
-                              'Welcome to unisphere!',
-                              style: TextStyle(
-                                fontSize: 30.0,
-                                fontWeight: FontWeight.w700,
-                                foreground: Paint()
-                                  ..style = PaintingStyle.stroke
-                                  ..strokeWidth = 6
-                                  ..color = Color(0xFF1A237E),
-                              ),
-                            ),
-                            const Text(
-                              'Welcome to unisphere!',
-                              style: TextStyle(
-                                fontSize: 30.0,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const TextSpan(
-                        text: 'Where learning meets efficiency',
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.grey,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                    ],
+          Expanded(
+            child: Transform.translate(
+              offset: const Offset(75.0, -280.0), // Adjust these values to move the photo
+              child: ColorFiltered(
+                colorFilter:const ColorFilter.mode(Colors.black, BlendMode.srcATop),
+                child: SizedBox (
+                  height: 230,
+                  width: 230,
+                  child: Image.asset(
+                    'assets/images/unisphere.png',
                   ),
                 ),
               ),
             ),
           ),
           Flexible(
-            flex:4,
-            child: Align(
-              alignment: Alignment.bottomRight,
-              child: Row(
-                children: [
-                  const Expanded(
-                    child: WelcomeButton(
-                      buttonText: 'Login',
-                      onTap: LoginScreen(),
-                      color: Colors.transparent,
-                      textColor: Colors.white,
-                    ),
+            child: Transform.translate(
+              offset: const Offset(-65.0, -330.0), // Adjust these values to move the photo
+              child: ColorFiltered(
+                colorFilter:const ColorFilter.mode(Colors.black, BlendMode.srcATop),
+                child: SizedBox(
+                  height: 400,
+                  width: 350,
+                  child: Image.asset(
+                    'assets/images/hello.png',
                   ),
-                  Expanded(
-                    child: WelcomeButton(
-                      buttonText: 'Sign up',
-                      onTap: SignUpScreen(),
-                      color: Colors.white,
-                      textColor: lightColorScheme.primary,
-                    ),
-                  ),
-                ],
+                ),
               ),
+            ),
+          ),
+          Transform.translate(
+            offset: Offset(80, 0),
+            child: WelcomeButton(
+              buttonText: 'Sign Up',
+              onTap:const SignUpScreen(),
+              color: Colors.cyan,
+              textColor: Colors.black,
+            ),
+          ),
+          const SizedBox(height: 16),
+          Transform.translate(
+            offset: Offset(80, 0),
+            child: WelcomeButton(
+              buttonText: 'Login',
+              onTap:const LoginScreen(),
+              color: Colors.indigoAccent,
+              textColor: Colors.black,
             ),
           ),
         ],
