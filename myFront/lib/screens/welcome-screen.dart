@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:screen/widgets/custom-scaffold.dart';
 import 'package:screen/widgets/welcome-button.dart';
 import 'package:screen/screens/signup-screen.dart';
@@ -15,7 +14,7 @@ class welcomeScreen extends StatelessWidget{
         children: [
           Expanded(
             child: Transform.translate(
-              offset: const Offset(-110.0, -80.0), // Adjust these values to move the photo
+              offset: const Offset(-85.0, -80.0), // Adjust these values to move the photo
               child: ColorFiltered(
                 colorFilter:const ColorFilter.mode(Colors.black, BlendMode.srcATop),
                 child: SizedBox(
@@ -30,7 +29,7 @@ class welcomeScreen extends StatelessWidget{
           ),
           Expanded(
             child: Transform.translate(
-              offset: const Offset(50.0, -280.0), // Adjust these values to move the photo
+              offset: const Offset(75.0, -280.0), // Adjust these values to move the photo
               child: ColorFiltered(
                 colorFilter:const ColorFilter.mode(Colors.black, BlendMode.srcATop),
                 child: SizedBox (
@@ -45,7 +44,7 @@ class welcomeScreen extends StatelessWidget{
           ),
           Flexible(
             child: Transform.translate(
-              offset: const Offset(-100.0, -330.0), // Adjust these values to move the photo
+              offset: const Offset(-65.0, -330.0), // Adjust these values to move the photo
               child: ColorFiltered(
                 colorFilter:const ColorFilter.mode(Colors.black, BlendMode.srcATop),
                 child: SizedBox(
@@ -58,30 +57,25 @@ class welcomeScreen extends StatelessWidget{
               ),
             ),
           ),
-          Flexible(
-            flex: 0,
-            child: Align(
-              alignment: Alignment.bottomRight,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  WelcomeButton(
-                    buttonText: 'Sign Up',
-                    onTap:const SignUpScreen(),
-                    color: Colors.blue,
-                    textColor: Colors.black,
-                  ),
-                  const SizedBox(height: 16),
-                  WelcomeButton(
-                    buttonText: 'Login',
-                    onTap:const LoginScreen(),
-                    color: Colors.indigoAccent,
-                    textColor: Colors.black,
-                  ),
-                ],
-              ),
+          Transform.translate(
+            offset: Offset(80, 0),
+            child: WelcomeButton(
+              buttonText: 'Sign Up',
+              onTap:const SignUpScreen(),
+              color: Colors.blue,
+              textColor: Colors.black,
             ),
-          )
+          ),
+          const SizedBox(height: 16),
+          Transform.translate(
+            offset: Offset(80, 0),
+            child: WelcomeButton(
+              buttonText: 'Login',
+              onTap:const LoginScreen(),
+              color: Colors.indigoAccent,
+              textColor: Colors.black,
+            ),
+          ),
         ],
       ),
     );
