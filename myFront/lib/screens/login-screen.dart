@@ -34,6 +34,20 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
           Padding(
+            padding: const EdgeInsets.only(top: 85),
+            child: Container(
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
+                ),
+                color: Colors.white,
+              ),
+              height: double.infinity,
+              width: double.infinity,
+            ),
+          ),
+          Padding(
             padding: const EdgeInsets.only(top: 100),
             child: Container(
               decoration: const BoxDecoration(
@@ -41,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   topRight: Radius.circular(40),
                   topLeft: Radius.circular(40),
                 ),
-                color: Colors.white,
+                color: Colors.black,
               ),
               height: double.infinity,
               width: double.infinity,
@@ -51,6 +65,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     TextField(
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
                       controller: _usernameController,
                       decoration: InputDecoration(
                         suffixIcon: const Icon(
@@ -71,6 +88,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     TextField(
+                      style:const TextStyle(
+                        color: Colors.white,
+                      ),
                       controller: _passwordController,
                       obscureText: !_isPasswordVisible,
                       decoration: InputDecoration(
@@ -146,7 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
-
+                                  color: Colors.white,
                                 ),
                               ),
                               TextButton(
