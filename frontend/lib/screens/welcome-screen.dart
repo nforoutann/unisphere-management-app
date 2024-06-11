@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:screen/widgets/custom-scaffold.dart';
-import 'package:screen/widgets/welcome-button.dart';
-import 'package:screen/screens/signup-screen.dart';
-import 'package:screen/screens/login-screen.dart';
+import 'package:frontend/widgets/custom-scaffold.dart';
+import 'package:frontend/widgets/welcome-button.dart';
+import 'package:frontend/screens/signup-screen.dart';
+import 'package:frontend/screens/login-screen.dart';
 
 class welcomeScreen extends StatelessWidget{
   welcomeScreen({super.key});

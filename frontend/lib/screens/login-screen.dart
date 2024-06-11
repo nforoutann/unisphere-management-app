@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:screen/screens/signup-screen.dart';
-import 'package:screen/widgets/custom-scaffold.dart';
-import 'package:screen/widgets/login-signup-button.dart';
+import 'package:frontend/screens/signup-screen.dart';
+import 'package:frontend/widgets/custom-scaffold.dart';
+import 'package:frontend/widgets/login-signup-button.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
