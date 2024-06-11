@@ -62,7 +62,7 @@ class welcomeScreen extends StatelessWidget{
             child: WelcomeButton(
               buttonText: 'Sign Up',
               onTap:const SignUpScreen(),
-              color: Colors.blue,
+              color: Colors.cyan,
               textColor: Colors.black,
             ),
           ),
