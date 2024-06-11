@@ -27,7 +27,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       child: Stack(
         children: [
           Transform.translate(
-            offset:const Offset(18, -145),
+            offset: const Offset(18, -145),
             child: Image.asset(
               'assets/images/createAccount.png',
               width: 300,
@@ -56,196 +56,186 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   topLeft: Radius.circular(40),
                   topRight: Radius.circular(40),
                 ),
-                //color: Colors.black,
                 color: Color(0xFF171717),
               ),
               height: double.infinity,
               width: double.infinity,
               child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 18.0,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 18.0),
                 child: SingleChildScrollView(
-                  padding: EdgeInsets.only(
-                    bottom: keyboardHeight,
-                  ),
-                  child: AnimatedContainer(
-                    duration: Duration(milliseconds: 300),
-                    padding: EdgeInsets.only(
-                      top: isKeyboardOpen ? 20 : 60, // Adjust these values as needed
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        TextField(
-                          style:const TextStyle(
-                            color: Colors.white,
-                          ),
-                          controller: _usernameController,
-                          decoration: InputDecoration(
-                            suffixIcon: const Icon(
-                              Icons.check,
-                              color: Colors.grey,
-                            ),
-                            label: Transform.translate(
-                              offset: const Offset(0, -10),
-                              child: const Text(
-                                'username',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.indigo,
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ),
-                          ),
+                  padding: EdgeInsets.only(bottom: keyboardHeight),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(height: isKeyboardOpen ? 20 : 60),
+                      TextField(
+                        style: const TextStyle(
+                          color: Colors.white,
                         ),
-                        const SizedBox(height: 10),
-                        TextField(
-                          style:const TextStyle(
-                            color: Colors.white,
+                        controller: _usernameController,
+                        decoration: InputDecoration(
+                          suffixIcon: const Icon(
+                            Icons.check,
+                            color: Colors.grey,
                           ),
-                          controller: _emailController,
-                          decoration: InputDecoration(
-                            suffixIcon: const Icon(
-                              Icons.check,
-                              color: Colors.grey,
-                            ),
-                            label: Transform.translate(
-                              offset: const Offset(0, -10),
-                              child: const Text(
-                                'email',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.indigo,
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        TextField(
-                          style: const TextStyle(
-                            color: Colors.white,
-                          ),
-                          controller: _passwordController,
-                          obscureText: !_isPasswordVisible,
-                          decoration: InputDecoration(
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-                                color: Colors.grey,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  _isPasswordVisible = !_isPasswordVisible;
-                                });
-                              },
-                            ),
-                            label: Transform.translate(
-                              offset: const Offset(0, -10),
-                              child: const Text(
-                                'password',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.indigo,
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        TextField(
-                          style: const TextStyle(
-                            color: Colors.white
-                          ),
-                          controller: _passwordConfirmController,
-                          obscureText: !_isPasswordVisibleConfirm,
-                          decoration: InputDecoration(
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                _isPasswordVisibleConfirm ? Icons.visibility : Icons.visibility_off,
-                                color: Colors.grey,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  _isPasswordVisibleConfirm = !_isPasswordVisibleConfirm;
-                                });
-                              },
-                            ),
-                            label: Transform.translate(
-                              offset: const Offset(0, -10),
-                              child: const Text(
-                                'confirm password',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.indigo,
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        Transform.translate(
-                          offset:const Offset(0, 10),
-                          child: MyElevatedButton(
-                            onPressed: () {
-                              // TODO: Implement login functionality
-                            },
+                          label: Transform.translate(
+                            offset: const Offset(0, -10),
                             child: const Text(
-                              'Sign Up',
+                              'username',
                               style: TextStyle(
-                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.indigo,
                                 fontSize: 20,
                               ),
                             ),
                           ),
                         ),
-                        const SizedBox(height: 100),
-                        if (!isKeyboardOpen) ...[
-                          Align(
-                            alignment: Alignment.bottomRight,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                const Text(
-                                  'Already have an account?',
+                      ),
+                      const SizedBox(height: 10),
+                      TextField(
+                        style: const TextStyle(
+                          color: Colors.white,
+                        ),
+                        controller: _emailController,
+                        decoration: InputDecoration(
+                          suffixIcon: const Icon(
+                            Icons.check,
+                            color: Colors.grey,
+                          ),
+                          label: Transform.translate(
+                            offset: const Offset(0, -10),
+                            child: const Text(
+                              'email',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.indigo,
+                                fontSize: 20,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      TextField(
+                        style: const TextStyle(
+                          color: Colors.white,
+                        ),
+                        controller: _passwordController,
+                        obscureText: !_isPasswordVisible,
+                        decoration: InputDecoration(
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                              color: Colors.grey,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _isPasswordVisible = !_isPasswordVisible;
+                              });
+                            },
+                          ),
+                          label: Transform.translate(
+                            offset: const Offset(0, -10),
+                            child: const Text(
+                              'password',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.indigo,
+                                fontSize: 20,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      TextField(
+                        style: const TextStyle(
+                          color: Colors.white,
+                        ),
+                        controller: _passwordConfirmController,
+                        obscureText: !_isPasswordVisibleConfirm,
+                        decoration: InputDecoration(
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _isPasswordVisibleConfirm ? Icons.visibility : Icons.visibility_off,
+                              color: Colors.grey,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _isPasswordVisibleConfirm = !_isPasswordVisibleConfirm;
+                              });
+                            },
+                          ),
+                          label: Transform.translate(
+                            offset: const Offset(0, -10),
+                            child: const Text(
+                              'confirm password',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.indigo,
+                                fontSize: 20,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Transform.translate(
+                        offset: const Offset(0, 10),
+                        child: MyElevatedButton(
+                          onPressed: () {
+                            // TODO: Implement login functionality
+                          },
+                          child: const Text(
+                            'Sign Up',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 130),
+                      if (!isKeyboardOpen) ...[
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              const Text(
+                                'Already have an account?',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              TextButton(
+                                style: TextButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0), // Adjust the padding as needed
+                                  minimumSize: const Size(0, 0), // Set the minimum size if needed
+                                  tapTargetSize: MaterialTapTargetSize.shrinkWrap, // Reduce the tap target size
+                                ),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (e) => const LoginScreen(),
+                                    ),
+                                  );
+                                },
+                                child: const Text(
+                                  'Login',
                                   style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
+                                    fontSize: 17,
                                   ),
                                 ),
-                                TextButton(
-                                  style: TextButton.styleFrom(
-                                    padding:const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0), // Adjust the padding as needed
-                                    minimumSize:const Size(0, 0), // Set the minimum size if needed
-                                    tapTargetSize: MaterialTapTargetSize.shrinkWrap, // Reduce the tap target size
-                                  ),
-                                  onPressed: (){
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (e) =>const LoginScreen(),
-                                      )
-                                    );
-                                  },
-                                  child: const Text(
-                                    'Login',
-                                    style: TextStyle(
-                                      fontSize: 17,
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          )
-                        ]
-                      ],
-                    ),
+                              )
+                            ],
+                          ),
+                        )
+                      ]
+                    ],
                   ),
                 ),
               ),
