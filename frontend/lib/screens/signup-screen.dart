@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/login-screen.dart';
 import 'package:frontend/widgets/custom-scaffold.dart';
@@ -14,7 +15,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _passwordConfirmController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _idController = TextEditingController();
+
   bool _isPasswordVisible = false;
   bool _isPasswordVisibleConfirm = false;
 
@@ -26,30 +29,35 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return CustomScaffold(
       child: Stack(
         children: [
-          Transform.translate(
-            offset: const Offset(18, -145),
-            child: Image.asset(
-              'assets/images/createAccount.png',
-              width: 300,
-              height: 300,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 50),
-            child: Container(
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30),
-                  topRight: Radius.circular(30),
-                ),
-                color: Colors.white,
+          if(!isKeyboardOpen)...{
+            Transform.translate(
+              offset: const Offset(18, -137),
+              child: Image.asset(
+                'assets/images/createAccount.png',
+                width: 270,
+                height: 295,
               ),
-              height: double.infinity,
-              width: double.infinity,
+            ),
+          },
+          Transform.translate(
+            offset: Offset(0, -8),
+            child: Padding(
+              padding: EdgeInsets.only(top: isKeyboardOpen ? 0 : 60),
+              child: Container(
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
+                  ),
+                  color: Colors.white,
+                ),
+                height: double.infinity,
+                width: double.infinity,
+              ),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 65),
+            padding: EdgeInsets.only(top: isKeyboardOpen ? 7 : 67),
             child: Container(
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
@@ -68,6 +76,29 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(height: isKeyboardOpen ? 20 : 60),
+                      TextField(
+                        style: const TextStyle(
+                          color: Colors.white,
+                        ),
+                        controller: _nameController,
+                        decoration: InputDecoration(
+                          suffixIcon: const Icon(
+                            Icons.check,
+                            color: Colors.grey,
+                          ),
+                          label: Transform.translate(
+                            offset: const Offset(0, -10),
+                            child: const Text(
+                              'name',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.indigo,
+                                fontSize: 20,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                       TextField(
                         style: const TextStyle(
                           color: Colors.white,
@@ -91,7 +122,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 9),
+                      TextField(
+                        style: const TextStyle(
+                          color: Colors.white,
+                        ),
+                        controller: _idController,
+                        decoration: InputDecoration(
+                          suffixIcon: const Icon(
+                            Icons.check,
+                            color: Colors.grey,
+                          ),
+                          label: Transform.translate(
+                            offset: const Offset(0, -10),
+                            child: const Text(
+                              'student id',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.indigo,
+                                fontSize: 20,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 9),
                       TextField(
                         style: const TextStyle(
                           color: Colors.white,
@@ -115,7 +170,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 9),
                       TextField(
                         style: const TextStyle(
                           color: Colors.white,
@@ -147,41 +202,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 10),
-                      TextField(
-                        style: const TextStyle(
-                          color: Colors.white,
-                        ),
-                        controller: _passwordConfirmController,
-                        obscureText: !_isPasswordVisibleConfirm,
-                        decoration: InputDecoration(
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _isPasswordVisibleConfirm ? Icons.visibility : Icons.visibility_off,
-                              color: Colors.grey,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _isPasswordVisibleConfirm = !_isPasswordVisibleConfirm;
-                              });
-                            },
-                          ),
-                          label: Transform.translate(
-                            offset: const Offset(0, -10),
-                            child: const Text(
-                              'confirm password',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.indigo,
-                                fontSize: 20,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 14),
                       Transform.translate(
-                        offset: const Offset(0, 10),
+                        offset: const Offset(0, 6),
                         child: MyElevatedButton(
                           onPressed: () {
                             // TODO: Implement login functionality
@@ -195,7 +218,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 130),
+                      const SizedBox(height: 110),
                       if (!isKeyboardOpen) ...[
                         Align(
                           alignment: Alignment.bottomRight,

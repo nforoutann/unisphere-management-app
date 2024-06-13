@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/signup-screen.dart';
 import 'package:frontend/widgets/custom-scaffold.dart';
@@ -23,14 +22,12 @@ class _LoginScreenState extends State<LoginScreen> {
     return CustomScaffold(
       child: Stack(
         children: [
-          Container(
-            child: Transform.translate(
-              offset: const Offset(0, -130),
-              child: Image.asset(
-                'assets/images/welcome.png',
-                height: 310,
-                width: 310,
-              ),
+          Transform.translate(
+            offset: const Offset(0, -130),
+            child: Image.asset(
+              'assets/images/welcome.png',
+              height: 310,
+              width: 310,
             ),
           ),
           Padding(
@@ -78,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         label: Transform.translate(
                           offset: const Offset(0, -10),
                           child: const Text(
-                            'username',
+                            'username or id',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.indigo,
