@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/login-screen.dart';
 import 'package:frontend/widgets/custom-scaffold.dart';
@@ -19,7 +18,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _idController = TextEditingController();
 
   bool _isPasswordVisible = false;
-  bool _isPasswordVisibleConfirm = false;
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _nameController.dispose();
+    _idController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,35 +37,32 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return CustomScaffold(
       child: Stack(
         children: [
-          if(!isKeyboardOpen)...{
-            Transform.translate(
-              offset: const Offset(18, -137),
+          if (!isKeyboardOpen)
+            Positioned(
+              top: -127,
+              left: 18,
               child: Image.asset(
                 'assets/images/createAccount.png',
                 width: 270,
                 height: 295,
               ),
             ),
-          },
-          Transform.translate(
-            offset: Offset(0, -8),
-            child: Padding(
-              padding: EdgeInsets.only(top: isKeyboardOpen ? 0 : 60),
-              child: Container(
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
-                  ),
-                  color: Colors.white,
+          Padding(
+            padding: EdgeInsets.only(top: isKeyboardOpen ? 0 : 60),
+            child: Container(
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
                 ),
-                height: double.infinity,
-                width: double.infinity,
+                color: Colors.white,
               ),
+              height: double.infinity,
+              width: double.infinity,
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(top: isKeyboardOpen ? 7 : 67),
+            padding: EdgeInsets.only(top: isKeyboardOpen ? 8 : 73),
             child: Container(
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
@@ -69,157 +74,37 @@ class _SignUpScreenState extends State<SignUpScreen> {
               height: double.infinity,
               width: double.infinity,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                padding: const EdgeInsets.symmetric(horizontal: 19.0),
                 child: SingleChildScrollView(
                   padding: EdgeInsets.only(bottom: keyboardHeight),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(height: isKeyboardOpen ? 20 : 60),
-                      TextField(
-                        style: const TextStyle(
-                          color: Colors.white,
-                        ),
-                        controller: _nameController,
-                        decoration: InputDecoration(
-                          suffixIcon: const Icon(
-                            Icons.check,
-                            color: Colors.grey,
-                          ),
-                          label: Transform.translate(
-                            offset: const Offset(0, -10),
-                            child: const Text(
-                              'name',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.indigo,
-                                fontSize: 20,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      TextField(
-                        style: const TextStyle(
-                          color: Colors.white,
-                        ),
-                        controller: _usernameController,
-                        decoration: InputDecoration(
-                          suffixIcon: const Icon(
-                            Icons.check,
-                            color: Colors.grey,
-                          ),
-                          label: Transform.translate(
-                            offset: const Offset(0, -10),
-                            child: const Text(
-                              'username',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.indigo,
-                                fontSize: 20,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 9),
-                      TextField(
-                        style: const TextStyle(
-                          color: Colors.white,
-                        ),
-                        controller: _idController,
-                        decoration: InputDecoration(
-                          suffixIcon: const Icon(
-                            Icons.check,
-                            color: Colors.grey,
-                          ),
-                          label: Transform.translate(
-                            offset: const Offset(0, -10),
-                            child: const Text(
-                              'student id',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.indigo,
-                                fontSize: 20,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 9),
-                      TextField(
-                        style: const TextStyle(
-                          color: Colors.white,
-                        ),
-                        controller: _emailController,
-                        decoration: InputDecoration(
-                          suffixIcon: const Icon(
-                            Icons.check,
-                            color: Colors.grey,
-                          ),
-                          label: Transform.translate(
-                            offset: const Offset(0, -10),
-                            child: const Text(
-                              'email',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.indigo,
-                                fontSize: 20,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 9),
-                      TextField(
-                        style: const TextStyle(
-                          color: Colors.white,
-                        ),
-                        controller: _passwordController,
-                        obscureText: !_isPasswordVisible,
-                        decoration: InputDecoration(
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-                              color: Colors.grey,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _isPasswordVisible = !_isPasswordVisible;
-                              });
-                            },
-                          ),
-                          label: Transform.translate(
-                            offset: const Offset(0, -10),
-                            child: const Text(
-                              'password',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.indigo,
-                                fontSize: 20,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+                      SizedBox(height: isKeyboardOpen ? 30 : 90),
+                      _buildTextField(_nameController, 'Name', Icons.account_circle),
+                      const SizedBox(height: 10),
+                      _buildTextField(_usernameController, 'Username', Icons.person),
+                      const SizedBox(height: 10),
+                      _buildTextField(_idController, 'Student ID', Icons.school),
+                      const SizedBox(height: 10),
+                      _buildTextField(_emailController, 'Email', Icons.email),
+                      const SizedBox(height: 10),
+                      _buildPasswordField(_passwordController, 'Password'),
                       const SizedBox(height: 14),
-                      Transform.translate(
-                        offset: const Offset(0, 6),
-                        child: MyElevatedButton(
-                          onPressed: () {
-                            // TODO: Implement login functionality
-                          },
-                          child: const Text(
-                            'Sign Up',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                            ),
+                      MyElevatedButton(
+                        onPressed: () {
+                          // TODO: Implement sign-up functionality
+                        },
+                        child: const Text(
+                          'Sign Up',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
                           ),
                         ),
                       ),
-                      const SizedBox(height: 110),
-                      if (!isKeyboardOpen) ...[
+                      const SizedBox(height: 90),
+                      if (!isKeyboardOpen)
                         Align(
                           alignment: Alignment.bottomRight,
                           child: Column(
@@ -235,9 +120,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               ),
                               TextButton(
                                 style: TextButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0), // Adjust the padding as needed
-                                  minimumSize: const Size(0, 0), // Set the minimum size if needed
-                                  tapTargetSize: MaterialTapTargetSize.shrinkWrap, // Reduce the tap target size
+                                  padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                                  minimumSize: const Size(0, 0),
+                                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                 ),
                                 onPressed: () {
                                   Navigator.push(
@@ -257,7 +142,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ],
                           ),
                         )
-                      ]
                     ],
                   ),
                 ),
@@ -265,6 +149,76 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
           )
         ],
+      ),
+    );
+  }
+
+  Widget _buildTextField(TextEditingController controller, String label, IconData icon) {
+    return SizedBox(
+      height: 60,
+      child: TextField(
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 16,
+        ),
+        controller: controller,
+        decoration: InputDecoration(
+          contentPadding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
+          border: const OutlineInputBorder(),
+          suffixIcon: Icon(
+            icon,
+            color: Colors.grey,
+            size: 24,
+          ),
+          labelText: label,
+          labelStyle: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.indigo,
+            fontSize: 18,
+          ),
+        ),
+        onChanged: (text) {
+          print('Text in $label: $text'); // Add debug print to monitor text changes
+        },
+      ),
+    );
+  }
+
+  Widget _buildPasswordField(TextEditingController controller, String label) {
+    return SizedBox(
+      height: 60,
+      child: TextField(
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 16,
+        ),
+        controller: controller,
+        obscureText: !_isPasswordVisible,
+        decoration: InputDecoration(
+          contentPadding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
+          border: const OutlineInputBorder(),
+          suffixIcon: IconButton(
+            icon: Icon(
+              _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+              color: Colors.grey,
+              size: 24,
+            ),
+            onPressed: () {
+              setState(() {
+                _isPasswordVisible = !_isPasswordVisible;
+              });
+            },
+          ),
+          labelText: label,
+          labelStyle: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.indigo,
+            fontSize: 18,
+          ),
+        ),
+        onChanged: (text) {
+          print('Text in $label: $text'); // Add debug print to monitor text changes
+        },
       ),
     );
   }

@@ -68,8 +68,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       controller: _usernameController,
                       decoration: InputDecoration(
+                        border: OutlineInputBorder(),
                         suffixIcon: const Icon(
-                          Icons.check,
+                          Icons.person,
                           color: Colors.grey,
                         ),
                         label: Transform.translate(
@@ -85,6 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
+                    SizedBox(height: 20),
                     TextField(
                       style:const TextStyle(
                         color: Colors.white,
@@ -92,6 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       controller: _passwordController,
                       obscureText: !_isPasswordVisible,
                       decoration: InputDecoration(
+                        border: OutlineInputBorder(),
                         suffixIcon: IconButton(
                           icon: Icon(
                             _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
@@ -133,7 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 40),
+                    const SizedBox(height: 17),
                     Transform.translate(
                       offset: Offset(0, 10),
                       child: MyElevatedButton(

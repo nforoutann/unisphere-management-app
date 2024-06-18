@@ -20,7 +20,7 @@ class welcomeScreen extends StatelessWidget{
                 child: SizedBox(
                   child: Image.asset(
                     'assets/images/logo.png',
-                    width: 100,
+                    width: 120,
                     height: 200,
                   ),
                 ),
