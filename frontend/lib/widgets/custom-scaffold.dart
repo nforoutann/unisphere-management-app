@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 class CustomScaffold extends StatelessWidget{
-  CustomScaffold({super.key,required this.child});
+  CustomScaffold({super.key,required this.child, this.backgroundAddress='assets/images/background.jpg'});
   Widget child;
+  String? backgroundAddress;
 
   @override
   Widget build(BuildContext context){
@@ -16,7 +17,7 @@ class CustomScaffold extends StatelessWidget{
       body: Stack(
         children: [
           Image.asset(
-            'assets/images/background.jpg',
+            backgroundAddress!,
             fit: BoxFit.cover,
             width: double.infinity,
             height: double.infinity,
