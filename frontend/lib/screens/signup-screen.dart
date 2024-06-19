@@ -16,8 +16,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _idController = TextEditingController();
+  final TextEditingController _departmentController = TextEditingController();
 
   bool _isPasswordVisible = false;
+  int _selectedRoleIndex = 0;
+
+  final List<String> _roles = ['Student', 'Teacher'];
 
   @override
   void dispose() {
@@ -26,6 +30,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     _passwordController.dispose();
     _nameController.dispose();
     _idController.dispose();
+    _departmentController.dispose();
     super.dispose();
   }
 
@@ -39,7 +44,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         children: [
           if (!isKeyboardOpen)
             Positioned(
-              top: -127,
+              top: -133,
               left: 18,
               child: Image.asset(
                 'assets/images/createAccount.png',
@@ -48,7 +53,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
             ),
           Padding(
-            padding: EdgeInsets.only(top: isKeyboardOpen ? 0 : 60),
+            padding: EdgeInsets.only(top: isKeyboardOpen ? 0 : 40), // Adjusted the padding to move the column higher
             child: Container(
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
@@ -62,7 +67,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(top: isKeyboardOpen ? 8 : 73),
+            padding: EdgeInsets.only(top: isKeyboardOpen ? 8 : 53), // Adjusted the padding to move the column higher
             child: Container(
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
@@ -80,13 +85,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(height: isKeyboardOpen ? 30 : 90),
+                      SizedBox(height: isKeyboardOpen ? 30 : 70), // Adjusted the height to move the column higher
+                      _buildSegmentedButton(),
+                      const SizedBox(height: 20),
                       _buildTextField(_nameController, 'Name', Icons.account_circle),
                       const SizedBox(height: 10),
                       _buildTextField(_usernameController, 'Username', Icons.person),
                       const SizedBox(height: 10),
-                      _buildTextField(_idController, 'Student ID', Icons.school),
-                      const SizedBox(height: 10),
+                      if (_selectedRoleIndex == 0)...{
+                        _buildTextField(_idController, 'Student ID', Icons.school),
+                        const SizedBox(height: 10),
+                      },
                       _buildTextField(_emailController, 'Email', Icons.email),
                       const SizedBox(height: 10),
                       _buildPasswordField(_passwordController, 'Password'),
@@ -103,7 +112,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 90),
+                      const SizedBox(height: 70), // Adjusted the height to move the column higher
                       if (!isKeyboardOpen)
                         Align(
                           alignment: Alignment.bottomRight,
@@ -150,6 +159,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
           )
         ],
       ),
+    );
+  }
+
+  Widget _buildSegmentedButton() {
+    return ToggleButtons(
+      borderColor: Colors.indigo,
+      fillColor: Colors.indigo,
+      borderWidth: 2,
+      selectedBorderColor: Colors.white,
+      selectedColor: Colors.white,
+      borderRadius: BorderRadius.circular(15),
+      children: _roles.map((role) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Text(role, style: TextStyle(fontSize: 16,
+            color: Colors.white,
+          )),
+        );
+      }).toList(),
+      onPressed: (int index) {
+        setState(() {
+          _selectedRoleIndex = index;
+        });
+      },
+      isSelected: List.generate(_roles.length, (index) => _selectedRoleIndex == index),
     );
   }
 
@@ -223,5 +257,3 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 }
-
-
