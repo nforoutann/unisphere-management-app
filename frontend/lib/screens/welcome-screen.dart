@@ -9,19 +9,21 @@ class welcomeScreen extends StatelessWidget{
 
   @override
   Widget build(BuildContext context){
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return CustomScaffold(
       child: Column(
         children: [
           Expanded(
             child: Transform.translate(
-              offset: const Offset(-85.0, -80.0), // Adjust these values to move the photo
+              offset: const Offset(-75.0, -80.0), // Adjust these values to move the photo
               child: ColorFiltered(
                 colorFilter:const ColorFilter.mode(Colors.black, BlendMode.srcATop),
                 child: SizedBox(
                   child: Image.asset(
                     'assets/images/logo.png',
-                    width: 120,
-                    height: 200,
+                    width: width*0.29,
+                    height: height*0.25,
                   ),
                 ),
               ),
@@ -29,12 +31,12 @@ class welcomeScreen extends StatelessWidget{
           ),
           Expanded(
             child: Transform.translate(
-              offset: const Offset(75.0, -280.0), // Adjust these values to move the photo
+              offset: const Offset(88.0, -280.0), // Adjust these values to move the photo
               child: ColorFiltered(
                 colorFilter:const ColorFilter.mode(Colors.black, BlendMode.srcATop),
                 child: SizedBox (
-                  height: 230,
-                  width: 230,
+                  height: height*0.5,
+                  width: width*0.55,
                   child: Image.asset(
                     'assets/images/unisphere.png',
                   ),
@@ -48,8 +50,8 @@ class welcomeScreen extends StatelessWidget{
               child: ColorFiltered(
                 colorFilter:const ColorFilter.mode(Colors.black, BlendMode.srcATop),
                 child: SizedBox(
-                  height: 400,
-                  width: 350,
+                  height: height*0.5,
+                  width: width*0.8,
                   child: Image.asset(
                     'assets/images/hello.png',
                   ),
@@ -58,7 +60,7 @@ class welcomeScreen extends StatelessWidget{
             ),
           ),
           Transform.translate(
-            offset: Offset(80, 0),
+            offset: Offset(95, 10),
             child: WelcomeButton(
               buttonText: 'Sign Up',
               onTap:const SignUpScreen(),
@@ -68,7 +70,7 @@ class welcomeScreen extends StatelessWidget{
           ),
           const SizedBox(height: 16),
           Transform.translate(
-            offset: Offset(80, 0),
+            offset: Offset(95, 10),
             child: WelcomeButton(
               buttonText: 'Login',
               onTap:const LoginScreen(),

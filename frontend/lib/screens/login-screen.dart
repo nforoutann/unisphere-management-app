@@ -70,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         suffixIcon: const Icon(
-                          Icons.person,
+                          Icons.account_circle,
                           color: Colors.grey,
                         ),
                         label: Transform.translate(
