@@ -20,6 +20,7 @@ public class Convertor {
         }
         return res;
     }
+
     public static HashMap <String, HashMap <String, String>> UserArrayToMap(ArrayList<HashMap <String, String>> list) {
         HashMap <String, HashMap <String, String>> res = new HashMap<>();
         for (var i : list)

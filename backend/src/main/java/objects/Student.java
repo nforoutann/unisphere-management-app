@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Student extends User {
+
     public Student(String name, String username) {
         super(name, username);
         terms = new ArrayList<>();
     }
+
+    private int id;
     private List<Term> terms;
     private Term currentTerm;
     private List<Course> courses = new ArrayList<>(); //todo to map
@@ -21,7 +24,7 @@ public class Student extends User {
         return numberOfCredits;
     }
 
-    public void update() throws Exception{
+    public void update() throws Exception{//todo change this
         numberOfCredits = currentTerm.getTotalCredits();
         currentGrade =0;
         courses = currentTerm.getCourses();
@@ -114,4 +117,11 @@ public class Student extends User {
         throw new Exception("Course does not exist");
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }
