@@ -1,3 +1,6 @@
+import 'package:delightful_toast/delight_toast.dart';
+import 'package:delightful_toast/toast/components/toast_card.dart';
+import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/login-screen.dart';
 import 'package:frontend/widgets/custom-scaffold.dart';
@@ -18,6 +21,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _departmentController = TextEditingController();
 
+  bool _usernameCheck = false;
   bool _isPasswordVisible = false;
   int _selectedRoleIndex = 0;
 
@@ -102,6 +106,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       const SizedBox(height: 14),
                       MyElevatedButton(
                         onPressed: () {
+                          if(!_allFieldsFilled()){
+                            _error(Color(0xffa8183e), "you have not filled all fields yet");
+                          }
+                          else if(_passwordCheck(_passwordController.text) != 'done'){
+                            String res = _passwordCheck(_passwordController.text);
+                            _error(Color(0xffa8183e), res);
+                          } else if(!_isEmailValid(_emailController.text)){
+                            _error(Color(0xffa8183e), 'Email is invalid');
+                          }
                           // TODO: Implement sign-up functionality
                         },
                         child: const Text(
@@ -256,4 +269,73 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
     );
   }
+
+  void _error(Color color, String myText){
+    return DelightToastBar(
+      builder: (context){
+        return Align(
+          alignment: Alignment.center,
+          child: ToastCard(
+            shadowColor: Colors.black45,
+            leading: const Icon(
+              Icons.notifications_active,
+              color: Colors.white,
+            ),
+            color: color,
+            title: Text(
+              myText,
+              style: const TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          ),
+        );
+      },
+      position: DelightSnackbarPosition.top,
+      autoDismiss: true,
+    ).show(
+      context,
+    );
+  }
+
+  bool _allFieldsFilled(){
+    bool nameFilled = _nameController.text.isNotEmpty;
+    bool usernameFilled = _usernameController.text.isNotEmpty;
+    bool idFilled = _idController.text.isNotEmpty;
+    bool emailFilled = _emailController.text.isNotEmpty;
+    bool passwordFilled = _passwordController.text.isNotEmpty;
+
+    if(_selectedRoleIndex ==0){
+      return nameFilled && usernameFilled && idFilled && emailFilled && passwordFilled;
+    } else{
+      return nameFilled && usernameFilled && emailFilled && passwordFilled;
+    }
+  }
+
+  String _passwordCheck(String password){
+    RegExp number = RegExp("[0-9]");
+    RegExp lower = RegExp("[a-z]");
+    RegExp upper = RegExp("[A-Z]");
+
+    bool NumberOfCharacter = password.length >= 8;
+    bool ConsistNumber = number.hasMatch(password);
+    bool consistUpperLower = lower.hasMatch(password) && upper.hasMatch(password);
+    if(NumberOfCharacter && ConsistNumber && consistUpperLower){
+      return "done";
+    } else if(!NumberOfCharacter){
+      return "Password is invalid: The number of characters must be more than 8";
+    } else if(!ConsistNumber){
+      return "Password is invalid: The password must have numbers";
+    } else if(!consistUpperLower){
+      return "Password is invalid: The password must have upper case and lower letters";
+    } else{
+      return "error";
+    }
+  }
+
+  bool _isEmailValid(String email){
+    RegExp regExp = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+    return regExp.hasMatch(email);
+  }
+
 }
