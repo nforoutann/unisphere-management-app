@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:delightful_toast/delight_toast.dart';
 import 'package:delightful_toast/toast/components/toast_card.dart';
 import 'package:delightful_toast/toast/utils/enums.dart';
@@ -5,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/screens/login-screen.dart';
 import 'package:frontend/widgets/custom-scaffold.dart';
 import 'package:frontend/widgets/login-signup-button.dart';
+import 'dart:io';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -24,6 +27,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool _usernameCheck = false;
   bool _isPasswordVisible = false;
   int _selectedRoleIndex = 0;
+  String response="";
 
   final List<String> _roles = ['Student', 'Teacher'];
 
@@ -57,7 +61,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
             ),
           Padding(
-            padding: EdgeInsets.only(top: isKeyboardOpen ? 0 : 40), // Adjusted the padding to move the column higher
+            padding: EdgeInsets.only(top: isKeyboardOpen ? 5 : 45), // Adjusted the padding to move the column higher
             child: Container(
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
@@ -71,7 +75,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(top: isKeyboardOpen ? 8 : 53), // Adjusted the padding to move the column higher
+            padding: EdgeInsets.only(top: isKeyboardOpen ? 13 : 58), // Adjusted the padding to move the column higher
             child: Container(
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
@@ -86,85 +90,95 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 19.0),
                 child: SingleChildScrollView(
                   padding: EdgeInsets.only(bottom: keyboardHeight),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(height: isKeyboardOpen ? 30 : 70), // Adjusted the height to move the column higher
-                      _buildSegmentedButton(),
-                      const SizedBox(height: 20),
-                      _buildTextField(_nameController, 'Name', Icons.account_circle),
-                      const SizedBox(height: 10),
-                      _buildTextField(_usernameController, 'Username', Icons.person),
-                      const SizedBox(height: 10),
-                      if (_selectedRoleIndex == 0)...{
-                        _buildTextField(_idController, 'Student ID', Icons.school),
+                  child: Transform.translate(
+                    offset: Offset(0, -8),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(height: isKeyboardOpen ? 30 : 70), // Adjusted the height to move the column higher
+                        _buildSegmentedButton(),
+                        const SizedBox(height: 20),
+                        _buildTextField(_nameController, 'Name', Icons.account_circle),
                         const SizedBox(height: 10),
-                      },
-                      _buildTextField(_emailController, 'Email', Icons.email),
-                      const SizedBox(height: 10),
-                      _buildPasswordField(_passwordController, 'Password'),
-                      const SizedBox(height: 14),
-                      MyElevatedButton(
-                        onPressed: () {
-                          if(!_allFieldsFilled()){
-                            _error(Color(0xffa8183e), "you have not filled all fields yet");
-                          }
-                          else if(_passwordCheck(_passwordController.text) != 'done'){
-                            String res = _passwordCheck(_passwordController.text);
-                            _error(Color(0xffa8183e), res);
-                          } else if(!_isEmailValid(_emailController.text)){
-                            _error(Color(0xffa8183e), 'Email is invalid');
-                          }
-                          // TODO: Implement sign-up functionality
+                        _buildTextField(_usernameController, 'Username', Icons.person),
+                        const SizedBox(height: 10),
+                        if (_selectedRoleIndex == 0)...{
+                          _buildTextField(_idController, 'Student ID', Icons.school),
+                          const SizedBox(height: 10),
                         },
-                        child: const Text(
-                          'Sign Up',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
+                        _buildTextField(_emailController, 'Email', Icons.email),
+                        const SizedBox(height: 10),
+                        _buildPasswordField(_passwordController, 'Password'),
+                        const SizedBox(height: 14),
+                        MyElevatedButton(
+                          onPressed: () async {
+                            if(!_allFieldsFilled()){
+                              _error(Color(0xffa8183e), "You have not filled all fields yet");
+                            }else if(_passwordCheck(_passwordController.text) != 'done'){
+                              String res = _passwordCheck(_passwordController.text);
+                              _error(Color(0xffa8183e), res);
+                            }else if(!_isIdNumber(_idController.text) && _selectedRoleIndex ==0){
+                              _error(Color(0xffa8183e), 'The student id should consist only number');
+                            }else if(!_isEmailValid(_emailController.text)){
+                              _error(Color(0xffa8183e), 'Email is invalid');
+                            }else if(_signUp() == '200'){
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (e) => LoginScreen() //todo another screen
+                                )
+                              );
+                            }
+                          },
+                          child: const Text(
+                            'Sign Up',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 70), // Adjusted the height to move the column higher
-                      if (!isKeyboardOpen)
-                        Align(
-                          alignment: Alignment.bottomRight,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              const Text(
-                                'Already have an account?',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                ),
-                              ),
-                              TextButton(
-                                style: TextButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                                  minimumSize: const Size(0, 0),
-                                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                ),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (e) => const LoginScreen(),
-                                    ),
-                                  );
-                                },
-                                child: const Text(
-                                  'Login',
+                        const SizedBox(height: 70), // Adjusted the height to move the column higher
+                        if (!isKeyboardOpen)
+                          Align(
+                            alignment: Alignment.bottomRight,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                const Text(
+                                  'Already have an account?',
                                   style: TextStyle(
-                                    fontSize: 17,
+                                    color: Colors.white,
+                                    fontSize: 16,
                                   ),
                                 ),
-                              )
-                            ],
-                          ),
-                        )
-                    ],
+                                TextButton(
+                                  style: TextButton.styleFrom(
+                                    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                                    minimumSize: const Size(0, 0),
+                                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                  ),
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (e) => const LoginScreen(),
+                                      ),
+                                    );
+                                  },
+                                  child: const Text(
+                                    'Login',
+                                    style: TextStyle(
+                                      fontSize: 17,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -338,4 +352,36 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return regExp.hasMatch(email);
   }
 
+  bool _isIdNumber(String id){
+    RegExp regExp = RegExp(r'^([0-9]+)$');
+    return regExp.hasMatch(id);
+  }
+
+  Future<String> _signUp() async {
+    String command = "";
+    if(_selectedRoleIndex == 0){
+      command = 'GET: SignUpChecker\$student\$${_nameController.text}\$${_usernameController.text}\$${_idController.text}\$${_emailController.text}\$${_passwordController.text}\u0000';
+    } else{
+      command = 'GET: SignUpChecker\$teacher\$${_nameController.text}\$${_usernameController.text}\$${_emailController.text}\$${_passwordController.text}\u0000';
+    }
+    await Socket.connect("192.168.0.104", 8080).then((serverSocket) {
+      serverSocket
+          .write(command);
+      serverSocket.flush();
+      serverSocket.listen((socketResponse) {
+        setState(() {
+          response = String.fromCharCodes(socketResponse);
+        });
+      });
+    });
+    print("----------   server response is:  { $response }");
+
+    if (response == "409") {
+      //409 means conflict so the username is already used
+      _usernameCheck = false;
+    } else if (response == "200") {
+      _usernameCheck = true;
+    }
+    return response;
+  }
 }

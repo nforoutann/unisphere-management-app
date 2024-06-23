@@ -1,10 +1,8 @@
 package dataManagement;
-import objects.*;
-
-import java.io.*;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 public class Database {
     private static Database instance;
@@ -42,5 +40,46 @@ public class Database {
     public HashMap<String, HashMap<String, String>> getTeacherDataMap() {
         teacherDataMap = Convertor.UserArrayToMap(tables.get("teacherData").get());
         return teacherDataMap;
+    }
+
+    public boolean isUsernameAvailable(String username) {
+        return getStudentDataMap().containsKey(username) || getTeacherDataMap().containsKey(username);
+    }
+
+    public void createUser(String role, String username, String password, String name, String email){
+        String result="", info="";
+        switch(role.split("\\$")[0]){
+            case "student":
+                int id = Integer.parseInt(role.split("\\$")[1]);
+                result="username:"+username+",,password:"+password+",,name:"+name+",,id:"+id+",,email:"+email+",,terms:{}";
+                info = Convertor.mapOfUsersToString(getStudentDataMap());
+                info = info + result;
+                try{
+                    PrintWriter pw = new PrintWriter(new FileWriter(studentsPath), true);
+                    pw.print(info);
+                    pw.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case "teacher":
+                result="username:"+username+",,password:"+password+",,name:"+name+",,email:"+email+",,courses:{}";
+                info = Convertor.mapOfUsersToString(getTeacherDataMap());
+                info = info + result;
+                try{
+                    PrintWriter pw = new PrintWriter(new FileWriter(teachersPath), true);
+                    pw.print(info);
+                    pw.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+        }
+    }
+
+    public static boolean doesUsernameMatchPassword(String username, String password){
+        boolean studentSide = getInstance().getStudentDataMap().containsKey(username) && getInstance().getStudentDataMap().get(username).get("password").equals(password);
+        boolean teacherSide = getInstance().getTeacherDataMap().containsKey(username) && getInstance().getTeacherDataMap().get(username).get("password").equals(password);
+        return studentSide || teacherSide;
     }
 }

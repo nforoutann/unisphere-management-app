@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:frontend/screens/signup-screen.dart';
 import 'package:frontend/widgets/custom-scaffold.dart';
 import 'package:frontend/widgets/login-signup-button.dart';
+import 'package:delightful_toast/toast/components/toast_card.dart';
+import 'package:delightful_toast/toast/utils/enums.dart';
+import 'package:delightful_toast/delight_toast.dart';
+import 'dart:io';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -14,6 +18,9 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _isPasswordVisible = false;
+  String response="";
+  bool _usernameCheck=false;
+  bool _passwordCheck=false;
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         label: Transform.translate(
                           offset: const Offset(0, -10),
                           child: const Text(
-                            'username or id',
+                            'username',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.indigo,
@@ -140,8 +147,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     Transform.translate(
                       offset: Offset(0, 10),
                       child: MyElevatedButton(
-                        onPressed: () {
-                          // TODO: Implement login functionality
+                        onPressed: () async {
+                          _login();
+                          //todo
                         },
                         child: const Text(
                           'Login',
@@ -205,5 +213,65 @@ class _LoginScreenState extends State<LoginScreen> {
         ],
       ),
     );
+  }
+
+  void _error(Color color, String myText){
+    return DelightToastBar(
+      builder: (context){
+        return Align(
+          alignment: Alignment.center,
+          child: ToastCard(
+            shadowColor: Colors.black45,
+            leading: const Icon(
+              Icons.notifications_active,
+              color: Colors.white,
+            ),
+            color: color,
+            title: Text(
+              myText,
+              style: const TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          ),
+        );
+      },
+      position: DelightSnackbarPosition.top,
+      autoDismiss: true,
+    ).show(
+      context,
+    );
+  }
+
+  Future<String> _login() async {
+    String command="";
+    command = 'GET: logInChecker\$${_usernameController.text}\$${_passwordController.text}\u0000';
+
+    await Socket.connect("192.168.1.8", 8080).then((serverSocket) {
+      serverSocket
+          .write(command);
+      serverSocket.flush();
+      serverSocket.listen((socketResponse) {
+        setState(() {
+          response = String.fromCharCodes(socketResponse);
+        });
+      });
+    });
+    print("----------   server response is:  { $response }");
+
+    if (response == "401") {
+      _error(Color(0xffa8183e), 'Password is incorrect');
+      _usernameCheck = true;
+      _passwordCheck = false;
+    } else if (response == "404") {
+      _error(Color(0xffa8183e), 'Username not found, please create account first');
+      _usernameCheck = false;
+      _passwordCheck = false;
+    } else if (response == "200") {
+      _usernameCheck = true;
+      _passwordCheck = true;
+    }
+
+    return response;
   }
 }
