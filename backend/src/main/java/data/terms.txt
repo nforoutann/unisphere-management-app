@@ -1,1 +1,1 @@
-id:4022&1,,courses:{id:score}
+id>4022&1,,courses>{id~score}

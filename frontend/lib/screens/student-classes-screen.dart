@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/widgets/main-scaffold.dart';
 
-class ClassScreen extends StatefulWidget{
-  ClassScreen({super.key});
+class StudentClassScreen extends StatefulWidget{
+  StudentClassScreen({super.key});
 
   @override
-  State<ClassScreen> createState() => _ClassScreenState();
+  State<StudentClassScreen> createState() => _StudentClassScreenState();
 }
 
-class _ClassScreenState extends State<ClassScreen> {
+class _StudentClassScreenState extends State<StudentClassScreen> {
   @override
   Widget build(BuildContext context){
-
+    return Text('data');
   }
 }

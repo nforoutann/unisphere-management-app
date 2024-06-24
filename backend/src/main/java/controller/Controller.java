@@ -35,6 +35,7 @@ public class Controller {
                 username = request.split("\\$")[1];
                 password = request.split("\\$")[2];
                 if(!Database.getInstance().isUsernameAvailable(username)){
+                    System.out.println(Database.getInstance().getUsersDataMap());
                     res = "404";
                 }else if(!Database.getInstance().doesUsernameMatchPassword(username, password)){
                     res = "409";

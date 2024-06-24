@@ -1,1 +1,1 @@
-id:1&1,,maxscore:5,,studnets:{4022=4.5},,type:PROJECT,,deadline:
+id>1&1,,maxscore>5,,studnets>{4022~4.5},,type>PROJECT,,deadline>

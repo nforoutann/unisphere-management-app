@@ -12,7 +12,7 @@ public class Convertor {
         String [] info = s.split(",,");
         HashMap <String, String> res = new HashMap<>();
         for (var each : info) {
-            int colon = each.indexOf(':');
+            int colon = each.indexOf('>');
             String key = each.substring(0, colon);
             String value = each.substring(colon + 1);
             res.put(key, value);
@@ -32,7 +32,7 @@ public class Convertor {
             StringBuilder res = new StringBuilder();
             for (Map.Entry<String, HashMap <String, String>> entry : m.entrySet()) {
                 for (Map.Entry<String, String> entry1 : entry.getValue().entrySet())
-                    res.append(String.format("%s:%s,,", entry1.getKey(), entry1.getValue()));
+                    res.append(String.format("%s>%s,,", entry1.getKey(), entry1.getValue()));
                 res.deleteCharAt(res.length() - 1);
                 res.deleteCharAt(res.length() - 1);
                 res.append('\n');

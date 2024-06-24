@@ -1,2 +1,2 @@
-username=nazanin,,password=1111,,name=nazanin foroutan,,email=nazaninforoutan6@gmail.com,,birth={},,role=student,,id=4022,,terms={id},,currentTerm=2,,tasks={title:done}
-username=harry,,password=2222,,name=harry potter,,email=foroutannazanin6@gmail.com,,birth={},,role=teacher,,courses={id:active}
+username>nazanin,,password>0000,,name>nazanin foroutan,,email>nazaninforoutan6@gmail.com,,birth>{},,role>student,,id>4022,,terms>{id},,currentTerm>2,,tasks>{title:done}
+username>foroutan,,password>1111,,name>nf,,email>foroutannazanin6@gmail.com,,birth>{},,role>teacher,,courses>{},,tasks>{}

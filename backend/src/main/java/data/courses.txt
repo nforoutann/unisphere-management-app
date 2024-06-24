@@ -1,1 +1,1 @@
-id:random,,teacher:harry,,students{4022:19},,assignments:{id},,active:true,,best:4022
+id>random,,teacher>harry,,students>{4022~19},,assignments>{id},,active>true,,best>4022
