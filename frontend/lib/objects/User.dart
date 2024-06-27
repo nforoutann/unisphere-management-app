@@ -1,22 +1,15 @@
+import 'package:frontend/objects/Student.dart';
+import 'package:frontend/objects/Task.dart';
+import 'package:frontend/objects/News.dart';
+
 class User{
-  late String _name;
-  late String _username;
-  String? _password;
+  late String name;
+  late String username;
+  String? password;
+  String? email;
+  List<News> news = [];
+  List<Task> tasks = [];
+  DateTime? birthday;
 
-  User(this._name, this._username);
-
-  String get name => _name;
-  String get username => _username;
-  String? get password => _password;
-
-  set name(String name){
-    _name = name;
-  }
-  set username(String username){
-    _username = username;
-  }
-  set password(String? password){
-    _password = password;
-  }
-
+  User(this.name, this.username);
 }

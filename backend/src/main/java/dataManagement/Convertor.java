@@ -1,8 +1,5 @@
 package dataManagement;
 
-import objects.Course;
-import objects.Student;
-import objects.Term;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,10 +17,11 @@ public class Convertor {
         return res;
     }
 
-    public static HashMap <String, HashMap <String, String>> UserArrayToMap(ArrayList<HashMap <String, String>> list) {
+    public static HashMap <String, HashMap <String, String>> ArrayToMap(ArrayList<HashMap <String, String>> list, String key) {
         HashMap <String, HashMap <String, String>> res = new HashMap<>();
-        for (var i : list)
-            res.put(i.get("username"), i);
+        for (var i : list){
+            res.put(i.get(key), i);
+        }
         return res;
     }
 

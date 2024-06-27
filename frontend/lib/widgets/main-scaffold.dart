@@ -17,7 +17,7 @@ class MyScaffold extends StatelessWidget{
           style: TextStyle(
             fontSize: 30,
             fontFamily: 'Montserrat',
-            fontWeight: FontWeight.w700,
+            fontWeight: FontWeight.w800,
           ),
         ),
         leading: IconButton(

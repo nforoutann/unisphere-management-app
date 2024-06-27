@@ -104,8 +104,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         const SizedBox(height: 10),
                         if (_selectedRoleIndex == 0)...{
                           _buildTextField(_idController, 'Student ID', Icons.school),
-                          const SizedBox(height: 10),
+                        }else...{
+                          _buildTextField(_idController, "Teacher's Code", Icons.vpn_key),
+                          //todo check being unique
                         },
+                        const SizedBox(height: 10),
                         _buildTextField(_emailController, 'Email', Icons.email),
                         const SizedBox(height: 10),
                         _buildPasswordField(_passwordController, 'Password'),

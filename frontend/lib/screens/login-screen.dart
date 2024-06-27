@@ -1,5 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:frontend/objects/Student.dart';
+import 'package:frontend/objects/Task.dart';
 import 'package:frontend/screens/signup-screen.dart';
+import 'package:frontend/screens/student-main-screen.dart';
 import 'package:frontend/widgets/custom-scaffold.dart';
 import 'package:frontend/widgets/login-signup-button.dart';
 import 'package:delightful_toast/toast/components/toast_card.dart';
@@ -17,6 +22,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  String ipAddress = "192.168.1.8";
   bool _isPasswordVisible = false;
   String response="";
   bool _usernameCheck=false;
@@ -148,8 +154,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       offset: Offset(0, 10),
                       child: MyElevatedButton(
                         onPressed: () async {
-                          _login();
-                          //todo
+                          String result = await _login();
+                          if(result == '200'){ //todo
+                            createStudnet(_usernameController.text);
+                            /*Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => StudentMain()
+                                ),
+                            );*/
+                          }
                         },
                         child: const Text(
                           'Login',
@@ -181,7 +195,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               TextButton(
                                 style: TextButton.styleFrom(
                                   padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0), // Adjust the padding as needed
-                                  minimumSize: Size(0, 0), // Set the minimum size if needed
+                                  //minimumSize: Size(0, 0), // Set the minimum size if needed todo
                                   tapTargetSize: MaterialTapTargetSize.shrinkWrap, // Reduce the tap target size
                                 ),
                                 onPressed: () {
@@ -247,7 +261,7 @@ class _LoginScreenState extends State<LoginScreen> {
     String command="";
     command = 'GET: logInChecker\$${_usernameController.text}\$${_passwordController.text}\u0000';
 
-    await Socket.connect("192.168.1.8", 8080).then((serverSocket) {
+    await Socket.connect(ipAddress, 8080).then((serverSocket) {
       serverSocket
           .write(command);
       serverSocket.flush();
@@ -274,4 +288,91 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return response;
   }
+
+  Future<Student> createStudnet(String username) async {
+    String res = "";
+    String name = "", email = "", currentTerm = "", strTasks = "", id = "";
+    int credits = 0;
+    double grade = 0;
+    DateTime birthday = DateTime.now();
+    bool hasBirthInfo = false;
+    String command = "POST: userInfo\$${username}\u0000";
+    print('Sending command: $command');
+
+    // Create a completer to manage async response
+    Completer<String> responseCompleter = Completer<String>();
+
+    await Socket.connect(ipAddress, 8080).then((serverSocket) {
+      print('Socket connected for createStudnet');
+      serverSocket.write(command);
+      serverSocket.flush();
+
+      serverSocket.listen((socketResponse) {
+        res = String.fromCharCodes(socketResponse);
+        print('Received response: $res');
+        responseCompleter.complete(res);
+        serverSocket.destroy(); // Close the socket after receiving the response
+      });
+    }).catchError((e) {
+      print('Socket error: $e');
+      responseCompleter.completeError(e);
+    });
+
+    // Wait for the response to be completed
+    res = await responseCompleter.future;
+
+    List<String> resParts = res.split('\$');
+
+    if (resParts.length >= 5) {
+      name = resParts[0];
+      id = resParts[1];
+      currentTerm = resParts[2];
+      email = resParts[3];
+
+      String birth = resParts[4];
+      if (birth.isNotEmpty) {
+        birth = birth.substring(1, birth.length - 1);
+        int year = int.parse(birth.split('-')[0]);
+        int month = int.parse(birth.split('-')[1]);
+        int day = int.parse(birth.split('-')[2]);
+        birthday = DateTime(year, month, day);
+        hasBirthInfo = true;
+      }
+
+      if (resParts.length > 5) {
+        strTasks = resParts[5];
+      }
+
+      if (resParts.length > 6) {
+        String strGrade = resParts[6];
+        grade = double.parse(strGrade);
+      }
+    } else {
+      // Handle the case where the response does not have enough parts
+      print("Response does not have enough parts: $res");
+    }
+
+    Student student = Student(name, username);
+    student.id = id;
+    student.currentTerm = currentTerm;
+    student.email = email;
+    if (hasBirthInfo) {
+      student.birthday = birthday;
+    }
+    student.grade = grade;
+    if (strTasks.isNotEmpty) {
+      List<String> Tasks = strTasks.split('//');
+      for (int i = 0; i < Tasks.length; i++) {
+        List<String> taskParts = Tasks[i].split('~');
+        if (taskParts.length > 1) {
+          String title = taskParts[0];
+          bool done = taskParts[1] == 'yes';
+          student.tasks.add(Task(title: title, done: done));
+        }
+      }
+    }
+
+    return student;
+  }
+
 }

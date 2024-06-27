@@ -36,11 +36,11 @@ public class Database {
         tables.put("assignmentsData", new Table(assignmentsPath));
         tables.put("newsData", new Table(newsPath));
 
-        usersDataMap = Convertor.UserArrayToMap(tables.get("usersData").get());
-        termsDataMap = Convertor.UserArrayToMap(tables.get("termsData").get());
-        coursesDataMap = Convertor.UserArrayToMap(tables.get("coursesData").get());
-        assignmentsDataMap = Convertor.UserArrayToMap(tables.get("assignmentsData").get());
-        newsDataMap = Convertor.UserArrayToMap(tables.get("newsData").get());
+        usersDataMap = Convertor.ArrayToMap(tables.get("usersData").get(), "username");
+        termsDataMap = Convertor.ArrayToMap(tables.get("termsData").get(), "termId");
+        coursesDataMap = Convertor.ArrayToMap(tables.get("coursesData").get(), "courseId");
+        assignmentsDataMap = Convertor.ArrayToMap(tables.get("assignmentsData").get(), "assignmentId");
+        newsDataMap = Convertor.ArrayToMap(tables.get("newsData").get(), "title");
     }
 
     public Table getTable(String tableName) {
@@ -48,29 +48,33 @@ public class Database {
     }
 
     public HashMap<String, HashMap<String, String>> getUsersDataMap() {
-        usersDataMap = Convertor.UserArrayToMap(tables.get("usersData").get());
+        usersDataMap = Convertor.ArrayToMap(tables.get("usersData").get(), "username");
         return usersDataMap;
     }
 
     public HashMap<String, HashMap<String, String>> getTermsDataMap() {
-        termsDataMap = Convertor.UserArrayToMap(tables.get("termsData").get());
+        termsDataMap = Convertor.ArrayToMap(tables.get("termsData").get(), "termId");
         return termsDataMap;
     }
 
     public HashMap<String, HashMap<String, String>> getCoursesDataMap() {
-        coursesDataMap = Convertor.UserArrayToMap(tables.get("coursesData").get());
+        coursesDataMap = Convertor.ArrayToMap(tables.get("coursesData").get(), "courseId");
         return coursesDataMap;
     }
 
     public HashMap<String, HashMap<String, String>> getAssignmentsDataMap() {
-        assignmentsDataMap = Convertor.UserArrayToMap(tables.get("assignmentsData").get());
+        assignmentsDataMap = Convertor.ArrayToMap(tables.get("assignmentsData").get(), "assignmentId");
         return assignmentsDataMap;
     }
 
     public HashMap<String, HashMap<String, String>> getNewsDataMap() {
-        newsDataMap = Convertor.UserArrayToMap(tables.get("newsData").get());
+        newsDataMap = Convertor.ArrayToMap(tables.get("newsData").get(), "title");
         return newsDataMap;
     }
+
+
+    //todo change the way u use file reading in each step of getDataMap, u can forexample add to the list and add to the file,, see which one is better
+
 
     public boolean isUsernameAvailable(String username){
         return getUsersDataMap().containsKey(username);
@@ -98,7 +102,75 @@ public class Database {
         }
     }
 
-    public static boolean doesUsernameMatchPassword(String username, String password){
+    public boolean doesUsernameMatchPassword(String username, String password){
         return getInstance().getUsersDataMap().containsKey(username) && getInstance().getUsersDataMap().get(username).get("password").equals(password);
+    }
+
+    public String getId(String username){
+        return getInstance().getUsersDataMap().get(username).get("id");
+    }
+
+    public String getUserInfo(String username){
+        String info = "";
+        if(getUsersDataMap().containsKey(username)){
+            if(getInstance().getUsersDataMap().get(username).get("role").equals("student")){
+                info = info + getInstance().getUsersDataMap().get(username).get("name") + '$' + getInstance().getUsersDataMap().get(username).get("id") + '$' + getInstance().getUsersDataMap().get(username).get("currentTerm") + '$' + getInstance().getUsersDataMap().get(username).get("email") + '$' + getInstance().getUsersDataMap().get(username).get("birthday") + '$' + getInstance().getUsersDataMap().get(username).get("tasks") + '$'+ totalGrade(username);
+            }else{
+                info = info + getInstance().getUsersDataMap().get(username).get("name") + '$' + getInstance().getUsersDataMap().get(username).get("currentTerm") + '$' + getInstance().getUsersDataMap().get(username).get("email") + '$' + getInstance().getUsersDataMap().get(username).get("birthday") + '$' + getInstance().getUsersDataMap().get(username).get("tasks");
+            }
+        } else{
+            return "error";
+        }
+        return info;
+    }
+
+    public double totalGrade(String username){
+        String id = getId(username);
+        int currentTerm = Integer.parseInt(getInstance().getUsersDataMap().get(username).get("currentTerm"));
+        if(currentTerm == 1){
+            return 0;
+        }
+        String term;
+        double totalScore = 0.0;
+        int totalCredit = 0;
+        HashMap<String, Double> grades = new HashMap<>();
+        String courses;
+        String studentsScore;
+        String[] info;
+
+        for(int i=1 ; i<currentTerm ; i++){
+            term = id+'&'+i;
+            courses = getInstance().getTermsDataMap().get(term).get("courses");
+            if(courses.equals("{}")){
+                continue;
+            }
+            courses = courses.substring(1, courses.length()-1);
+            String[] courseIds = courses.split("//");
+            for(String courseId : courseIds){
+                int thisCredit = Integer.parseInt(getInstance().getCoursesDataMap().get(courseId).get("credit"));
+                totalCredit = totalCredit + thisCredit;
+                studentsScore = getInstance().getCoursesDataMap().get(courseId).get("students");
+                if(studentsScore.equals("{}")){
+                    continue;
+                }
+                studentsScore.substring(1, studentsScore.length()-1);
+                if(studentsScore.contains("//")){
+                    info = studentsScore.split("//");
+                } else{
+                    info = new String[]{studentsScore};
+                }
+
+                for(String eachStudent : info){
+                    eachStudent = eachStudent.substring(1, eachStudent.length()-1);
+                    if(eachStudent.split("~")[0].equals(id)){
+                        double score = Double.parseDouble(eachStudent.split("~")[1]);
+                        totalScore += score*thisCredit;
+                        break;
+                    }
+                }
+
+            }
+        }
+        return totalScore/totalCredit;
     }
 }

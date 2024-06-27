@@ -38,7 +38,7 @@ class _StudentMainState extends State<StudentMain> {
     });
   }
 
-  List<String> texts = ['To-Do List', 'Assignments', 'Home', 'Classes', 'News'];
+  List<String> texts = ['To-Do', 'Assignments', 'Home', 'Classes', 'News'];
 
   @override
   Widget build(BuildContext context) {

@@ -1,1 +1,5 @@
-id>1&1,,maxscore>5,,studnets>{4022~4.5},,type>PROJECT,,deadline>
+assignmentId>1111&1&1,,score>5,,students>{4022~4.5//4023~5},,type>PROJECT,,deadline>{2024~7~1}
+assignmentId>1111&2&1,,score>100,,students{4022~100//4023~50},,type>HW,,deadline>{2024~7~1}
+assignmentId>1111&3&1,,score>50,,students{4022~40//4023~33},,type>HW,,deadline>{2024~7~5}
+assignmentId>3333&1&1,,score>5,,students>{4022~4.5},,type>PROJECT,,deadline>{2024~7~1}
+assignmentId>3333&2&1,,score>100,,students{4022~100},,type>HW,,deadline>{2024~7~1}

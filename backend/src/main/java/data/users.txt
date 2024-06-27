@@ -1,2 +1,4 @@
-username>nazanin,,password>0000,,name>nazanin foroutan,,email>nazaninforoutan6@gmail.com,,birth>{},,role>student,,id>4022,,terms>{id},,currentTerm>2,,tasks>{title:done}
-username>foroutan,,password>1111,,name>nf,,email>foroutannazanin6@gmail.com,,birth>{},,role>teacher,,courses>{},,tasks>{}
+username>nazanin,,password>1234,,name>nazanin foroutan,,email>nazaninforoutan6@gmail.com,,birthday>{2006-3-6},,role>student,,id>4022,,terms>{4022$1//4022$2},,currentTerm>2,,tasks>{clean the bedroom~yes//study ap~no}
+username>foroutan,,password>1234,,name>nf,,email>foroutannazanin6@gmail.com,,birthday>{},,role>teacher,,courses>{1111$1//1111$2//1111$3},,code>1111,,tasks>{}
+username>hadis,,password>1234,,name>hr,,email>nazaninforoutan6@gmail.com,,birthday>{},,role>student,,id>4023,,terms>{4023$1},,currentTerm>1,,tasks>{clean the bedroom~yes//study ap~no}
+username>itsme,,password>1234,,name>me,,email>foroutannazanin6@gmail.com,,birthday>{},,role>teacher,,courses>{2222$1//2222&2},,code>2222,,tasks>{}
