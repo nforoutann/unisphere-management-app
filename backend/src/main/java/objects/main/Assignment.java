@@ -1,4 +1,4 @@
-package objects;
+package objects.main;
 
 public class Assignment {
     private boolean active=true;

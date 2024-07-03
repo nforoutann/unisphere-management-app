@@ -1,7 +1,6 @@
 package network;
 
 import java.net.ServerSocket;
-import java.net.Socket;
 
 public class Server {
     public static void main(String[] args) throws Exception {
@@ -9,7 +8,7 @@ public class Server {
         ServerSocket serverSocket = new ServerSocket(8080);
         while (true) {
             System.out.println("Waiting for client...");
-            new ClientHandler(serverSocket.accept()).start();
+            new RequestHandler(serverSocket.accept()).start();
         }
     }
 }

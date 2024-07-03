@@ -2,20 +2,22 @@ package network;
 import controller.Controller;
 
 import java.util.*;
-import java.net.*;
 import java.io.*;
 
 import java.net.Socket;
 
-public class ClientHandler extends Thread {
+public class RequestHandler extends Thread {
     private Socket socket;
     private DataOutputStream dos;
     private DataInputStream dis;
+    private ObjectOutputStream oos;
 
-    public ClientHandler(Socket socket) throws IOException{
+    public RequestHandler(Socket socket) throws IOException{
         this.socket = socket;
         dos = new DataOutputStream(socket.getOutputStream());
         dis = new DataInputStream(socket.getInputStream());
+        oos = new ObjectOutputStream(dos);
+
         System.out.println("connected to server");
     }
 
@@ -29,9 +31,13 @@ public class ClientHandler extends Thread {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        String res = new Controller().run(command); //todo maybe review again for run in controller
+        Object res = new Controller().run(command); //todo maybe review again for run in controller
         try{
-            writer(res);
+            if(res instanceof String){
+                writer((String)res);
+            } else{
+                writerObj(res);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -56,6 +62,17 @@ public class ClientHandler extends Thread {
         catch (IOException e) {
             System.out.println("error in listener : " + e);}
         return "Error!";
+    }
+
+    public void writerObj(Object obj) throws IOException {
+        oos.writeObject(obj);
+        oos.flush();
+        oos.close();
+        dos.close();
+        dis.close();
+        socket.close();
+        System.out.println(obj.toString());
+        System.out.println("command finished and response sent to server");
     }
 
     public void writer(String write) throws IOException {

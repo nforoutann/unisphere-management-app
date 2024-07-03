@@ -154,15 +154,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       offset: Offset(0, 10),
                       child: MyElevatedButton(
                         onPressed: () async {
-                          String result = await _login();
+                          String result = await _login(_usernameController.text, _passwordController.text, ipAddress);
                           if(result == '200'){ //todo
-                            createStudnet(_usernameController.text);
-                            /*Navigator.pushReplacement(
+                            // todo createStudent(_usernameController.text, ipAddress);
+                            Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => StudentMain()
                                 ),
-                            );*/
+                            );
                           }
                         },
                         child: const Text(
@@ -257,20 +257,37 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Future<String> _login() async {
-    String command="";
-    command = 'GET: logInChecker\$${_usernameController.text}\$${_passwordController.text}\u0000';
+  Future<String> _login(String username, String password, String ipAddress) async {
+    String command = 'GET: logInChecker\$${username}\$${password}\u0000';
+    response = ""; // Clear previous response
+    Completer<String> responseCompleter = Completer<String>();
 
     await Socket.connect(ipAddress, 8080).then((serverSocket) {
-      serverSocket
-          .write(command);
+      serverSocket.write(command);
       serverSocket.flush();
       serverSocket.listen((socketResponse) {
-        setState(() {
-          response = String.fromCharCodes(socketResponse);
-        });
+        response = String.fromCharCodes(socketResponse);
+        responseCompleter.complete(response);
+        serverSocket.destroy(); // Close the socket after receiving the response
+      }, onDone: () {
+        if (!responseCompleter.isCompleted) {
+          responseCompleter.completeError("Socket closed without response");
+        }
+      }, onError: (error) {
+        responseCompleter.completeError(error);
       });
+    }).catchError((error) {
+      responseCompleter.completeError(error);
     });
+
+    try {
+      response = await responseCompleter.future;
+    } catch (e) {
+      print("Error receiving response: $e");
+      _error(Color(0xffa8183e), 'Network error, please try again');
+      return "error";
+    }
+
     print("----------   server response is:  { $response }");
 
     if (response == "401") {
@@ -288,91 +305,4 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return response;
   }
-
-  Future<Student> createStudnet(String username) async {
-    String res = "";
-    String name = "", email = "", currentTerm = "", strTasks = "", id = "";
-    int credits = 0;
-    double grade = 0;
-    DateTime birthday = DateTime.now();
-    bool hasBirthInfo = false;
-    String command = "POST: userInfo\$${username}\u0000";
-    print('Sending command: $command');
-
-    // Create a completer to manage async response
-    Completer<String> responseCompleter = Completer<String>();
-
-    await Socket.connect(ipAddress, 8080).then((serverSocket) {
-      print('Socket connected for createStudnet');
-      serverSocket.write(command);
-      serverSocket.flush();
-
-      serverSocket.listen((socketResponse) {
-        res = String.fromCharCodes(socketResponse);
-        print('Received response: $res');
-        responseCompleter.complete(res);
-        serverSocket.destroy(); // Close the socket after receiving the response
-      });
-    }).catchError((e) {
-      print('Socket error: $e');
-      responseCompleter.completeError(e);
-    });
-
-    // Wait for the response to be completed
-    res = await responseCompleter.future;
-
-    List<String> resParts = res.split('\$');
-
-    if (resParts.length >= 5) {
-      name = resParts[0];
-      id = resParts[1];
-      currentTerm = resParts[2];
-      email = resParts[3];
-
-      String birth = resParts[4];
-      if (birth.isNotEmpty) {
-        birth = birth.substring(1, birth.length - 1);
-        int year = int.parse(birth.split('-')[0]);
-        int month = int.parse(birth.split('-')[1]);
-        int day = int.parse(birth.split('-')[2]);
-        birthday = DateTime(year, month, day);
-        hasBirthInfo = true;
-      }
-
-      if (resParts.length > 5) {
-        strTasks = resParts[5];
-      }
-
-      if (resParts.length > 6) {
-        String strGrade = resParts[6];
-        grade = double.parse(strGrade);
-      }
-    } else {
-      // Handle the case where the response does not have enough parts
-      print("Response does not have enough parts: $res");
-    }
-
-    Student student = Student(name, username);
-    student.id = id;
-    student.currentTerm = currentTerm;
-    student.email = email;
-    if (hasBirthInfo) {
-      student.birthday = birthday;
-    }
-    student.grade = grade;
-    if (strTasks.isNotEmpty) {
-      List<String> Tasks = strTasks.split('//');
-      for (int i = 0; i < Tasks.length; i++) {
-        List<String> taskParts = Tasks[i].split('~');
-        if (taskParts.length > 1) {
-          String title = taskParts[0];
-          bool done = taskParts[1] == 'yes';
-          student.tasks.add(Task(title: title, done: done));
-        }
-      }
-    }
-
-    return student;
-  }
-
 }

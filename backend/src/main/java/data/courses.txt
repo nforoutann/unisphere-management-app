@@ -1,5 +1,5 @@
-courseId>1111&1,,teacher>foroutan,,students>{4022~19.42//4023~20.22},,assignments>{1111&1&1},,done>false,,best>4022,,credit>3
-courseId>1111&2,,teacher>foroutan,,students>{4022~18.5//4023~12},,assignments>{1111&2&1},,done>false,,best>4022,,credit>2
-courseId>1111&3,,teacher>foroutan,,students>{4022~20//4023~20},,assignments>{1111&3&1},,done>false,,best>4022,,credit>1
-courseId>3333&1,,teacher>itsme,,students>{4022~19.5},,assignments>{3333&1&1},,done>false,,best>4022,,credit>3
-courseId>3333&2,,teacher>itsme,,students>{4022~18.12},,assignments>{3333&2&1},,done>false,,best>4022,,credit>2
+courseId>1111&1,,title>ap,,teacher>foroutan,,students>{4022~19.42//4023~20.22},,assignments>{1111&1&1~yes},,done>false,,best>4022,,credit>3
+courseId>1111&2,,title>ec,,teacher>foroutan,,students>{4022~18.5//4023~12},,assignments>{1111&2&1~no},,done>false,,best>4022,,credit>2
+courseId>1111&3,,title>az physics,,teacher>foroutan,,students>{4022~20//4023~20},,assignments>{1111&3&1~yes},,done>false,,best>4022,,credit>1
+courseId>3333&1,,title>the basics of programming,,teacher>itsme,,students>{4022~19.5},,assignments>{3333&1&1~no},,done>false,,best>4022,,credit>3
+courseId>3333&2,,title>english,,teacher>itsme,,students>{4022~18.12},,assignments>{3333&2&1~no},,done>false,,best>4022,,credit>2

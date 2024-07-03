@@ -2,12 +2,15 @@ package controller;
 
 import dataManagement.Database;
 import jdk.jfr.DataAmount;
+import objects.serializable.Student;
+
+import java.io.ObjectOutputStream;
 
 public class Controller {
     Database database = Database.getInstance();
 
-    public String run(String request){
-        String res = "";
+    public Object run(String request){
+        Object res = "";
         String command = request.split("\\$")[0];
         switch (command){
             case "GET: SignUpChecker":
@@ -44,8 +47,11 @@ public class Controller {
                 break;
             case "POST: userInfo":
                 username = request.split("\\$")[1];
-                res = Database.getInstance().getUserInfo(username);
-                System.out.println("-------------------the res is:"+res);
+                res = Database.getInstance().getUserInfo(username); //the res is user now
+                break;
+            case "POST assignments":
+                username = request.split("\\$")[1];
+                //todo
                 break;
 
 
