@@ -1,6 +1,12 @@
 import 'User.dart';
 
 class Teacher extends User{
-  Teacher(String name, String username) : super(name, username);
-
+  Teacher({
+  required super.name,
+  required super.username,
+  required super.ongoingTasks,
+  required super.birthday,
+  required super.email,
+  required super.password,
+  });
 }

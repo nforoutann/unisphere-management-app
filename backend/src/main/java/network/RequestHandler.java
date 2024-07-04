@@ -1,5 +1,8 @@
 package network;
 import controller.Controller;
+import com.google.gson.Gson;
+import objects.serializable.Student;
+
 
 import java.util.*;
 import java.io.*;
@@ -10,13 +13,11 @@ public class RequestHandler extends Thread {
     private Socket socket;
     private DataOutputStream dos;
     private DataInputStream dis;
-    private ObjectOutputStream oos;
 
     public RequestHandler(Socket socket) throws IOException{
         this.socket = socket;
         dos = new DataOutputStream(socket.getOutputStream());
         dis = new DataInputStream(socket.getInputStream());
-        oos = new ObjectOutputStream(dos);
 
         System.out.println("connected to server");
     }
@@ -65,11 +66,17 @@ public class RequestHandler extends Thread {
     }
 
     public void writerObj(Object obj) throws IOException {
-        oos.writeObject(obj);
-        oos.flush();
-        oos.close();
+        Gson gson = new Gson();
+        String json = "";
+        if(obj instanceof Student){
+            Student student = (Student) obj;
+            json = gson.toJson(student);
+        }
+        PrintWriter writer = new PrintWriter(dos, true);
+        writer.println(json);
         dos.close();
         dis.close();
+        writer.close();
         socket.close();
         System.out.println(obj.toString());
         System.out.println("command finished and response sent to server");

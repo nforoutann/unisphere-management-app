@@ -7,10 +7,11 @@ public class Assignment implements Serializable {
     private String assignmentId;
     private String title;
     private double score;
+    private boolean active;
     private AssignmentType type;
     private int estimateTime;
-    private Date deadline;
-    private Date definedTime;
+    private String deadline;
+    private String definedTime;
 
     public String getAssignmentId() {
         return assignmentId;
@@ -52,20 +53,27 @@ public class Assignment implements Serializable {
         this.estimateTime = estimateTime;
     }
 
-    public Date getDeadline() {
+    public String getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(Date deadline) {
+    public void setDeadline(String deadline) {
         this.deadline = deadline;
     }
 
-    public Date getDefinedTime() {
+    public String getDefinedTime() {
         return definedTime;
     }
 
-    public void setDefinedTime(Date definedTime) {
+    public void setDefinedTime(String definedTime) {
         this.definedTime = definedTime;
     }
-}
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+}

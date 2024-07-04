@@ -2,10 +2,13 @@ package dataManagement;
 
 import objects.serializable.Assignment;
 import objects.serializable.AssignmentType;
+import objects.serializable.Course;
+import objects.serializable.Student;
 
 import java.util.*;
 
 public class Convertor {
+
     public static HashMap<String, String > stringToMap (String s) {
         String [] info = s.split(",,");
         HashMap <String, String> res = new HashMap<>();
@@ -57,16 +60,22 @@ public class Convertor {
             assignment.setType(type.get(entry.getValue().get("type")));
             assignment.setEstimateTime(Integer.parseInt(entry.getValue().get("estimatedTime")));
             String deadlineStr = entry.getValue().get("deadline");
-            deadlineStr = deadlineStr.substring(1, deadlineStr.length() - 1);
-            String[] deadline = deadlineStr.split("~");
-            assignment.setDeadline(new Date(Integer.parseInt(deadline[0]), Integer.parseInt(deadline[1]), Integer.parseInt(deadline[2]))); //todo change the Date type with LocalDate
+            assignment.setDeadline(deadlineStr); //todo change the Date type with LocalDate
             String definedTimeStr = entry.getValue().get("definedTime");
-            definedTimeStr = definedTimeStr.substring(1, definedTimeStr.length() - 1);
-            String[] definedTime = definedTimeStr.split("~");
-            assignment.setDefinedTime(new Date(Integer.parseInt(definedTime[0]), Integer.parseInt(definedTime[1]), Integer.parseInt(definedTime[2])));
+            assignment.setDefinedTime(definedTimeStr);
             res.add(assignment);
         }
         return res;
     }
 
+    public static Course mapToCourse(HashMap<String, String> map, String nameOfTheBestStudent, String teacherName){
+        Course course = new Course();
+        course.setCourseId(map.get("courseId"));
+        course.setTitle(map.get("title"));
+        course.setTeacherName(teacherName);
+        course.setCredit(map.get("credit"));
+        course.setNumberOfDefinedAssignments(String.valueOf(map.get("assignments").split("//").length));
+        course.setNameOfBestStudent(nameOfTheBestStudent);
+        return course;
+    }
 }

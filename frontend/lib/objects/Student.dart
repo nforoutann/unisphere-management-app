@@ -1,8 +1,4 @@
-import 'dart:convert';
-import 'dart:typed_data';
-import 'package:frontend/objects/Task.dart';
 import 'package:frontend/objects/User.dart';
-
 import 'Assignment.dart';
 
 class Student extends User {
@@ -11,47 +7,75 @@ class Student extends User {
   String? currentTerm;
   double? totalGrade;
   double? bestScore;
-  double? worstScore; 
+  double? worstScore;
   int? numberOfLeftAssignments;
   int? numberOfExams;
-  List<Assignment> ongoingAssignments = [];
+  List<Assignment> doneAssignments = [];
 
-  Student(String name, String username) : super(name, username);
+  Student({
+    required String name,
+    required String username,
+    required String password,
+    required String email,
+    DateTime? birthday,
+    required List<String> ongoingTasks,
+    required this.id,
+    required this.credits,
+    required this.currentTerm,
+    required this.totalGrade,
+    required this.bestScore,
+    required this.worstScore,
+    required this.numberOfLeftAssignments,
+    required this.doneAssignments,
+    required this.numberOfExams,
+  }) : super(
+    name: name,
+    username: username,
+    password: password,
+    email: email,
+    birthday: birthday,
+    ongoingTasks: ongoingTasks,
+  );
 
-  static Student deserialize(Uint8List bytes) {
-    var buffer = ByteData.sublistView(bytes);
-    int offset = 0;
-
-    // Read UTF string with length prefix
-    String readString(ByteData buffer, int offset) {
-      int length = buffer.getUint16(offset, Endian.big);
-      offset += 2;
-      String value = utf8.decode(buffer.buffer.asUint8List(offset, length));
-      offset += length;
-      return value;
+  factory Student.fromJson(Map<String, dynamic> json) {
+    List<Assignment> assignmentsList = [];
+    if (json['doneAssignments'] != null) {
+      var assignmentsJson = json['doneAssignments'] as List;
+      assignmentsList = assignmentsJson
+          .map((assignmentJson) => Assignment.fromJson(assignmentJson))
+          .toList();
     }
 
-    String name = readString(buffer, offset);
-    String username = readString(buffer, offset);
-    Student student = Student(name, username);
-
-    student.id = readString(buffer, offset);
-    student.currentTerm = readString(buffer, offset);
-    student.email = readString(buffer, offset);
-
-    int timestamp = buffer.getInt64(offset, Endian.big);
-    offset += 8;
-    student.birthday = DateTime.fromMillisecondsSinceEpoch(timestamp);
-
-    student.totalGrade = buffer.getFloat64(offset, Endian.big);
-    offset += 8;
-
-    int taskCount = buffer.getInt32(offset, Endian.big);
-    offset += 4;
-    for (int i = 0; i < taskCount; i++) {
-      student.ongoingTasks.add(Task.deserialize(buffer, offset));
+    List<String> ongoingTaskList = [];
+    if (json['ongoingTasks'] != null) {
+      var tasksJson = json['ongoingTasks'] as List;
+      ongoingTaskList = tasksJson.map((task) => task.toString()).toList();
     }
 
-    return student;
+    String birthdayStr = json['birthday'];
+    DateTime? birthday;
+    if(birthdayStr != "{}"){
+      birthdayStr = birthdayStr.substring(1, birthdayStr.length-1);
+      var birthInfo = birthdayStr.split("~");
+      birthday = DateTime(int.parse(birthInfo[0]), int.parse(birthInfo[1]), int.parse(birthInfo[2]));
+    }
+
+    return Student(
+      name: json['name'],
+      username: json['username'],
+      password: json['password'],
+      email: json['email'],
+      birthday: birthday,
+      ongoingTasks: ongoingTaskList, // Assuming you deserialize this elsewhere
+      id: json['id'].toString(),
+      credits: json['credits'],
+      currentTerm: json['currentTerm'].toString(),
+      totalGrade: json['totalGrade'],
+      bestScore: json['bestScore'],
+      worstScore: json['worstScore'],
+      numberOfLeftAssignments: json['numberOfLeftAssignments'],
+      doneAssignments: assignmentsList,
+      numberOfExams: json['numberOfExams'],
+    );
   }
 }

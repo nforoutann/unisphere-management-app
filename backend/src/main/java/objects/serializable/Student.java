@@ -6,11 +6,11 @@ public class Student extends User {
     private int id;
     private int credits;
     private int currentTerm;
-    private Double totalGrade;
-    private Double bestScore;
+    private double totalGrade;
+    private double bestScore;
     private double worstScore;
     private int numberOfLeftAssignments;
-    private int NumberOfExams;
+    private int numberOfExams;
     private List<Assignment> doneAssignments;
 
 
@@ -75,11 +75,11 @@ public class Student extends User {
     }
 
     public int getNumberOfExams() {
-        return NumberOfExams;
+        return numberOfExams;
     }
 
     public void setNumberOfExams(int numberOfExams) {
-        NumberOfExams = numberOfExams;
+        this.numberOfExams = numberOfExams;
     }
 
     public List<Assignment> getDoneAssignments() {

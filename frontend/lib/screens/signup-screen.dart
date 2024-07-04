@@ -377,7 +377,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         });
       });
     });
-    print("----------   server response is:  { $response }");
+    print("----------   network response is:  { $response }");
 
     if (response == "409") {
       //409 means conflict so the username is already used

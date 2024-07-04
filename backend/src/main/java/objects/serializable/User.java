@@ -9,7 +9,7 @@ public class User implements Serializable {
     private String name;
     private String username;
     private String password;
-    private Date birthday;
+    private String birthday;
     private String email;
     private List<String> ongoingTasks = new ArrayList<>();
 
@@ -30,7 +30,7 @@ public class User implements Serializable {
         return password;
     }
 
-    public Date getBirthday() {
+    public String getBirthday() {
         return birthday;
     }
 
@@ -38,7 +38,7 @@ public class User implements Serializable {
         return ongoingTasks;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
 

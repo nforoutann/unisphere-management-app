@@ -1,16 +1,17 @@
-import 'package:frontend/objects/Student.dart';
-import 'package:frontend/objects/Task.dart';
-import 'package:frontend/objects/News.dart';
-
-import 'Assignment.dart';
-
-class User{
-  late String name;
-  late String username;
+class User {
+  String name;
+  String username;
   String? password;
   String? email;
   DateTime? birthday;
-  List<Task> ongoingTasks = [];
+  List<String> ongoingTasks;
 
-  User(this.name, this.username);
+  User({
+    required this.name,
+    required this.username,
+    this.password,
+    this.email,
+    this.birthday,
+    required this.ongoingTasks,
+  });
 }

@@ -1,6 +1,8 @@
 package objects.serializable;
 
-public enum AssignmentType{
+import java.io.Serializable;
+
+public enum AssignmentType implements Serializable {
     PROJECT,
     HW;
 }

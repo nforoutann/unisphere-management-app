@@ -1,13 +1,9 @@
 package controller;
 
 import dataManagement.Database;
-import jdk.jfr.DataAmount;
 import objects.serializable.Student;
 
-import java.io.ObjectOutputStream;
-
 public class Controller {
-    Database database = Database.getInstance();
 
     public Object run(String request){
         Object res = "";
@@ -48,6 +44,8 @@ public class Controller {
             case "POST: userInfo":
                 username = request.split("\\$")[1];
                 res = Database.getInstance().getUserInfo(username); //the res is user now
+                Student student = (Student) res;
+                System.out.println(((Student) res).getName());
                 break;
             case "POST assignments":
                 username = request.split("\\$")[1];

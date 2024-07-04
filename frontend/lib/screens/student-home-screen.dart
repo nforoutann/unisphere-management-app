@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/widgets/main-scaffold.dart';
+import 'package:frontend/objects/Student.dart';
 
 class StudentHomeScreen extends StatefulWidget{
+
   StudentHomeScreen({super.key});
 
   @override

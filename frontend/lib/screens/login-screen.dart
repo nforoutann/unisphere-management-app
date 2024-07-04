@@ -1,16 +1,10 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:frontend/objects/Student.dart';
-import 'package:frontend/objects/Task.dart';
+import 'package:frontend/network/network-helper.dart';
 import 'package:frontend/screens/signup-screen.dart';
-import 'package:frontend/screens/student-main-screen.dart';
 import 'package:frontend/widgets/custom-scaffold.dart';
 import 'package:frontend/widgets/login-signup-button.dart';
-import 'package:delightful_toast/toast/components/toast_card.dart';
-import 'package:delightful_toast/toast/utils/enums.dart';
-import 'package:delightful_toast/delight_toast.dart';
-import 'dart:io';
+
+import 'package:frontend/widgets/messages.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -154,15 +148,25 @@ class _LoginScreenState extends State<LoginScreen> {
                       offset: Offset(0, 10),
                       child: MyElevatedButton(
                         onPressed: () async {
-                          String result = await _login(_usernameController.text, _passwordController.text, ipAddress);
-                          if(result == '200'){ //todo
+                          String result = await Network.login(_usernameController.text, _passwordController.text, ipAddress);
+                          if(result == '200'){
+                            _usernameCheck = true;
+                            _passwordCheck = true;
                             // todo createStudent(_usernameController.text, ipAddress);
-                            Navigator.pushReplacement(
+                            /*Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => StudentMain()
                                 ),
-                            );
+                            );*/
+                          } else if(result == '409'){
+                            Messages.error(context ,Color(0xffa8183e), 'Password is incorrect');
+                            _usernameCheck = true;
+                            _passwordCheck = false;
+                          } else if(result == "404"){
+                            Messages.error(context ,Color(0xffa8183e), 'Username not found, please create account first');
+                            _usernameCheck = false;
+                            _passwordCheck = false;
                           }
                         },
                         child: const Text(
@@ -227,82 +231,5 @@ class _LoginScreenState extends State<LoginScreen> {
         ],
       ),
     );
-  }
-
-  void _error(Color color, String myText){
-    return DelightToastBar(
-      builder: (context){
-        return Align(
-          alignment: Alignment.center,
-          child: ToastCard(
-            shadowColor: Colors.black45,
-            leading: const Icon(
-              Icons.notifications_active,
-              color: Colors.white,
-            ),
-            color: color,
-            title: Text(
-              myText,
-              style: const TextStyle(
-                color: Colors.white,
-              ),
-            ),
-          ),
-        );
-      },
-      position: DelightSnackbarPosition.top,
-      autoDismiss: true,
-    ).show(
-      context,
-    );
-  }
-
-  Future<String> _login(String username, String password, String ipAddress) async {
-    String command = 'GET: logInChecker\$${username}\$${password}\u0000';
-    response = ""; // Clear previous response
-    Completer<String> responseCompleter = Completer<String>();
-
-    await Socket.connect(ipAddress, 8080).then((serverSocket) {
-      serverSocket.write(command);
-      serverSocket.flush();
-      serverSocket.listen((socketResponse) {
-        response = String.fromCharCodes(socketResponse);
-        responseCompleter.complete(response);
-        serverSocket.destroy(); // Close the socket after receiving the response
-      }, onDone: () {
-        if (!responseCompleter.isCompleted) {
-          responseCompleter.completeError("Socket closed without response");
-        }
-      }, onError: (error) {
-        responseCompleter.completeError(error);
-      });
-    }).catchError((error) {
-      responseCompleter.completeError(error);
-    });
-
-    try {
-      response = await responseCompleter.future;
-    } catch (e) {
-      print("Error receiving response: $e");
-      _error(Color(0xffa8183e), 'Network error, please try again');
-      return "error";
-    }
-
-    print("----------   server response is:  { $response }");
-
-    if (response == "401") {
-      _error(Color(0xffa8183e), 'Password is incorrect');
-      _usernameCheck = true;
-      _passwordCheck = false;
-    } else if (response == "404") {
-      _error(Color(0xffa8183e), 'Username not found, please create account first');
-      _usernameCheck = false;
-      _passwordCheck = false;
-    } else if (response == "200") {
-      _usernameCheck = true;
-      _passwordCheck = true;
-    }
-
-    return response;
   }
 }
