@@ -11,6 +11,7 @@ class Student extends User {
   int? numberOfLeftAssignments;
   int? numberOfExams;
   List<Assignment> doneAssignments = [];
+  int? numberOfLostAssignments;
 
   Student({
     required String name,
@@ -28,6 +29,7 @@ class Student extends User {
     required this.numberOfLeftAssignments,
     required this.doneAssignments,
     required this.numberOfExams,
+    required this.numberOfLostAssignments,
   }) : super(
     name: name,
     username: username,
@@ -76,6 +78,7 @@ class Student extends User {
       numberOfLeftAssignments: json['numberOfLeftAssignments'],
       doneAssignments: assignmentsList,
       numberOfExams: json['numberOfExams'],
+      numberOfLostAssignments: json['numberOfLostAssignments']
     );
   }
 }

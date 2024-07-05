@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/objects/Student.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class StudentHomeScreen extends StatefulWidget {
   Student? student;
@@ -33,22 +33,34 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                           margin: EdgeInsets.all(8.0),
                           color: Colors.indigo,
                         ),
-                        const Card(
+                        Card(
                           surfaceTintColor: Colors.indigo,
-                          elevation: 15,
+                          elevation: 10,
                           shadowColor: Colors.cyanAccent,
                           color: Colors.white,
                           child: Padding(
-                            padding: EdgeInsets.all(16),
+                            padding: EdgeInsets.all(5),
                             child: Center(
-                              child: Text(
-                                'Card 1',
-                                style: TextStyle(
-                                  fontFamily: 'Montserrat',
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                ),
-                              ),
+                              child: Column(
+                                children: [
+                                  const FaIcon(
+                                    FontAwesomeIcons.heartCrack,
+                                    size: 20,
+                                    color: Colors.indigo,
+                                  ),
+                                  Center(
+                                      child: Text(
+                                        textAlign: TextAlign.center,
+                                        'you have ${widget.student!.numberOfExams} exams',
+                                        style: const TextStyle(
+                                            fontFamily: 'Georgia',
+                                            letterSpacing: 0.8,
+                                            fontWeight: FontWeight.w600
+                                        ),
+                                      )
+                                  )
+                                ],
+                              )
                             ),
                           ),
                         ),
@@ -63,21 +75,34 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                           margin: EdgeInsets.all(8.0),
                           color: Colors.indigo,
                         ),
-                        const Card(
+                        Card(
                           surfaceTintColor: Colors.indigo,
                           shadowColor: Colors.cyanAccent,
-                          elevation: 15, // Increase this value for a more prominent shadow
+                          elevation: 10,
                           color: Colors.white,
                           child: Padding(
-                            padding: EdgeInsets.all(16),
+                            padding: EdgeInsets.all(5),
                             child: Center(
-                              child: Text(
-                                'Card 2',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                ),
-                              ),
+                              child: Column(
+                                children: [
+                                  const FaIcon(
+                                    FontAwesomeIcons.pen,
+                                    size: 20,
+                                    color: Colors.indigo,
+                                  ),
+                                  Center(
+                                      child: Text(
+                                        textAlign: TextAlign.center,
+                                        '${widget.student!.numberOfLeftAssignments} exercises left',
+                                        style: const TextStyle(
+                                            fontFamily: 'Georgia',
+                                            letterSpacing: 0.8,
+                                            fontWeight: FontWeight.w600
+                                        ),
+                                      )
+                                  )
+                                ],
+                              )
                             ),
                           ),
                         ),
@@ -92,21 +117,34 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                           margin: EdgeInsets.all(8.0),
                           color: Colors.indigo,
                         ),
-                        const Card(
+                        Card(
                           surfaceTintColor: Colors.indigo,
                           shadowColor: Colors.cyanAccent,
-                          elevation: 15,
+                          elevation: 10,
                           color: Colors.white,
                           child: Padding(
-                            padding: EdgeInsets.all(16),
+                            padding: EdgeInsets.all(5),
                             child: Center(
-                              child: Text(
-                                'Card 3',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                ),
-                              ),
+                              child: Column(
+                                children: [
+                                  const FaIcon(
+                                    FontAwesomeIcons.explosion,
+                                    size: 20,
+                                    color: Colors.indigo,
+                                  ),
+                                  Center(
+                                      child: Text(
+                                        textAlign: TextAlign.center,
+                                        'lost ${widget.student!.numberOfLostAssignments==null ? 0 : widget.student!.numberOfLostAssignments} deadlines',
+                                        style: const TextStyle(
+                                            fontFamily: 'Georgia',
+                                            letterSpacing: 0.8,
+                                            fontWeight: FontWeight.w600,
+                                        ),
+                                      )
+                                  )
+                                ],
+                              )
                             ),
                           ),
                         ),
@@ -129,16 +167,17 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                         ),
                         Card(
                           surfaceTintColor: Colors.indigo,
-                          shadowColor: Colors.indigoAccent,
-                          elevation: 15,
+                          shadowColor: Colors.cyanAccent,
+                          elevation: 10,
                           color: Colors.white,
                           child: Padding(
                             padding: EdgeInsets.all(7),
                             child: Center(
                                 child: Column(
                                   children: [
-                                    const Icon(
-                                        Icons.sentiment_satisfied_sharp,
+                                    FaIcon(
+                                      FontAwesomeIcons.faceSmile,
+                                      size: 20,
                                       color: Colors.indigo,
                                     ),
                                     Center(
@@ -146,8 +185,9 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                           textAlign: TextAlign.center,
                                           'your best score is ${widget.student!.bestScore}',
                                           style: const TextStyle(
-                                              fontFamily: 'Montserrat',
-                                              fontWeight: FontWeight.w600,
+                                              fontFamily: 'Georgia',
+                                              letterSpacing: 0.8,
+                                              fontWeight: FontWeight.w600
                                           ),
                                         )
                                     )
@@ -170,26 +210,27 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                         ),
                         Card(
                           surfaceTintColor: Colors.indigo,
-                          shadowColor: Colors.indigoAccent,
-                          elevation: 15,
+                          shadowColor: Colors.cyanAccent,
+                          elevation: 10,
                           color: Colors.white,
                           child: Padding(
                             padding: EdgeInsets.all(7),
                             child: Center(
                               child: Column(
                                 children: [
-                                 const Icon(
-                                      Icons.sentiment_dissatisfied_sharp,
-                                    color: Colors.indigo,
-
-                                  ),
+                                 const FaIcon(
+                                   FontAwesomeIcons.faceFrown,
+                                   size: 20,
+                                   color: Colors.indigo,
+                                 ),
                                   Center(
                                       child: Text(
                                         textAlign: TextAlign.center,
                                         'your worst score is ${widget.student!.worstScore}',
                                       style: const TextStyle(
-                                          fontFamily: 'Montserrat',
-                                        fontWeight: FontWeight.w500
+                                          fontFamily: 'Georgia',
+                                          letterSpacing: 0.8,
+                                          fontWeight: FontWeight.w600
                                       ),
                                     )
                                   )

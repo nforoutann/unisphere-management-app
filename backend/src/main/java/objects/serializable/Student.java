@@ -9,6 +9,7 @@ public class Student extends User {
     private double totalGrade;
     private double bestScore;
     private double worstScore;
+    private int numberOfLostAssignments;
     private int numberOfLeftAssignments;
     private int numberOfExams;
     private List<Assignment> doneAssignments;
@@ -88,5 +89,13 @@ public class Student extends User {
 
     public void setDoneAssignments(List<Assignment> doneAssignments) {
         this.doneAssignments = doneAssignments;
+    }
+
+    public int getNumberOfLostAssignments() {
+        return numberOfLostAssignments;
+    }
+
+    public void setNumberOfLostAssignments(int numberOfLostAssignments) {
+        this.numberOfLostAssignments = numberOfLostAssignments;
     }
 }

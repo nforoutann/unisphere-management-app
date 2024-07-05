@@ -177,7 +177,7 @@ public class Database {
         return null;
     }
 
-    private int numberOfDoneAssignments(String username){
+    private int numberOfLeftAssignments(String username){ //todo ommit the active part and work with deadline
         String[] coursesIds = getCourseIds(username);
         if(coursesIds.length == 0){
             return 0;
@@ -187,14 +187,37 @@ public class Database {
                 .filter(a -> !a.equals("{}"))
                 .map(a -> a.substring(1, a.length()-1))
                 .flatMap(a -> Stream.of(a.split("//")))
-                //.filter(a -> a.split("~")[1].equals("yes"))
+                //.filter(a -> a.split("~")[1].equals("no")) //todo not active
+                .filter(a -> a.split("~")[1].equals("yes")) //active
                 .map(a -> a.split("~")[0])
                 .map(a -> getInstance().getAssignmentsDataMap().get(a).get("students"))
                 .filter(a -> !a.equals("{}"))
                 .map(a -> a.substring(1, a.length()-1))
                 .flatMap(a -> Stream.of(a.split("//")))
                 .filter(a -> a.startsWith(getId(username)))
-                .filter(a -> a.endsWith("no"))
+                .filter(a -> a.endsWith("no")) //not sent
+                .toList()
+                .size();
+    }
+
+    private int numberOfLostAssignments(String username){ //todo ommit the active part and work with deadline
+        String[] coursesIds = getCourseIds(username);
+        if(coursesIds.length == 0){
+            return 0;
+        }
+        return Arrays.stream(coursesIds)
+                .map(a -> getInstance().getCoursesDataMap().get(a).get("assignments"))
+                .filter(a -> !a.equals("{}"))
+                .map(a -> a.substring(1, a.length()-1))
+                .flatMap(a -> Stream.of(a.split("//")))
+                .filter(a -> a.split("~")[1].equals("no")) //not active
+                .map(a -> a.split("~")[0])
+                .map(a -> getInstance().getAssignmentsDataMap().get(a).get("students"))
+                .filter(a -> !a.equals("{}"))
+                .map(a -> a.substring(1, a.length()-1))
+                .flatMap(a -> Stream.of(a.split("//")))
+                .filter(a -> a.startsWith(getId(username)))
+                .filter(a -> a.endsWith("no")) //not sent
                 .toList()
                 .size();
     }
@@ -232,7 +255,8 @@ public class Database {
                 List<String> ongoingTasks = getOngoingTasksTitle(username);
                 Double minScore = getScore(username, "min");
                 Double maxScore = getScore(username, "max");
-                int numberOfLeftAssignments = numberOfDoneAssignments(username);
+                int numberOfLeftAssignments = numberOfLeftAssignments(username);
+                int numberOfLostAssignments = numberOfLostAssignments(username);
 
                 //make the object
                 Student student = new Student(name, username);
@@ -248,6 +272,7 @@ public class Database {
                 student.setWorstScore(minScore);
                 student.setNumberOfLeftAssignments(numberOfLeftAssignments);
                 student.setNumberOfExams(numberOfExams);
+                student.setNumberOfLostAssignments(numberOfLostAssignments);
                 student.setDoneAssignments(Convertor.mapToListOfAssignments(getDoneAssignments(username)));
 
                 return student;
