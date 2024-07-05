@@ -55,7 +55,7 @@ class _StudentMainState extends State<StudentMain> {
     List<Widget> pagesList = <Widget>[
       ToDoScreen(),
       StudentAssignmentScreen(),
-      StudentHomeScreen(student: student),
+      student != null ? StudentHomeScreen(student: student!) : Center(child: CircularProgressIndicator()),
       StudentClassScreen(),
       StudentNewsScreen(),
     ];
@@ -92,7 +92,7 @@ class _StudentMainState extends State<StudentMain> {
         ],
         onTap: (index) {
           setState(() {
-            if(index ==2){
+            if (index == 2) {
               _fetchStudent();
             }
             _currentIndex = index;

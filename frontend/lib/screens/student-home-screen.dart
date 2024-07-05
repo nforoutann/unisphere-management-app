@@ -3,9 +3,9 @@ import 'package:frontend/objects/Student.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class StudentHomeScreen extends StatefulWidget {
-  final Student? student;
+  Student? student;
 
-  StudentHomeScreen({Key? key, required this.student}) : super(key: key);
+  StudentHomeScreen({Key? key,  this.student}) : super(key: key);
 
   @override
   _StudentHomeScreenState createState() => _StudentHomeScreenState();
@@ -33,7 +33,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                           margin: EdgeInsets.all(8.0),
                           color: Colors.indigo,
                         ),
-                        Card(
+                        const Card(
                           surfaceTintColor: Colors.indigo,
                           elevation: 15,
                           shadowColor: Colors.cyanAccent,
@@ -44,6 +44,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                               child: Text(
                                 'Card 1',
                                 style: TextStyle(
+                                  fontFamily: 'Montserrat',
                                   color: Colors.black,
                                   fontSize: 18,
                                 ),
@@ -62,7 +63,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                           margin: EdgeInsets.all(8.0),
                           color: Colors.indigo,
                         ),
-                        Card(
+                        const Card(
                           surfaceTintColor: Colors.indigo,
                           shadowColor: Colors.cyanAccent,
                           elevation: 15, // Increase this value for a more prominent shadow
@@ -91,7 +92,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                           margin: EdgeInsets.all(8.0),
                           color: Colors.indigo,
                         ),
-                        Card(
+                        const Card(
                           surfaceTintColor: Colors.indigo,
                           shadowColor: Colors.cyanAccent,
                           elevation: 15,
@@ -136,7 +137,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                             child: Center(
                                 child: Column(
                                   children: [
-                                    Icon(
+                                    const Icon(
                                         Icons.sentiment_satisfied_sharp,
                                       color: Colors.indigo,
                                     ),
@@ -144,8 +145,8 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                         child: Text(
                                           textAlign: TextAlign.center,
                                           'your best score is ${widget.student!.bestScore}',
-                                          style: TextStyle(
-                                            fontFamily: 'Montserrat',
+                                          style: const TextStyle(
+                                              fontFamily: 'Montserrat',
                                               fontWeight: FontWeight.w500
                                           ),
                                         )
@@ -177,7 +178,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                             child: Center(
                               child: Column(
                                 children: [
-                                  Icon(
+                                 const Icon(
                                       Icons.sentiment_dissatisfied_sharp,
                                     color: Colors.indigo,
 
@@ -186,8 +187,8 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                       child: Text(
                                         textAlign: TextAlign.center,
                                         'your worst score is ${widget.student!.worstScore}',
-                                      style: TextStyle(
-                                        fontFamily: 'Montserrat',
+                                      style: const TextStyle(
+                                          fontFamily: 'Montserrat',
                                         fontWeight: FontWeight.w500
                                       ),
                                     )
@@ -208,7 +209,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
         ),
         Expanded(
           child: Container(
-            child: Center(
+            child: const Center(
               child: Text(
                 'Second Part',
                 style: TextStyle(
@@ -222,7 +223,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
         ),
         Expanded(
           child: Container(
-            child: Center(
+            child: const Center(
               child: Text(
                 'Third Part',
                 style: TextStyle(
