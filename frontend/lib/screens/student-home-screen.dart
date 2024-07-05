@@ -147,7 +147,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                           'your best score is ${widget.student!.bestScore}',
                                           style: const TextStyle(
                                               fontFamily: 'Montserrat',
-                                              fontWeight: FontWeight.w500
+                                              fontWeight: FontWeight.w600,
                                           ),
                                         )
                                     )

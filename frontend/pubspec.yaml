@@ -65,10 +65,9 @@ flutter:
     - family: Montserrat
       fonts:
         - asset: assets/fonts/Montserrat-SemiBold.ttf
-        - asset: assets/fonts/Montserrat-BoldItalic.ttf
     - family: Georgia
       fonts:
-        - asset: assets/fonts/Georgia.ttf
+        - asset: assets/fonts/georgia.ttf
 
 
 
