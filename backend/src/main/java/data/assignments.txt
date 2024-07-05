@@ -1,5 +1,5 @@
-assignmentId>1111&1&1,,title>one,,score>100,,students>{4022~45~yes//4023~0~no},,type>PROJECT,,deadline>{2024~7~1},,estimatedTime>5,,definedTime>{2024~6~28}
+assignmentId>1111&1&1,,title>one,,score>100,,students>{4022~55~yes//4023~0~no},,type>PROJECT,,deadline>{2024~7~1},,estimatedTime>5,,definedTime>{2024~6~28}
 assignmentId>1111&2&1,,title>two,,score>100,,students>{4022~0~no//4023~0~no},,type>HW,,deadline>{2024~7~1},,estimatedTime>2,,definedTime>{2024~6~29}
-assignmentId>1111&3&1,,title>three,,score>100,,students>{4022~40~yes//4023~33~yes},,type>HW,,deadline>{2024~7~5},,estimatedTime>7,,definedTime>{2024~6~28}
+assignmentId>1111&3&1,,title>three,,score>100,,students>{4022~90~yes//4023~33~yes},,type>HW,,deadline>{2024~7~5},,estimatedTime>7,,definedTime>{2024~6~28}
 assignmentId>3333&1&1,,title>four,,score>100,,students>{4022~75~yes},,type>PROJECT,,deadline>{2024~7~1},,estimatedTime>8,,definedTime>{2024~6~29}
 assignmentId>3333&2&1,,title>five,,score>100,,students>{4022~0~no},,type>HW,,deadline>{2024~7~1},,estimatedTime>1,,definedTime>{2024~6~28}

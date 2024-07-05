@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:frontend/network/network-helper.dart';
+import 'package:frontend/objects/Student.dart';
 import 'package:frontend/screens/student-assignments-screen.dart';
 import 'package:frontend/screens/student-classes-screen.dart';
 import 'package:frontend/screens/student-home-screen.dart';
-import 'package:frontend/screens/studnet-news-screen.dart';
+import 'package:frontend/screens/student-news-screen.dart';
 import 'package:frontend/screens/to-do-list-screen.dart';
 import 'package:frontend/widgets/main-scaffold.dart';
 
@@ -11,26 +13,54 @@ void main() {
   runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: StudentMain(),
+      home: StudentMain(username: "nazanin"),
     ),
   );
 }
 
 class StudentMain extends StatefulWidget {
+  final String username;
+
+  StudentMain({required this.username});
+
   @override
   _StudentMainState createState() => _StudentMainState();
 }
 
 class _StudentMainState extends State<StudentMain> {
+  static const String ipAddress = "192.168.1.8";
   int _currentIndex = 2; // Initial index
+  Student? student;
 
-  static List<Widget> _pages = <Widget>[
-    ToDoScreen(),
-    StudentAssignmentScreen(),
-    StudentHomeScreen(),
-    StudentClassScreen(),
-    StudentNewsScreen()
-  ];
+  @override
+  void initState() {
+    super.initState();
+    if (_currentIndex == 2) {
+      _fetchStudent();
+    }
+  }
+
+  Future<void> _fetchStudent() async {
+    try {
+      Student fetchedStudent = await Network.getStudent(widget.username, ipAddress);
+      setState(() {
+        student = fetchedStudent;
+      });
+    } catch (e) {
+      print('Error fetching student: $e');
+    }
+  }
+
+  Widget _pages(int index) {
+    List<Widget> pagesList = <Widget>[
+      ToDoScreen(),
+      StudentAssignmentScreen(),
+      StudentHomeScreen(student: student),
+      StudentClassScreen(),
+      StudentNewsScreen(),
+    ];
+    return pagesList[index];
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -44,7 +74,7 @@ class _StudentMainState extends State<StudentMain> {
   Widget build(BuildContext context) {
     return MyScaffold(
       text: texts[_currentIndex],
-      child: _pages[_currentIndex],
+      child: _pages(_currentIndex),
       navigationBar: CurvedNavigationBar(
         index: _currentIndex,
         height: 60,
@@ -53,7 +83,7 @@ class _StudentMainState extends State<StudentMain> {
         backgroundColor: Color(0xFF171717),
         animationCurve: Curves.easeInOut,
         animationDuration: Duration(milliseconds: 230),
-        items: <Widget>[
+        items: const <Widget>[
           Icon(Icons.checklist, size: 30),
           Icon(Icons.assignment_outlined, size: 30),
           Icon(Icons.home, size: 30),
@@ -62,8 +92,10 @@ class _StudentMainState extends State<StudentMain> {
         ],
         onTap: (index) {
           setState(() {
+            if(index ==2){
+              _fetchStudent();
+            }
             _currentIndex = index;
-            // Handle tapping of navigation items if needed
           });
         },
       ),

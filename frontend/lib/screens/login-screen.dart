@@ -3,7 +3,7 @@ import 'package:frontend/network/network-helper.dart';
 import 'package:frontend/screens/signup-screen.dart';
 import 'package:frontend/widgets/custom-scaffold.dart';
 import 'package:frontend/widgets/login-signup-button.dart';
-
+import 'package:frontend/screens/student-main-screen.dart';
 import 'package:frontend/widgets/messages.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -153,12 +153,12 @@ class _LoginScreenState extends State<LoginScreen> {
                             _usernameCheck = true;
                             _passwordCheck = true;
                             // todo createStudent(_usernameController.text, ipAddress);
-                            /*Navigator.pushReplacement(
+                            Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => StudentMain()
+                                    builder: (context) => StudentMain(username: _usernameController.text)
                                 ),
-                            );*/
+                            );
                           } else if(result == '409'){
                             Messages.error(context ,Color(0xffa8183e), 'Password is incorrect');
                             _usernameCheck = true;
