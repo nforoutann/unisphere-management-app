@@ -12,6 +12,7 @@ public class Assignment implements Serializable {
     private int estimateTime;
     private String deadline;
     private String definedTime;
+    private String courseName;
 
     public String getAssignmentId() {
         return assignmentId;
@@ -75,5 +76,13 @@ public class Assignment implements Serializable {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
     }
 }

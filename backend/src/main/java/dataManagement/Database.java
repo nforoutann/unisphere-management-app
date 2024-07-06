@@ -126,7 +126,7 @@ public class Database {
         tasksStr = tasksStr.substring(1, tasksStr.length()-1);
         String[] tasksArray = tasksStr.split("//");
         return Arrays.stream(tasksArray)
-                .filter(a -> a.split("~")[1].equals("yes"))
+                .filter(a -> a.split("~")[1].equals("no"))
                 .map(a -> a.split("~")[0])
                 .collect(Collectors.toList());
     }
@@ -157,21 +157,28 @@ public class Database {
                 .filter(a -> !a.equals("{}"))
                 .map(a -> a.substring(1, a.length()-1))
                 .flatMap(a -> Stream.of(a.split("//")))
-                .filter(a -> a.endsWith("~yes"))
+                .filter(a -> a.endsWith("~no"))
                 .map(a -> a.split("~")[0])
                 .map(a -> getInstance().getAssignmentsDataMap().get(a).get("students"))
                 .filter(a -> !a.equals("{}"))
                 .map(a -> a.substring(1, a.length()-1))
                 .flatMap(students -> Arrays.stream(students.split("//")))
                 .filter(student -> student.startsWith(id))
+                .filter(student -> student.endsWith("yes"))
                 .map(a -> a.split("~")[1])
                 .map(a -> Double.parseDouble(a))
                 .sorted()
                 .collect(Collectors.toList());
         switch(which){
             case "min":
+                if(list.size() == 0){
+                    return 0.0;
+                }
                 return list.getFirst();
             case "max":
+                if(list.size() == 0){
+                    return 0.0;
+                }
                 return list.getLast();
         }
         return null;
@@ -234,7 +241,12 @@ public class Database {
                 .map(a -> a.substring(1, a.length()-1))
                 .flatMap(a -> Stream.of(a.split("//")))
                 .map(a -> a.split("~")[0])
+                .filter(a -> Arrays.stream(
+                        getInstance().getAssignmentsDataMap().get(a).get("students").substring(1, getInstance().getAssignmentsDataMap().get(a).get("students").length()-1).split("//"))
+                        .anyMatch(student -> student.split("~")[0].equals(getId(username))&&student.split("~")[2].equals("yes"))
+                )
                 .forEach(a -> res.put(a, getInstance().getAssignmentsDataMap().get(a)));
+
         return res;
     }
 
@@ -273,7 +285,7 @@ public class Database {
                 student.setNumberOfLeftAssignments(numberOfLeftAssignments);
                 student.setNumberOfExams(numberOfExams);
                 student.setNumberOfLostAssignments(numberOfLostAssignments);
-                student.setDoneAssignments(Convertor.mapToListOfAssignments(getDoneAssignments(username)));
+                student.setDoneAssignments(Convertor.mapToListOfAssignments(getDoneAssignments(username), getInstance().getCoursesDataMap()));
 
                 return student;
             }else{

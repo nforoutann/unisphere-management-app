@@ -7,6 +7,7 @@ class Assignment {
   DateTime? deadline;
   DateTime? definedTime;
   int? estimatedTime;
+  String? courseName;
 
   Assignment({
     this.assignmentId,
@@ -17,6 +18,7 @@ class Assignment {
     this.deadline,
     this.definedTime,
     this.estimatedTime,
+    this.courseName,
   });
 
   factory Assignment.fromJson(Map<String, dynamic> json) {
@@ -35,6 +37,7 @@ class Assignment {
       title: json['title'],
       score: json['score'],
       active: json['active'],
+      courseName: json['courseName'],
       assignmentType: json['assignmentType'] != null
           ? parseAssignmentType(json['assignmentType'])
           : null,

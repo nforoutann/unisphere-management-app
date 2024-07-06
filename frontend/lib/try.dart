@@ -8,131 +8,86 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Navigation Example',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MainScreen(),
+      home: MyScreen(),
     );
   }
 }
 
-class MainScreen extends StatefulWidget {
-  @override
-  _MainScreenState createState() => _MainScreenState();
-}
-
-class _MainScreenState extends State<MainScreen> {
-  int _selectedIndex = 0;
-
-  static List<Widget> _pages = <Widget>[
-    Page1(),
-    Page2(),
-    Page3(),
-    Page4(),
-    Page5(),
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
+class MyScreen extends StatelessWidget {
+  // Sample data for the list
+  final List<String> dataList = ['x', 'y', 'z', 't', 'n', 'a', 'b', 'c', 'q'];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Navigation Example'),
+        title: Text('Custom List View'),
       ),
-      body: _pages[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            backgroundColor: Colors.black,
-            icon: Icon(Icons.home),
-            label: 'Page 1',
+      body: Column(
+        children: [
+          // First part that is always visible
+          Container(
+            padding: EdgeInsets.all(16.0),
+            color: Colors.blueAccent,
+            child: Text(
+              'Fixed Part',
+              style: TextStyle(color: Colors.white, fontSize: 18.0),
+            ),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.business),
-            label: 'Page 2',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            label: 'Page 3',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Page 4',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.info),
-            label: 'Page 5',
+          // Second part containing the custom list
+          Expanded(
+            child: ListView.builder(
+              itemCount: (dataList.length / 2).ceil(), // Calculate number of rows needed
+              itemBuilder: (context, index) {
+                int firstIndex = index * 2;
+                int secondIndex = index * 2 + 1;
+
+                // Check if secondIndex is within bounds
+                if (secondIndex < dataList.length) {
+                  // Display two items in a row
+                  return Row(
+                    children: [
+                      Expanded(
+                        child: Card(
+                          child: Padding(
+                            padding: EdgeInsets.all(16.0),
+                            child: Text(
+                              dataList[firstIndex],
+                              style: TextStyle(fontSize: 16.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 16.0), // Add spacing between cards
+                      Expanded(
+                        child: Card(
+                          child: Padding(
+                            padding: EdgeInsets.all(16.0),
+                            child: Text(
+                              dataList[secondIndex],
+                              style: TextStyle(fontSize: 16.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                } else {
+                  // Display single item in a row
+                  return Card(
+                    child: Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Text(
+                        dataList[firstIndex],
+                        style: TextStyle(fontSize: 16.0),
+                      ),
+                    ),
+                  );
+                }
+              },
+            ),
           ),
         ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blue,
-        onTap: _onItemTapped,
-      ),
-    );
-  }
-}
-
-class Page1 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        'Page 1, hello',
-        style: TextStyle(fontSize: 24),
-      ),
-    );
-  }
-}
-
-class Page2 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        'Page 2',
-        style: TextStyle(fontSize: 24),
-      ),
-    );
-  }
-}
-
-class Page3 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        'Page 3',
-        style: TextStyle(fontSize: 24),
-      ),
-    );
-  }
-}
-
-class Page4 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        'Page 4',
-        style: TextStyle(fontSize: 24),
-      ),
-    );
-  }
-}
-
-class Page5 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        'Page 5',
-        style: TextStyle(fontSize: 24),
       ),
     );
   }

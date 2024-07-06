@@ -47,13 +47,16 @@ public class Convertor {
         }
     }
 
-    public static List<Assignment> mapToListOfAssignments(HashMap<String, HashMap<String, String>> map) {
+    public static List<Assignment> mapToListOfAssignments(HashMap<String, HashMap<String, String>> map, HashMap<String, HashMap<String, String>> map2) {
         List<Assignment> res = new ArrayList<>();
         HashMap<String, AssignmentType> type = new HashMap<>();
         type.put("HW", AssignmentType.HW);
         type.put("PROJECT", AssignmentType.PROJECT);
         for(Map.Entry<String, HashMap<String, String>> entry : map.entrySet()) {
             Assignment assignment = new Assignment();
+            String courseId = entry.getValue().get("assignmentId").split("&")[0]+"&"+entry.getValue().get("assignmentId").split("&")[1];
+            String courseName = map2.get(courseId).get("title");
+            assignment.setCourseName(courseName);
             assignment.setAssignmentId(entry.getKey());
             assignment.setTitle(entry.getValue().get("title"));
             assignment.setScore(Double.parseDouble(entry.getValue().get("score")));
