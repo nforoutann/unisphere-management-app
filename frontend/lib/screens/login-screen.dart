@@ -148,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       offset: Offset(0, 10),
                       child: MyElevatedButton(
                         onPressed: () async {
-                          String result = await Network.login(_usernameController.text, _passwordController.text, ipAddress);
+                          String result = await Network.login(_usernameController.text, _passwordController.text);
                           if(result == '200'){
                             _usernameCheck = true;
                             _passwordCheck = true;

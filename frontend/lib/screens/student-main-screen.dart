@@ -28,7 +28,6 @@ class StudentMain extends StatefulWidget {
 }
 
 class _StudentMainState extends State<StudentMain> {
-  static const String ipAddress = "192.168.1.8";
   int _currentIndex = 2; // Initial index
   Student? student;
 
@@ -42,7 +41,7 @@ class _StudentMainState extends State<StudentMain> {
 
   Future<void> _fetchStudent() async {
     try {
-      Student fetchedStudent = await Network.getStudent(widget.username, ipAddress);
+      Student fetchedStudent = await Network.getStudent(widget.username);
       setState(() {
         student = fetchedStudent;
       });

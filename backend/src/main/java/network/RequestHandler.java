@@ -71,6 +71,7 @@ public class RequestHandler extends Thread {
         if(obj instanceof Student){
             Student student = (Student) obj;
             json = gson.toJson(student);
+            System.out.println(student.getOngoingTasks().get(0).getTitle());
         }
         PrintWriter writer = new PrintWriter(dos, true);
         writer.println(json);

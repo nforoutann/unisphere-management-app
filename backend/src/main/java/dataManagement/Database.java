@@ -1,6 +1,7 @@
 package dataManagement;
 import objects.serializable.*;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -118,7 +119,7 @@ public class Database {
         return getInstance().getUsersDataMap().get(username).get("id");
     }
 
-    private List<String> getOngoingTasksTitle(String username){
+    private List<Task> getOngoingTasksTitle(String username){
         String tasksStr= getInstance().getUsersDataMap().get(username).get("tasks");
         if(tasksStr.equals("{}")){
             return new ArrayList<>();
@@ -127,7 +128,7 @@ public class Database {
         String[] tasksArray = tasksStr.split("//");
         return Arrays.stream(tasksArray)
                 .filter(a -> a.split("~")[1].equals("no"))
-                .map(a -> a.split("~")[0])
+                .map(a -> new Task(a.split("~")[0], a.split("~")[1].equals("yes") ? true : false, a.split("~")[2]))
                 .collect(Collectors.toList());
     }
 
@@ -264,7 +265,7 @@ public class Database {
                 String birthStr = getInstance().getUsersDataMap().get(username).get("birthday");
                 double totalGrade = totalGrade(username);
                 int totalCredits = getTheCredits(username);
-                List<String> ongoingTasks = getOngoingTasksTitle(username);
+                List<Task> ongoingTasks = getOngoingTasksTitle(username);
                 Double minScore = getScore(username, "min");
                 Double maxScore = getScore(username, "max");
                 int numberOfLeftAssignments = numberOfLeftAssignments(username);
@@ -418,7 +419,8 @@ public class Database {
         for(String eachTask : tasksInfo){
             String title = eachTask.split("~")[0];
             boolean done = eachTask.split("~")[1].equals("yes") ? true : false;
-            Task task = new Task(title, done);
+            String time = eachTask.split("~")[2];
+            Task task = new Task(title, done, time);
             tasks.add(task);
         }
         return tasks;
@@ -437,5 +439,140 @@ public class Database {
             courses.add(course);
         }
         return courses;
+    }
+
+    public void createTask(String username, String title, String time, boolean done){
+        try{
+            var usersMap = getInstance().getUsersDataMap();
+            String tasks = usersMap.get(username).get("tasks").toString();
+            if(tasks.equals("{}")){
+                tasks = title+(done ? "~yes" : "~no")+time;
+            }else{
+                tasks = tasks.substring(1, tasks.length()-1);
+                boolean exist = Arrays.stream(tasks.split("//"))
+                        .map(a -> a.split("~")[0])
+                        .anyMatch(a -> a.equals(title));
+
+                if(exist){
+                    throw new Exception("the task with the current title already exist");
+                }
+                tasks = tasks + "//" + title + (done ? "~yes" : "~no") + "~" + time;
+            }
+            tasks = "{" + tasks + "}";
+            usersMap.get(username).put("tasks", tasks);
+            printNewData(Convertor.mapOfUsersToString(usersMap), usersPath);
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public boolean setDoneTask(String username, String title, boolean done){
+        var usersMap = getInstance().getUsersDataMap();
+        String tasks = usersMap.get(username).get("tasks");
+        try{
+            if(tasks.equals("{}")){
+                throw new Exception();
+            }
+            tasks = tasks.substring(1, tasks.length()-1);
+            String[] tasksInfo = tasks.split("//");
+            boolean exist = Arrays.stream(tasksInfo)
+                    .map(a -> a.split("~")[0])
+                    .anyMatch(a -> a.equals(title));
+            if(!exist){
+                throw new Exception();
+            }
+            String time =  Arrays.stream(tasksInfo)
+                    .filter(a -> a.split("~")[0].equals(title))
+                    .map(a -> a.split("~")[2])
+                    .findAny()
+                    .get();
+
+            deleteTask(username, title);
+            createTask(username, title, time, done);
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public boolean deleteTask(String username, String title) {
+        var usersMap = getInstance().getUsersDataMap();
+        String tasks = usersMap.get(username).get("tasks");
+        String tasksFixed = tasks.substring(1, tasks.length()-1);
+        boolean condition = Arrays.stream(tasksFixed.split("//"))
+                .map(a -> a.split("~")[0])
+                .anyMatch(a -> a.equals(title));
+        if(!condition){
+            return false;
+        }
+
+        // Escape special characters in title for regex
+        String escapedTitle = title.replaceAll("([\\\\{}().*+?|^$\\[\\]])", "\\\\$1");
+
+        // Regex to match the task to delete
+        String taskRegex = escapedTitle + "~[^~]+~\\{[^}]+\\}";
+
+        // Replace the task if it appears at the beginning or middle
+        tasks = tasks.replaceAll("\\{" + taskRegex + "//", "\\{");
+        // Replace the task if it appears at the end or is the only task
+        tasks = tasks.replaceAll("//" + taskRegex + "(//)?", "").replaceAll("\\{" + taskRegex + "\\}", "{}");
+
+        // Clean up any leading or trailing delimiters left behind
+        tasks = tasks.replaceAll("^(\\{)?//", "{").replaceAll("//(\\})?$", "}");
+
+        usersMap.get(username).put("tasks", tasks);
+        printNewData(Convertor.mapOfUsersToString(usersMap), usersPath);
+        return true;
+    }
+
+    public void printNewData(String data, String path){
+        try(FileWriter fw = new FileWriter(new File(path))){
+            fw.write(data);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void editTheTask(String username, String title, String newTitle){
+        var usersMap = getInstance().getUsersDataMap();
+        String tasks = usersMap.get(username).get("tasks");
+        tasks = tasks.substring(1, tasks.length()-1);
+        String[] taskStr = tasks.split("//");
+        String time="", done = "";
+        for(String eachTask : taskStr){
+            if(eachTask.split("~")[0].equals(title)){
+                done = eachTask.split("~")[1];
+                time = eachTask.split("~")[2];
+                break;
+            }
+        }
+        deleteTask(username, title);
+        createTask(username, newTitle, time, done.equals("yes") ? true : false);
+    }
+
+    private void checkTasksExpiration(String username, String today){
+        String tasks = getInstance().getUsersDataMap().get(username).get("tasks");
+        if(tasks.equals("{}")){
+            return;
+        }
+        tasks = tasks.substring(1, tasks.length()-1);
+        String[] eachTask = tasks.split("//");
+
+        int thisYear = Integer.parseInt(today.split("::")[0]);
+        int thisMonth = Integer.parseInt(today.split("::")[1]);
+        int thisDay = Integer.parseInt(today.split("::")[2]);
+
+        String day1 = eachTask[0].split("~")[2];
+
+        int year = Integer.parseInt(day1.split("~")[0]);
+        int month = Integer.parseInt(day1.split("~")[1]);
+        int day = Integer.parseInt(day1.split("~")[2]);
+
+        if(thisYear > year || (thisYear==year && thisMonth > month) || (thisYear==year && thisMonth==month && thisDay > day)){
+            for(String each : eachTask){
+                deleteTask(username, each.split("~")[0]);
+            }
+        }
     }
 }

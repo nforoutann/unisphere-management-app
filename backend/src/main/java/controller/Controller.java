@@ -41,7 +41,7 @@ public class Controller {
                     res = "200";
                 }
                 break;
-            case "POST: userInfo":
+            case "GET: userInfo":
                 username = request.split("\\$")[1];
                 res = Database.getInstance().getUserInfo(username); //the res is user now
                 Student student = (Student) res;
@@ -51,8 +51,21 @@ public class Controller {
                 username = request.split("\\$")[1];
                 //todo
                 break;
-
-
+            case "POST: doneTask":
+                username = request.split("\\$")[1];
+                String title = request.split("\\$")[2];
+                boolean done = request.split("\\$")[3].equals("yes");
+                boolean check = Database.getInstance().setDoneTask(username, title, done);
+                res = check ? "200" : "409";
+                break;
+            case "POST: deleteTask":
+                username = request.split("\\$")[1];
+                title = request.split("\\$")[2];
+                check = Database.getInstance().deleteTask(username, title);
+                res = check ? "200" : "409";
+                break;
+            default:
+                res = "404";
         }
         return res;
     }

@@ -14,7 +14,7 @@ class MyScaffold extends StatelessWidget{
       appBar: AppBar(
         title: Text(
             this.text!,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 30,
             fontFamily: 'Montserrat',
             fontWeight: FontWeight.w800,
@@ -27,14 +27,14 @@ class MyScaffold extends StatelessWidget{
             print('Menu button pressed');
           },
         ),
-        titleTextStyle: TextStyle(
+        titleTextStyle:const TextStyle(
           color: Colors.white,
           fontSize: 40,
           fontFamily: 'Montserrat',
           fontStyle: FontStyle.italic,
         ),
         iconTheme: const IconThemeData(color: Colors.white),
-        backgroundColor: Colors.transparent,
+        backgroundColor: backgroundColor,
         elevation: 0,
       ),
       backgroundColor: backgroundColor,

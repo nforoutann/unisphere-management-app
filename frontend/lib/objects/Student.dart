@@ -1,3 +1,4 @@
+import 'package:frontend/objects/Task.dart';
 import 'package:frontend/objects/User.dart';
 import 'Assignment.dart';
 
@@ -19,7 +20,7 @@ class Student extends User {
     required String password,
     required String email,
     DateTime? birthday,
-    required List<String> ongoingTasks,
+    required List<Task> ongoingTasks,
     required this.id,
     required this.credits,
     required this.currentTerm,
@@ -47,11 +48,12 @@ class Student extends User {
           .map((assignmentJson) => Assignment.fromJson(assignmentJson))
           .toList();
     }
-
-    List<String> ongoingTaskList = [];
+    List<Task> ongoingTaskList = [];
     if (json['ongoingTasks'] != null) {
       var tasksJson = json['ongoingTasks'] as List;
-      ongoingTaskList = tasksJson.map((task) => task.toString()).toList();
+      ongoingTaskList = tasksJson
+          .map((taskJson) => Task.fromJson(taskJson))
+          .toList();
     }
 
     String birthdayStr = json['birthday'];

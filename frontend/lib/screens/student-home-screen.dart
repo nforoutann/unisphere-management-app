@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/objects/Student.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:frontend/widgets/done-card.dart';
+import 'package:frontend/widgets/to-do-card.dart';
 
 class StudentHomeScreen extends StatefulWidget {
   Student? student;
@@ -271,29 +272,31 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                           child: Text(
                             'ongoing tasks',
                             style: TextStyle(
-                              color: Colors.white,
+                              color: Color(0xff5a83de),
                               fontSize: 20,
                               fontFamily: 'Montserrat',
                               fontStyle: FontStyle.italic,
+                              fontWeight: FontWeight.w700
                             ),
                           ),
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: 120),
+                        padding:const EdgeInsets.only(left: 120),
                         child: Text(
                           '${today.year}, ${today.month}, ${today.day}',
                           style: const TextStyle(
-                            color: Colors.white,
+                            fontFamily: 'Montserrat',
+                            color: Color(0xff48b2ce),
                           ),
                         ),
                       )
                     ],
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 14),
                   Expanded(
                     child: widget.student!.ongoingTasks == null || widget.student!.ongoingTasks.isEmpty
-                        ? Center(
+                        ? const Center(
                       child: Text(
                         'No ongoing tasks',
                         style: TextStyle(
@@ -309,16 +312,15 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                         itemCount: widget.student!.ongoingTasks.length,
                         itemBuilder: (context, index) {
                           return Padding(
-                            padding: EdgeInsets.only(left: 10, right: 10),
-                            child: Card(
-                              surfaceTintColor: Colors.cyan,
-                              shadowColor: Colors.cyan,
-                              elevation: 2,
+                            padding:const EdgeInsets.only(left: 10, right: 10),
+                            child: ToDoCard(
+                              student: widget.student,
+                              task: widget.student!.ongoingTasks[index],
                               child: ListTile(
                                 title: Padding(
                                   padding: EdgeInsets.only(left: 1, right: 1),
                                   child: Text(
-                                    widget.student!.ongoingTasks[index],
+                                    '${widget.student!.ongoingTasks[index].title}',
                                     style: const TextStyle(
                                       fontFamily: 'Montserrat',
                                       color: Colors.black,
@@ -341,22 +343,23 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
         Flexible(
           child: Column(
             children: [
-              SizedBox(height: 30),
+              const SizedBox(height: 28),
               const Align(
                 alignment: Alignment(-0.7, -1),
                 child: Text(
                   'done assignments',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: Color(0xff5a83de),
                     fontSize: 20,
                     fontFamily: 'Montserrat',
                     fontStyle: FontStyle.italic,
+                      fontWeight: FontWeight.w700
                   ),
                 ),
               ),
               Flexible(
                 child: widget.student!.doneAssignments == null || widget.student!.doneAssignments.isEmpty
-                    ? Center(
+                    ? const Center(
                   child: Text(
                     'No done assignments',
                     style: TextStyle(
@@ -373,18 +376,18 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                     itemCount: widget.student!.doneAssignments.length,
                     itemBuilder: (context, index) {
                       return Padding(
-                        padding: EdgeInsets.only(left: 15, right: 20, bottom: 40, top: 20),
+                        padding:const EdgeInsets.only(left: 15, right: 20, bottom: 40, top: 20),
                         child: Container(
                           width: 170, // Set a fixed width for each card
                           child: DoneCard(
                             child: Padding(
-                              padding: EdgeInsets.all(25),
+                              padding: const EdgeInsets.all(25),
                               child: Align(
                                 alignment: Alignment.center,
                                 child: SingleChildScrollView(
                                   child: Text.rich(
                                     textAlign: TextAlign.center,
-                                     TextSpan(
+                                    TextSpan(
                                       style:const TextStyle(
                                         color: Colors.black,
                                         fontSize: 20,
@@ -398,10 +401,10 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                         const TextSpan(
                                           text: '\ncourse: ',
                                           style: const TextStyle(
-                                            fontFamily: 'Montserrat',
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 15
+                                              fontFamily: 'Montserrat',
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 15
                                           ),
                                         ),
                                         TextSpan(

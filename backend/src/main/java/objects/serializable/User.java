@@ -11,7 +11,7 @@ public class User implements Serializable {
     private String password;
     private String birthday;
     private String email;
-    private List<String> ongoingTasks = new ArrayList<>();
+    private List<Task> ongoingTasks = new ArrayList<>();
 
     public User(String name, String username) {
         this.name = name;
@@ -34,7 +34,7 @@ public class User implements Serializable {
         return birthday;
     }
 
-    public List<String> getOngoingTasks() {
+    public List<Task> getOngoingTasks() {
         return ongoingTasks;
     }
 
@@ -42,7 +42,7 @@ public class User implements Serializable {
         this.birthday = birthday;
     }
 
-    public void setOngoingTasks(List<String> ongoingTasksTitle) {
+    public void setOngoingTasks(List<Task> ongoingTasksTitle) {
         this.ongoingTasks = ongoingTasksTitle;
     }
 
