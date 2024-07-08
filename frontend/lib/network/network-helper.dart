@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:frontend/objects/Course.dart';
 import 'package:frontend/objects/Student.dart';
 import 'package:frontend/objects/Task.dart';
+import 'package:frontend/widgets/messages.dart';
 
 class Network {
   static String ipAddress = "192.168.1.8";
@@ -83,8 +84,7 @@ class Network {
     return response;
   }
 
-  static Future<void> editTask(String type, String username, String title,
-      bool done) async {
+  static Future<void> editTask(String type, String username, String title, bool done) async {
     String command = 'POST: ${type}\$${username}\$${title}\$${done
         ? "yes"
         : "no"}\u0000';
@@ -162,8 +162,7 @@ class Network {
     return completer.future;
   }
 
-  static Future<void> creatTask(String username, String title, String time,
-      bool done) async {
+  static Future<void> creatTask(String username, String title, String time, bool done) async {
     String command = 'POST: createTask\$${username}\$${title}\$${time}\$${done
         ? "yes"
         : "no"}\u0000';
@@ -238,6 +237,39 @@ class Network {
     }
 
     return completer.future;
+  }
+
+  static Future<String> addStudentToCourse(String username, String courseCode) async{
+    String command = 'POST: addStudentToCourse\$${username}\$${courseCode}\u0000';
+    String response = "";
+    Completer<String> responseCompleter = Completer<String>();
+
+    await Socket.connect(ipAddress, 8080).then((serverSocket) {
+      serverSocket.write(command);
+      serverSocket.flush();
+      serverSocket.listen((socketResponse) {
+        response = String.fromCharCodes(socketResponse);
+        responseCompleter.complete(response);
+        serverSocket.destroy(); // Close the socket after receiving the response
+      }, onDone: () {
+        if (!responseCompleter.isCompleted) {
+          responseCompleter.completeError("Socket closed without response");
+        }
+      }, onError: (error) {
+        responseCompleter.completeError(error);
+      });
+    }).catchError((error) {
+      responseCompleter.completeError(error);
+    });
+
+    try {
+      response = await responseCompleter.future;
+    } catch (e) {
+      print("Error receiving response: $e");
+    }
+    print("----------   network response is:  { $response }");
+
+    return responseCompleter.future;
   }
 
 }

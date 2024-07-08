@@ -1,5 +1,5 @@
-teacher>itsme,,assignments>{3333&2&1~no},,students>{4022~18.12},,best>4022,,time>{TUESDAY=9:30~11:00//MONDAY=13:00~15:30},,title>english,,credit>2,,courseId>3333&2,,done>false
-teacher>itsme,,assignments>{3333&1&1~no},,students>{4022~19.5},,best>4022,,time>{TUESDAY=9:30~11:00//MONDAY=13:00~15:30},,title>the basics of programming,,credit>3,,courseId>3333&1,,done>false
+teacher>mahdi,,assignments>{3333&2&1~no},,students>{4022~18.12},,best>4022,,time>{TUESDAY=9:30~11:00//MONDAY=13:00~15:30},,title>english,,credit>2,,courseId>3333&2,,done>false
+teacher>mahdi,,assignments>{3333&1&1~no},,students>{4022~19.5},,best>4022,,time>{TUESDAY=9:30~11:00//MONDAY=13:00~15:30},,title>the basics of programming,,credit>3,,courseId>3333&1,,done>false
 teacher>foroutan,,assignments>{1111&2&1~yes},,students>{4022~18.5//4023~12},,best>4022,,time>{TUESDAY=9:30~11:00//MONDAY=13:00~15:30},,title>ec,,credit>2,,courseId>1111&2,,done>false
 teacher>foroutan,,assignments>{1111&3&1~no},,students>{4022~20//4023~20},,best>4022,,time>{SATURDAY=9:30~11:00//MONDAY=9:00~10:30},,title>az physics,,credit>1,,courseId>1111&3,,done>false
 teacher>foroutan,,assignments>{1111&1&1~no},,students>{4022~19.42//4023~20.22},,best>4022,,time>{SATURDAY=9:30~11:00//MONDAY=9:00~10:30},,title>Advanced Programming,,credit>3,,courseId>1111&1,,done>false

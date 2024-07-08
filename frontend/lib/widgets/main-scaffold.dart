@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 
 class MyScaffold extends StatelessWidget{
-  MyScaffold({super.key, this.child, this.navigationBar, required this.text});
+  MyScaffold({super.key, this.child, this.navigationBar, required this.text, this.firstButton, this.secondButton});
   Widget? child;
   Widget? navigationBar;
   Color backgroundColor = Color(0xFF171717);
   String? text;
+  Widget? firstButton;
+  Widget? secondButton;
+
 
   @override
   Widget build(BuildContext context){
@@ -42,6 +45,10 @@ class MyScaffold extends StatelessWidget{
         iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: backgroundColor,
         elevation: 0,
+        actions: [
+          if(firstButton!=null) firstButton!,
+          if(secondButton!=null) Padding(padding: EdgeInsets.only(right: 15) ,child: secondButton!),
+        ],
       ),
       backgroundColor: backgroundColor,
       body: child,

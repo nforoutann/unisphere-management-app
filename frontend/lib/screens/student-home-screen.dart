@@ -58,7 +58,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                       textAlign: TextAlign.center,
                                       'you have ${widget.student!.numberOfExams} exams',
                                       style: const TextStyle(
-                                        fontFamily: 'Georgia',
+                                        fontFamily: 'Montserrat',
                                         letterSpacing: 0.8,
                                         fontWeight: FontWeight.w600,
                                       ),
@@ -100,7 +100,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                       textAlign: TextAlign.center,
                                       '${widget.student!.numberOfLeftAssignments} exercises left',
                                       style: const TextStyle(
-                                        fontFamily: 'Georgia',
+                                        fontFamily: 'Montserrat',
                                         letterSpacing: 0.8,
                                         fontWeight: FontWeight.w600,
                                       ),
@@ -142,7 +142,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                       textAlign: TextAlign.center,
                                       'lost ${widget.student!.numberOfLostAssignments == null ? 0 : widget.student!.numberOfLostAssignments} deadlines',
                                       style: const TextStyle(
-                                        fontFamily: 'Georgia',
+                                        fontFamily: 'Montserrat',
                                         letterSpacing: 0.8,
                                         fontWeight: FontWeight.w600,
                                       ),
@@ -192,7 +192,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                       textAlign: TextAlign.center,
                                       'your best score is ${widget.student!.bestScore}',
                                       style: const TextStyle(
-                                        fontFamily: 'Georgia',
+                                        fontFamily: 'Montserrat',
                                         letterSpacing: 0.8,
                                         fontWeight: FontWeight.w600,
                                       ),
@@ -236,7 +236,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                       textAlign: TextAlign.center,
                                       'your worst score is ${widget.student!.worstScore}',
                                       style: const TextStyle(
-                                        fontFamily: 'Georgia',
+                                        fontFamily: 'Montserrat',
                                         letterSpacing: 0.8,
                                         fontWeight: FontWeight.w600,
                                       ),

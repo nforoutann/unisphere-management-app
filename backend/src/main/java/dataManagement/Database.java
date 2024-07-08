@@ -575,7 +575,7 @@ public class Database {
 
     public String addStudentToCourse(String username, String courseCode){
         //check validation
-        if(getInstance().getCoursesDataMap().containsKey(courseCode)){
+        if(!getInstance().getCoursesDataMap().containsKey(courseCode)){
             return "404";
         }
 
@@ -588,7 +588,6 @@ public class Database {
 
         //add course to the current term of the student
         String coursesOfStudent = TermMap.get(currentTermId).get("courses");
-
         if(!coursesOfStudent.equals("{}")){
             String[] courseIds = coursesOfStudent.substring(1, coursesOfStudent.length()-1).split("//");
             for(String courseId : courseIds){

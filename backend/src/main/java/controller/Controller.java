@@ -90,6 +90,11 @@ public class Controller {
                 username = request.split("\\$")[1];
                 res = new CourseListWrapper(Database.getInstance().getCourses(username));
                 break;
+            case "POST: addStudentToCourse":
+                username = request.split("\\$")[1];
+                String CourseCode = request.split("\\$")[2];
+                res = Database.getInstance().addStudentToCourse(username, CourseCode);
+                break;
             default:
                 res = "404";
         }

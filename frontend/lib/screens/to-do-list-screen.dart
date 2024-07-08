@@ -96,7 +96,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
                     padding: EdgeInsets.symmetric(vertical: 30),
                     child: Text(
                       '${widget.tasks.length == 0 ? 'No Tasks Yet' : 'Done Tasks'}',
-                      style: TextStyle(
+                      style:const TextStyle(
                         color: Colors.white,
                         fontFamily: 'Montserrat',
                         fontStyle: FontStyle.italic,
