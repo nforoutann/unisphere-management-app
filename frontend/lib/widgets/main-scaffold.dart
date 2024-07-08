@@ -10,6 +10,7 @@ class MyScaffold extends StatelessWidget{
   @override
   Widget build(BuildContext context){
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       bottomNavigationBar: navigationBar,
       appBar: AppBar(
         title: Text(
@@ -20,12 +21,17 @@ class MyScaffold extends StatelessWidget{
             fontWeight: FontWeight.w800,
           ),
         ),
-        leading: IconButton(
-          icon: Icon(Icons.account_circle),
-          onPressed: () {
-            // Handle the button press
-            print('Menu button pressed');
-          },
+        leading: Align(
+          alignment: Alignment(1, 0),
+          child: IconButton(
+            icon: Icon(Icons.account_circle),
+            style: ButtonStyle(
+              backgroundColor: WidgetStateProperty.all(Colors.indigoAccent),
+            ),
+            onPressed: () {
+              //todo
+            },
+          ),
         ),
         titleTextStyle:const TextStyle(
           color: Colors.white,

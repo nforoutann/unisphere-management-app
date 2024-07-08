@@ -1,7 +1,7 @@
 package network;
 import controller.Controller;
 import com.google.gson.Gson;
-import objects.serializable.Student;
+import objects.serializable.*;
 
 
 import java.util.*;
@@ -68,11 +68,18 @@ public class RequestHandler extends Thread {
     public void writerObj(Object obj) throws IOException {
         Gson gson = new Gson();
         String json = "";
-        if(obj instanceof Student){
+
+        if (obj instanceof Student) {
             Student student = (Student) obj;
             json = gson.toJson(student);
-            System.out.println(student.getOngoingTasks().get(0).getTitle());
+        } else if (obj instanceof TaskListWrapper) {
+            TaskListWrapper taskList = (TaskListWrapper) obj;
+            List<Task> tasks = taskList.getTasks();
+            json = gson.toJson(tasks);
+        } else {
+            throw new IllegalArgumentException("Unsupported object type");
         }
+
         PrintWriter writer = new PrintWriter(dos, true);
         writer.println(json);
         dos.close();
@@ -80,7 +87,7 @@ public class RequestHandler extends Thread {
         writer.close();
         socket.close();
         System.out.println(obj.toString());
-        System.out.println("command finished and response sent to server");
+        System.out.println("Command finished and response sent to server");
     }
 
     public void writer(String write) throws IOException {

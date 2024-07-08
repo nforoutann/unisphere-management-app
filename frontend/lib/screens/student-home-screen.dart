@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/objects/Student.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:frontend/widgets/done-card.dart';
+import 'package:frontend/widgets/done-assignment-card.dart';
 import 'package:frontend/widgets/to-do-card.dart';
 
 class StudentHomeScreen extends StatefulWidget {
@@ -297,7 +297,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                   Expanded(
                     child: widget.student!.ongoingTasks == null || widget.student!.ongoingTasks.isEmpty
                         ? const Center(
-                      child: Text(
+                          child: Text(
                         'No ongoing tasks',
                         style: TextStyle(
                           color: Colors.white,
@@ -314,8 +314,19 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                           return Padding(
                             padding:const EdgeInsets.only(left: 10, right: 10),
                             child: ToDoCard(
-                              student: widget.student,
+                              onDone: (){
+                                setState(() {
+                                  widget.student!.ongoingTasks[index].done = true;
+                                  widget.student!.ongoingTasks.removeAt(index);
+                                });
+                              },
+                              username: widget.student!.username,
                               task: widget.student!.ongoingTasks[index],
+                              onDelete: () {
+                                setState(() {
+                                  widget.student!.ongoingTasks.removeAt(index);
+                                });
+                              },
                               child: ListTile(
                                 title: Padding(
                                   padding: EdgeInsets.only(left: 1, right: 1),
@@ -379,7 +390,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                         padding:const EdgeInsets.only(left: 15, right: 20, bottom: 40, top: 20),
                         child: Container(
                           width: 170, // Set a fixed width for each card
-                          child: DoneCard(
+                          child: DoneAssignmentCard(
                             child: Padding(
                               padding: const EdgeInsets.all(25),
                               child: Align(

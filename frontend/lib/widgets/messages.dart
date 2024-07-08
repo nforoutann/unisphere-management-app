@@ -20,6 +20,7 @@ class Messages {
               myText,
               style: const TextStyle(
                 color: Colors.white,
+                fontFamily: 'Montserrat'
               ),
             ),
           ),

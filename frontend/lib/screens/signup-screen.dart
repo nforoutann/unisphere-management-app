@@ -46,6 +46,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     final double keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
     final bool isKeyboardOpen = keyboardHeight > 0;
+    String fontFamilyName = 'Montserrat';
 
     return CustomScaffold(
       child: Stack(
@@ -154,6 +155,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 16,
+                                    fontFamily: 'Montserrat'
                                   ),
                                 ),
                                 TextButton(
@@ -174,6 +176,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     'Login',
                                     style: TextStyle(
                                       fontSize: 17,
+                                      fontFamily: 'Montserrat'
                                     ),
                                   ),
                                 )
@@ -201,10 +204,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
       selectedColor: Colors.white,
       borderRadius: BorderRadius.circular(15),
       children: _roles.map((role) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Text(role, style: TextStyle(fontSize: 16,
+        return  Padding(
+          padding:  EdgeInsets.symmetric(horizontal: 16.0),
+          child: Text(
+              role,
+              style: TextStyle(fontSize: 16,
             color: Colors.white,
+                fontFamily: 'Montserrat',
           )),
         );
       }).toList(),
@@ -224,6 +230,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         style: const TextStyle(
           color: Colors.white,
           fontSize: 16,
+          fontFamily: 'Montserrat',
         ),
         controller: controller,
         decoration: InputDecoration(
@@ -239,6 +246,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             fontWeight: FontWeight.bold,
             color: Colors.indigo,
             fontSize: 18,
+            fontFamily: 'Montserrat',
           ),
         ),
         onChanged: (text) {
@@ -255,6 +263,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         style: const TextStyle(
           color: Colors.white,
           fontSize: 16,
+          fontFamily: 'Montserrat',
         ),
         controller: controller,
         obscureText: !_isPasswordVisible,
@@ -278,6 +287,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             fontWeight: FontWeight.bold,
             color: Colors.indigo,
             fontSize: 18,
+            fontFamily: 'Montserrat'
           ),
         ),
         onChanged: (text) {
@@ -360,7 +370,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return regExp.hasMatch(id);
   }
 
-  Future<String> _signUp() async {
+  Future<String> _signUp() async { //todo move to network helper
     String command = "";
     if(_selectedRoleIndex == 0){
       command = 'GET: SignUpChecker\$student\$${_nameController.text}\$${_usernameController.text}\$${_idController.text}\$${_emailController.text}\$${_passwordController.text}\u0000';

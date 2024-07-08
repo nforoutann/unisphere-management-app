@@ -25,6 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final isKeyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
+    String fontFamilyName = 'Montserrat';
 
     return CustomScaffold(
       child: Stack(
@@ -82,12 +83,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         label: Transform.translate(
                           offset: const Offset(0, -10),
-                          child: const Text(
+                          child: Text(
                             'username',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.indigo,
                               fontSize: 20,
+                              fontFamily: fontFamilyName,
                             ),
                           ),
                         ),
@@ -115,12 +117,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         label: Transform.translate(
                           offset: const Offset(0, -10),
-                          child: const Text(
+                          child: Text(
                             'password',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.indigo,
                               fontSize: 20,
+                              fontFamily: fontFamilyName,
                             ),
                           ),
                         ),
@@ -133,12 +136,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         onPressed: () {
                           // TODO: Implement forgot password functionality
                         },
-                        child: const Text(
+                        child: Text(
                           'Forgot Password?',
                           style: TextStyle(
                             color: Colors.indigo,
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
+                            fontFamily: fontFamilyName,
                           ),
                         ),
                       ),
@@ -148,25 +152,29 @@ class _LoginScreenState extends State<LoginScreen> {
                       offset: Offset(0, 10),
                       child: MyElevatedButton(
                         onPressed: () async {
-                          String result = await Network.login(_usernameController.text, _passwordController.text);
-                          if(result == '200'){
-                            _usernameCheck = true;
-                            _passwordCheck = true;
-                            // todo createStudent(_usernameController.text, ipAddress);
-                            Navigator.pushReplacement(
+                          if(_usernameController.text.isEmpty || _passwordController.text.isEmpty){
+                            Messages.error(context, Color(0xffa8183e), 'Please Fill All The Fields First');
+                          } else{
+                            String result = await Network.login(_usernameController.text, _passwordController.text);
+                            if(result == '200'){
+                              _usernameCheck = true;
+                              _passwordCheck = true;
+                              // todo createStudent(_usernameController.text, ipAddress);
+                              Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => StudentMain(username: _usernameController.text)
                                 ),
-                            );
-                          } else if(result == '409'){
-                            Messages.error(context ,Color(0xffa8183e), 'Password is incorrect');
-                            _usernameCheck = true;
-                            _passwordCheck = false;
-                          } else if(result == "404"){
-                            Messages.error(context ,Color(0xffa8183e), 'Username not found, please create account first');
-                            _usernameCheck = false;
-                            _passwordCheck = false;
+                              );
+                            } else if(result == '409'){
+                              Messages.error(context ,Color(0xffa8183e), 'Password Is Incorrect');
+                              _usernameCheck = true;
+                              _passwordCheck = false;
+                            } else if(result == "404"){
+                              Messages.error(context ,Color(0xffa8183e), 'Username Not Found, Please Create Account First');
+                              _usernameCheck = false;
+                              _passwordCheck = false;
+                            }
                           }
                         },
                         child: const Text(
@@ -174,6 +182,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 20,
+                            fontFamily: 'Montserrat',
                           ),
                         ),
                       ),
@@ -188,12 +197,13 @@ class _LoginScreenState extends State<LoginScreen> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              const Text(
+                               Text(
                                 "Don't have an account?",
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
+                                  fontFamily: fontFamilyName,
                                 ),
                               ),
                               TextButton(
@@ -210,11 +220,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                   );
                                 },
-                                child: const Text(
+                                child: Text(
                                   'Sign Up',
                                   style: TextStyle(
                                     fontSize: 17,
                                     fontWeight: FontWeight.bold,
+                                    fontFamily: fontFamilyName,
                                   ),
                                 ),
                               ),

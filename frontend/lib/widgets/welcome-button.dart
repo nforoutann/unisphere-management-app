@@ -31,9 +31,11 @@ class WelcomeButton extends StatelessWidget{
           child: Text(
             buttonText!,
             style: TextStyle(
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w800,
               fontSize: 23,
               color: textColor!,
+              fontFamily: 'Montserrat',
+              fontStyle: FontStyle.italic,
             ),
           ),
         ),

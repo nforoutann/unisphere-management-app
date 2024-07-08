@@ -8,6 +8,7 @@ import 'package:frontend/screens/student-home-screen.dart';
 import 'package:frontend/screens/student-news-screen.dart';
 import 'package:frontend/screens/to-do-list-screen.dart';
 import 'package:frontend/widgets/main-scaffold.dart';
+import 'package:frontend/objects/Task.dart';
 
 void main() {
   runApp(
@@ -30,6 +31,7 @@ class StudentMain extends StatefulWidget {
 class _StudentMainState extends State<StudentMain> {
   int _currentIndex = 2; // Initial index
   Student? student;
+  List<Task>? tasks;
 
   @override
   void initState() {
@@ -50,9 +52,20 @@ class _StudentMainState extends State<StudentMain> {
     }
   }
 
+  Future<void> _fetchListTasks() async {
+    try {
+      List<Task> taskList = await Network.getTasks(widget.username);
+      setState(() {
+        tasks = taskList;
+      });
+    } catch (e) {
+      print('Error fetching student: $e');
+    }
+  }
+
   Widget _pages(int index) {
     List<Widget> pagesList = <Widget>[
-      ToDoScreen(),
+      tasks != null ? ToDoScreen(tasks: tasks!, username: widget.username) : Center(child: CircularProgressIndicator()),
       StudentAssignmentScreen(),
       student != null ? StudentHomeScreen(student: student!) : Center(child: CircularProgressIndicator()),
       StudentClassScreen(),
@@ -93,6 +106,8 @@ class _StudentMainState extends State<StudentMain> {
           setState(() {
             if (index == 2) {
               _fetchStudent();
+            } else if(index == 0){
+              _fetchListTasks();
             }
             _currentIndex = index;
           });

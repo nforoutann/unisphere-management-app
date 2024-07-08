@@ -251,8 +251,8 @@ public class Database {
         return res;
     }
 
-    public User getUserInfo(String username){
-
+    public User getUserInfo(String username, String today){
+        //todo checkTasksExpiration(username, today);
         if(getUsersDataMap().containsKey(username)){
             if(getInstance().getUsersDataMap().get(username).get("role").equals("student")){
                 //preparing the data
@@ -417,8 +417,9 @@ public class Database {
         String[] tasksInfo = tasksInfoStr.split("//");
         List<Task> tasks = new ArrayList<>();
         for(String eachTask : tasksInfo){
+            System.out.println(eachTask);
             String title = eachTask.split("~")[0];
-            boolean done = eachTask.split("~")[1].equals("yes") ? true : false;
+            boolean done = eachTask.split("~")[1].equals("yes");
             String time = eachTask.split("~")[2];
             Task task = new Task(title, done, time);
             tasks.add(task);
@@ -446,16 +447,9 @@ public class Database {
             var usersMap = getInstance().getUsersDataMap();
             String tasks = usersMap.get(username).get("tasks").toString();
             if(tasks.equals("{}")){
-                tasks = title+(done ? "~yes" : "~no")+time;
+                tasks = title+(done ? "~yes" : "~no")+"~"+time;
             }else{
                 tasks = tasks.substring(1, tasks.length()-1);
-                boolean exist = Arrays.stream(tasks.split("//"))
-                        .map(a -> a.split("~")[0])
-                        .anyMatch(a -> a.equals(title));
-
-                if(exist){
-                    throw new Exception("the task with the current title already exist");
-                }
                 tasks = tasks + "//" + title + (done ? "~yes" : "~no") + "~" + time;
             }
             tasks = "{" + tasks + "}";
@@ -499,29 +493,30 @@ public class Database {
     public boolean deleteTask(String username, String title) {
         var usersMap = getInstance().getUsersDataMap();
         String tasks = usersMap.get(username).get("tasks");
-        String tasksFixed = tasks.substring(1, tasks.length()-1);
-        boolean condition = Arrays.stream(tasksFixed.split("//"))
+        tasks = tasks.substring(1, tasks.length()-1);
+        boolean condition = Arrays.stream(tasks.split("//"))
                 .map(a -> a.split("~")[0])
                 .anyMatch(a -> a.equals(title));
         if(!condition){
             return false;
         }
+        String[] taskInfo = tasks.split("//");
+        String newTask = "";
 
-        // Escape special characters in title for regex
-        String escapedTitle = title.replaceAll("([\\\\{}().*+?|^$\\[\\]])", "\\\\$1");
+        for(String eachTask : taskInfo){
+            if(eachTask.split("~")[0].equals(title)){
+                continue;
+            }
+            if(newTask.equals("")){
+                newTask = eachTask;
+                continue;
+            }
+            newTask = newTask + "//" + eachTask;
+        }
 
-        // Regex to match the task to delete
-        String taskRegex = escapedTitle + "~[^~]+~\\{[^}]+\\}";
+        newTask = "{" + newTask + "}";
+        usersMap.get(username).put("tasks", newTask);
 
-        // Replace the task if it appears at the beginning or middle
-        tasks = tasks.replaceAll("\\{" + taskRegex + "//", "\\{");
-        // Replace the task if it appears at the end or is the only task
-        tasks = tasks.replaceAll("//" + taskRegex + "(//)?", "").replaceAll("\\{" + taskRegex + "\\}", "{}");
-
-        // Clean up any leading or trailing delimiters left behind
-        tasks = tasks.replaceAll("^(\\{)?//", "{").replaceAll("//(\\})?$", "}");
-
-        usersMap.get(username).put("tasks", tasks);
         printNewData(Convertor.mapOfUsersToString(usersMap), usersPath);
         return true;
     }
@@ -565,9 +560,11 @@ public class Database {
 
         String day1 = eachTask[0].split("~")[2];
 
-        int year = Integer.parseInt(day1.split("~")[0]);
-        int month = Integer.parseInt(day1.split("~")[1]);
-        int day = Integer.parseInt(day1.split("~")[2]);
+        day1 = day1.substring(1, day1.length()-1);
+
+        int year = Integer.parseInt(day1.split("::")[0]);
+        int month = Integer.parseInt(day1.split("::")[1]);
+        int day = Integer.parseInt(day1.split("::")[2]);
 
         if(thisYear > year || (thisYear==year && thisMonth > month) || (thisYear==year && thisMonth==month && thisDay > day)){
             for(String each : eachTask){

@@ -16,7 +16,7 @@ class Task {
     DateTime time = DateTime(int.parse(date.split("::")[0]), int.parse(date.split("::")[1]), int.parse(date.split("::")[2]), int.parse(date.split("::")[3]), int.parse(date.split("::")[4]));
     return Task(
       title: json['title'],
-      done: json['done']=='true' ? true : false,
+      done: json['done'],
       time: time,
     );
   }

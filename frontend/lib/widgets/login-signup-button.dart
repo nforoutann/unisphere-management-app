@@ -4,8 +4,11 @@ class MyElevatedButton extends StatelessWidget {
   final Gradient gradient;
   final VoidCallback? onPressed;
   final Widget child;
+  double? width;
+  double? height;
 
-  const MyElevatedButton({
+
+   MyElevatedButton({
     Key? key,
     required this.onPressed,
     required this.child,
@@ -16,13 +19,15 @@ class MyElevatedButton extends StatelessWidget {
           Colors.cyan,
         ]
     ),
+    this.height = 50,
+    this.width = 350,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 350,
-      height: 50,
+      width: width,
+      height: height,
       decoration: BoxDecoration(
         gradient: gradient,
         borderRadius: BorderRadius.circular(20),

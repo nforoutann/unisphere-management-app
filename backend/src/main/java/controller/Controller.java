@@ -2,6 +2,10 @@ package controller;
 
 import dataManagement.Database;
 import objects.serializable.Student;
+import objects.serializable.Task;
+import objects.serializable.TaskListWrapper;
+
+import java.util.List;
 
 public class Controller {
 
@@ -43,9 +47,13 @@ public class Controller {
                 break;
             case "GET: userInfo":
                 username = request.split("\\$")[1];
-                res = Database.getInstance().getUserInfo(username); //the res is user now
+                String year = request.split("\\$")[2];
+                String month = request.split("\\$")[3];
+                String day = request.split("\\$")[4];
+                String time = year+"::"+month+"::"+day;
+                res = Database.getInstance().getUserInfo(username, time); //the res is user now
                 Student student = (Student) res;
-                System.out.println(((Student) res).getName());
+                System.out.println("the users name is: "+((Student) res).getName());
                 break;
             case "POST assignments":
                 username = request.split("\\$")[1];
@@ -63,6 +71,19 @@ public class Controller {
                 title = request.split("\\$")[2];
                 check = Database.getInstance().deleteTask(username, title);
                 res = check ? "200" : "409";
+                break;
+            case "GET: getTasks":
+                username = request.split("\\$")[1];
+                List<Task> task = Database.getInstance().getTasks(username);
+                res = new TaskListWrapper(task);
+                break;
+            case "POST: createTask":
+                username = request.split("\\$")[1];
+                title = request.split("\\$")[2];
+                time = request.split("\\$")[3];
+                done = request.split("\\$")[4].equals("yes");
+                Database.getInstance().createTask(username, title, time, done);
+                res = "200";
                 break;
             default:
                 res = "404";

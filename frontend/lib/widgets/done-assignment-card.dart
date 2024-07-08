@@ -1,19 +1,7 @@
 import 'package:flutter/material.dart';
 
-
-void main(){
-  runApp(
-    MaterialApp(
-      home: Scaffold(
-        body: DoneCard(child: Text('data'),),
-      ),
-    )
-  );
-  
-}
-
-class DoneCard extends StatelessWidget{
-  DoneCard({super.key, required this.child});
+class DoneAssignmentCard extends StatelessWidget{
+  DoneAssignmentCard({super.key, required this.child});
   Widget? child;
   
   
