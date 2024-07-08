@@ -1,47 +1,42 @@
+import 'dart:collection';
+
+import 'package:flutter/cupertino.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:frontend/objects/date-hour.dart';
 import 'Teacher.dart';
-import 'Student.dart';
-import 'Exam.dart';
-import 'Assignment.dart';
 
 class Course{
-  late Teacher _teacher;
-  late String _title;
-  late int _credit;
-  late int _id;
-
-  bool _active = true;
-  List<Student> _students = <Student>[];
-  Map<Student, double> _finalScores = Map();
-  List<Assignment> _assignments = <Assignment>[];
-  Map<Exam, DateTime> _examDates = Map();
+  late String teacher;
+  late String title;
+  late int credit;
+  late String code;
+  late List<date> time;
+  late String numberOfDefinedAssignments;
+  late String nameOfBestStudent;
 
 
-  Course(this._title, this._teacher, this._credit, this._id);
-
-  Teacher get teacher => _teacher;
-  String get title => _title;
-  int get credit => _credit;
-  int get id => _id;
-  bool get active => _active;
-  List<Student> get students => _students;
-  Map<Student, double> get finalScores => _finalScores;
-  List<Assignment> get assignments => _assignments;
-  Map<Exam, DateTime> get examDates => _examDates;
+  Course({required this.title,required this.teacher,required this.credit,required this.code, required this.time, required this.nameOfBestStudent, required this.numberOfDefinedAssignments});
 
 
-  set teacher(Teacher teacher){
-    this._teacher = teacher;
+  factory Course.fromJson(Map<String, dynamic> json) {
+    List<date> time = [];
+    if(json['time'] != null){
+      var timeJson = json['time'] as List;
+      for(int i=0 ; i<timeJson.length ; i++){
+        String timeJsonStr =timeJson[i].toString();
+        time.add(date(EndHour: timeJsonStr.split("=")[1].split("~")[1], startHour: timeJsonStr.split("=")[1].split("~")[0], weekDay: timeJsonStr.split("=")[0]));
+      }
+    }
+
+    return Course(
+      title: json['title'],
+      code: json['code'],
+      credit: int.parse(json['credit']),
+      teacher: json['teacher'],
+      time: time,
+      nameOfBestStudent: json['nameOfBestStudent'],
+      numberOfDefinedAssignments: json['numberOfDefinedAssignments']
+    );
   }
-  set title(String title){
-    this._title = title;
-  }
-  set credit(int credit){
-    this._credit = credit;
-  }
-  set id(int id){
-    this._id;
-  }
-  set active(bool active){
-    this._active = active;
-  }
+
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:frontend/network/network-helper.dart';
+import 'package:frontend/objects/Course.dart';
 import 'package:frontend/objects/Student.dart';
 import 'package:frontend/screens/student-assignments-screen.dart';
 import 'package:frontend/screens/student-classes-screen.dart';
@@ -32,6 +33,7 @@ class _StudentMainState extends State<StudentMain> {
   int _currentIndex = 2; // Initial index
   Student? student;
   List<Task>? tasks;
+  List<Course>? courses;
 
   @override
   void initState() {
@@ -63,12 +65,23 @@ class _StudentMainState extends State<StudentMain> {
     }
   }
 
+  Future<void> _fetchListCourses() async {
+    try {
+      List<Course> courseList = await Network.getCourses(widget.username);
+      setState(() {
+        courses = courseList;
+      });
+    } catch (e) {
+      print('Error fetching student: $e');
+    }
+  }
+
   Widget _pages(int index) {
     List<Widget> pagesList = <Widget>[
       tasks != null ? ToDoScreen(tasks: tasks!, username: widget.username) : Center(child: CircularProgressIndicator()),
       StudentAssignmentScreen(),
       student != null ? StudentHomeScreen(student: student!) : Center(child: CircularProgressIndicator()),
-      StudentClassScreen(),
+      courses != null ? StudentClassScreen(courses: courses!) : Center(child: CircularProgressIndicator()),
       StudentNewsScreen(),
     ];
     return pagesList[index];
@@ -108,6 +121,8 @@ class _StudentMainState extends State<StudentMain> {
               _fetchStudent();
             } else if(index == 0){
               _fetchListTasks();
+            } else if(index == 3){
+              _fetchListCourses();
             }
             _currentIndex = index;
           });

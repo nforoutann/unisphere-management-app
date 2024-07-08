@@ -100,7 +100,7 @@ public class Database {
                 result="username>"+username+",,password>"+password+",,name>"+name+",,email>"+email+",,courses>{}";
                 break;
         }
-        info = Convertor.mapOfUsersToString(getCoursesDataMap());
+        info = Convertor.mapOfDataToString(getCoursesDataMap());
         info = info + result;
         try{
             PrintWriter pw = new PrintWriter(new FileWriter(usersPath), true);
@@ -454,7 +454,7 @@ public class Database {
             }
             tasks = "{" + tasks + "}";
             usersMap.get(username).put("tasks", tasks);
-            printNewData(Convertor.mapOfUsersToString(usersMap), usersPath);
+            printNewData(Convertor.mapOfDataToString(usersMap), usersPath);
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -517,7 +517,7 @@ public class Database {
         newTask = "{" + newTask + "}";
         usersMap.get(username).put("tasks", newTask);
 
-        printNewData(Convertor.mapOfUsersToString(usersMap), usersPath);
+        printNewData(Convertor.mapOfDataToString(usersMap), usersPath);
         return true;
     }
 
@@ -571,5 +571,89 @@ public class Database {
                 deleteTask(username, each.split("~")[0]);
             }
         }
+    }
+
+    public String addStudentToCourse(String username, String courseCode){
+        //check validation
+        if(getInstance().getCoursesDataMap().containsKey(courseCode)){
+            return "404";
+        }
+
+        String currentTerm = getInstance().getUsersDataMap().get(username).get("currentTerm");
+        String currentTermId = getId(username)+'&'+currentTerm;
+        var TermMap = getInstance().getTermsDataMap();
+
+        boolean studentAlreadyExists = false;
+
+
+        //add course to the current term of the student
+        String coursesOfStudent = TermMap.get(currentTermId).get("courses");
+
+        if(!coursesOfStudent.equals("{}")){
+            String[] courseIds = coursesOfStudent.substring(1, coursesOfStudent.length()-1).split("//");
+            for(String courseId : courseIds){
+                if(courseCode.equals(courseId)){
+                    studentAlreadyExists = true;
+                }
+            }
+        }
+
+        if(studentAlreadyExists){
+            return "409";
+        }
+
+        String newCourseData;
+        if(coursesOfStudent.equals("{}")){
+            newCourseData = "{" + courseCode + "}";
+        }else{
+            coursesOfStudent = coursesOfStudent.substring(1, coursesOfStudent.length()-1);
+            newCourseData = "{"+coursesOfStudent+"//"+courseCode+"}";
+        }
+        TermMap.get(currentTermId).put("courses", newCourseData);
+        printNewData(Convertor.mapOfDataToString(TermMap), termsPath);
+
+        //add student to the courses data
+        var courseMap = getInstance().getCoursesDataMap();
+        var thisCourseData = courseMap.get(courseCode);
+        var studentsInThisCourse = thisCourseData.get("students");
+        String newStudentData;
+        if(studentsInThisCourse.equals("{}")){
+            newStudentData = "{" + getId(username) + "~" + 0 + "}";
+        } else{
+            studentsInThisCourse = studentsInThisCourse.substring(1, studentsInThisCourse.length()-1);
+            newStudentData = "{"+ studentsInThisCourse + "//" + getId(username) + "~" + 0 + "}";
+        }
+        courseMap.get(courseCode).put("students", newStudentData);
+        printNewData(Convertor.mapOfDataToString(courseMap), coursesPath);
+
+
+        //add student to assignments of the course
+        String assignments = courseMap.get(courseCode).get("assignments");
+        String[] assignmentInfo;
+        if(assignments.equals("{}")){
+            return "200";
+        } else{
+            assignments = assignments.substring(1, assignments.length()-1);
+            assignmentInfo = assignments.split("//");
+        }
+        var assignmentMap = getInstance().getAssignmentsDataMap();
+
+        for(String each : assignmentInfo){
+            String assignmentId = each.split("~")[0];
+            var thisAssignment = assignmentMap.get(assignmentId);
+            String students = thisAssignment.get("students");
+            String newStudents;
+            if(students.equals("{}")){
+                newStudents = "{" + getId(username) + "~" + "0" + "~" + "no" + "}";
+            } else{
+                students = students.substring(1, students.length()-1);
+                newStudents = "{"+students+"//" + getId(username) + "~" + "0" + "~" + "no" + "}";
+            }
+            assignmentMap.get(assignmentId).put("students", newStudents);
+        }
+
+        printNewData(Convertor.mapOfDataToString(assignmentMap), assignmentsPath);
+
+        return "200";
     }
 }

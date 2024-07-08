@@ -1,6 +1,7 @@
 package controller;
 
 import dataManagement.Database;
+import objects.serializable.CourseListWrapper;
 import objects.serializable.Student;
 import objects.serializable.Task;
 import objects.serializable.TaskListWrapper;
@@ -84,6 +85,10 @@ public class Controller {
                 done = request.split("\\$")[4].equals("yes");
                 Database.getInstance().createTask(username, title, time, done);
                 res = "200";
+                break;
+            case "GET: getCourses":
+                username = request.split("\\$")[1];
+                res = new CourseListWrapper(Database.getInstance().getCourses(username));
                 break;
             default:
                 res = "404";

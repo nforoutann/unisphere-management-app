@@ -3,7 +3,6 @@ package dataManagement;
 import objects.serializable.Assignment;
 import objects.serializable.AssignmentType;
 import objects.serializable.Course;
-import objects.serializable.Student;
 
 import java.util.*;
 
@@ -29,7 +28,7 @@ public class Convertor {
         return res;
     }
 
-    public static String mapOfUsersToString(HashMap <String, HashMap <String, String>> m) {
+    public static String mapOfDataToString(HashMap <String, HashMap <String, String>> m) {
         try {
             StringBuilder res = new StringBuilder();
             for (Map.Entry<String, HashMap <String, String>> entry : m.entrySet()) {
@@ -73,10 +72,16 @@ public class Convertor {
 
     public static Course mapToCourse(HashMap<String, String> map, String nameOfTheBestStudent, String teacherName){
         Course course = new Course();
-        course.setCourseId(map.get("courseId"));
+        course.setCode(map.get("courseId"));
         course.setTitle(map.get("title"));
-        course.setTeacherName(teacherName);
+        course.setTeacher(teacherName);
         course.setCredit(map.get("credit"));
+
+        String time = map.get("time");
+        time =time.substring(1,time.length()-1);
+        List<String> timeList = Arrays.asList(time.split("//"));
+        course.setTime(timeList);
+
         course.setNumberOfDefinedAssignments(String.valueOf(map.get("assignments").split("//").length));
         course.setNameOfBestStudent(nameOfTheBestStudent);
         return course;

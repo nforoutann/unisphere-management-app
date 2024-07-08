@@ -76,6 +76,10 @@ public class RequestHandler extends Thread {
             TaskListWrapper taskList = (TaskListWrapper) obj;
             List<Task> tasks = taskList.getTasks();
             json = gson.toJson(tasks);
+        } else if(obj instanceof CourseListWrapper){
+            CourseListWrapper courseList = (CourseListWrapper) obj;
+            List<Course> courses = courseList.getCourses();
+            json = gson.toJson(courses);
         } else {
             throw new IllegalArgumentException("Unsupported object type");
         }

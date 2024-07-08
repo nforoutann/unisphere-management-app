@@ -1,21 +1,24 @@
 package objects.serializable;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
 public class Course implements Serializable {
-    private String courseId;
+    private String code;
     private String title;
-    private String teacherName;
+    private String teacher;
     private String credit;
     private String numberOfDefinedAssignments;
     private String nameOfBestStudent;
+    private List<String> time;
 
-    public String getCourseId() {
-        return courseId;
+    public String getCode() {
+        return code;
     }
 
-    public void setCourseId(String courseId) {
-        this.courseId = courseId;
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getTitle() {
@@ -26,12 +29,12 @@ public class Course implements Serializable {
         this.title = title;
     }
 
-    public String getTeacherName() {
-        return teacherName;
+    public String getTeacher() {
+        return teacher;
     }
 
-    public void setTeacherName(String teacherName) {
-        this.teacherName = teacherName;
+    public void setTeacher(String teacher) {
+        this.teacher = teacher;
     }
 
     public String getCredit() {
@@ -56,5 +59,13 @@ public class Course implements Serializable {
 
     public void setNameOfBestStudent(String nameOfBestStudent) {
         this.nameOfBestStudent = nameOfBestStudent;
+    }
+
+    public List<String> getTime() {
+        return time;
+    }
+
+    public void setTime(List<String> time) {
+        this.time = time;
     }
 }
