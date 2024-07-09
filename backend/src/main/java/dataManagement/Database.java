@@ -923,6 +923,24 @@ public class Database {
         courseMap.get(courseId).put("done", "true");
         printNewData(Convertor.mapOfDataToString(courseMap), coursesPath);
     }
+    public void setScore(String username, String assignmentId, String score){
+        String students = getInstance().getAssignmentsDataMap().get(assignmentId).get("students");
+        students = students.substring(1, students.length()-1);
+        String newStudents = "" ;
+        String[] studentIds = students.split("//");
+        for(int i=0 ; i<studentIds.length ; i++){
+            if(studentIds[i].split("~")[0].equals(getId(username))){
+                newStudents += studentIds[i].split("~")[0]+"~"+score+"~"+studentIds[i].split("~")[2]+"//";
+            } else{
+                newStudents += studentIds[i]+"//";
+            }
+        }
+        newStudents = newStudents.substring(0, newStudents.length()-2);
+        newStudents = "{" + newStudents+ "}";
+        var map = getInstance().getAssignmentsDataMap();
+        map.get(assignmentId).put("students", newStudents);
+        printNewData(Convertor.mapOfDataToString(map), assignmentsPath);
+    }
 
 
     //assignments method
@@ -1052,7 +1070,7 @@ public class Database {
 
 
     public static void main(String[] args) {
-        getInstance().createAssignment("1111&1", "admin","admin","admin","admin","admin","admin","admin");
+        getInstance().setScore("nazanin", "1111&2&1", "18");
     }
 
 }

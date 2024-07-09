@@ -10,7 +10,7 @@ class AssignmentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 8, bottom: 6),
+      padding: EdgeInsets.only(top: 10, bottom: 6),
       child: Center(
         child: InkWell(
           onTap: onTap,

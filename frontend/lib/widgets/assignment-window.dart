@@ -284,8 +284,8 @@ class AssignmentWindow extends StatelessWidget {
                           await Network.editAssignment(
                             username,
                             assignment.assignmentId!,
-                            estimatedController.text,
-                            descriptionController.text,
+                            estimatedController.text.isEmpty ? assignment.estimatedTime.toString() : estimatedController.text,
+                            descriptionController.text.isEmpty ? assignment.estimatedTime.toString() : descriptionController.text,
                             uploaded,
                           );
                         },
