@@ -91,6 +91,15 @@ public class Controller {
                 List<Assignment> list = Database.getInstance().getAssignments(username, time);
                 res = new AssignmentListWrapper(list);
                 break;
+            case "POST: editAssignment":
+                username = request.split("\\$")[1];
+                String assignmentId = request.split("\\$")[2];
+                String estimatedTime = request.split("\\$")[3];
+                String description = request.split("\\$")[4];
+                done = request.split("\\$")[5].equals("yes");
+                res = Database.getInstance().editAssignment(username, assignmentId, estimatedTime, description, done);
+                res = "200";
+                break;
             default:
                 res = "404";
         }

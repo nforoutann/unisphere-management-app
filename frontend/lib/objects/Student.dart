@@ -68,6 +68,7 @@ class Student extends User {
       name: json['name'],
       username: json['username'],
       password: json['password'],
+
       email: json['email'],
       birthday: birthday,
       ongoingTasks: ongoingTaskList, // Assuming you deserialize this elsewhere

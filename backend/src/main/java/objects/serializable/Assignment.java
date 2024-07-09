@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class Assignment implements Serializable {
     private String assignmentId;
     private String title;
-    private double score;
+    private String score;
     private boolean active;
     private boolean done;
     private AssignmentType type;
@@ -13,6 +13,7 @@ public class Assignment implements Serializable {
     private String deadline;
     private String definedTime;
     private String courseName;
+    private String description;
 
     public String getAssignmentId() {
         return assignmentId;
@@ -30,11 +31,11 @@ public class Assignment implements Serializable {
         this.title = title;
     }
 
-    public double getScore() {
+    public String getScore() {
         return score;
     }
 
-    public void setScore(double score) {
+    public void setScore(String score) {
         this.score = score;
     }
 
@@ -92,5 +93,13 @@ public class Assignment implements Serializable {
 
     public void setDone(boolean done) {
         this.done = done;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

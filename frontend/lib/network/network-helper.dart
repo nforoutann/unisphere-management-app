@@ -318,4 +318,46 @@ class Network {
     return completer.future;
   }
 
+  static Future<void> editAssignment(String username, String assignmentId, String estimatedTime, String description, bool uploaded) async {
+    print('hello');
+    String command = 'POST: editAssignment\$${username}\$${assignmentId}\$${estimatedTime}\$${description}\$${uploaded ? "yes" : "no"}\u0000';
+    String response = "";
+    Completer<String> responseCompleter = Completer<String>();
+    print(command);
+
+    try {
+      final serverSocket = await Socket.connect(ipAddress, 8080);
+      // Write the command to the server
+      serverSocket.write(command);
+      await serverSocket.flush();
+
+      // Listen for server responses
+      serverSocket.listen(
+              (socketResponse) {
+            response = String.fromCharCodes(socketResponse);
+            responseCompleter.complete(response);
+            serverSocket.destroy(); // Close the socket after receiving the response
+          },
+          onDone: () {
+            if (!responseCompleter.isCompleted) {
+              responseCompleter.completeError("Socket closed without response");
+            }
+          },
+          onError: (error) {
+            if (!responseCompleter.isCompleted) {
+              responseCompleter.completeError(error);
+            }
+          }
+      );
+
+      response = await responseCompleter.future;
+    } catch (e) {
+      print("Error receiving response: $e");
+      return;
+    }
+
+    print("----------   network response is:  { $response }");
+  }
+
+
 }

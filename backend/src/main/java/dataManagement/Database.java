@@ -50,8 +50,6 @@ public class Database {
         newsDataMap = Convertor.ArrayToMap(tables.get("newsData").get(), "title");
     }
 
-    //todo use ReentrantReadWriteLock for reading and writing in multithreading
-
     //basic methods
 
     public HashMap<String, HashMap<String, String>> getUsersDataMap() {
@@ -128,7 +126,7 @@ public class Database {
         String[] tasksArray = tasksStr.split("//");
         return Arrays.stream(tasksArray)
                 .filter(a -> a.split("~")[1].equals("no"))
-                .map(a -> new Task(a.split("~")[0], a.split("~")[1].equals("yes") ? true : false, a.split("~")[2]))
+                .map(a -> new Task(a.split("~")[0], a.split("~")[1].equals("yes"), a.split("~")[2]))
                 .collect(Collectors.toList());
     }
     private int getTheCredits(String username){
@@ -163,6 +161,7 @@ public class Database {
                 .map(a -> a.substring(1, a.length()-1))
                 .flatMap(students -> Arrays.stream(students.split("//")))
                 .filter(student -> student.startsWith(id))
+                .filter(student -> !student.split("~")[1].equals("null"))
                 .map(a -> a.split("~")[1])
                 .map(a -> Double.parseDouble(a))
                 .sorted()
@@ -644,5 +643,30 @@ public class Database {
                 ).forEach(assignment -> assignmentMap.put(assignment, getInstance().getAssignmentsDataMap().get(assignment)));
 
         return Convertor.mapToListOfAssignments(getId(username), assignmentMap, getInstance().getCoursesDataMap(), today);
+    }
+    public String editAssignment(String username, String assignmentId, String estimatedTime, String description, boolean uploaded){
+        var assignmentMap = getInstance().getAssignmentsDataMap();
+        assignmentMap.get(assignmentId).put("estimatedTime", estimatedTime);
+        assignmentMap.get(assignmentId).put("description", description);
+        String newStudents = "";
+        String students = assignmentMap.get(assignmentId).get("students");
+        if(uploaded){
+            students = students.substring(1, students.length()-1);
+            String[] studentIds = students.split("//");
+            for(String eachStudent : studentIds){
+                if(eachStudent.split("~")[0].equals(getId(username))){
+                    newStudents = newStudents + "//" + getId(username) + "~" + "null" + "yes" + "}";
+                } else {
+                    newStudents = newStudents + "//" + eachStudent;
+                }
+            }
+
+            newStudents = "{" + newStudents + "}";
+        } else{
+            newStudents = students;
+        }
+        assignmentMap.get(assignmentId).put("students", newStudents);
+        printNewData(Convertor.mapOfDataToString(assignmentMap), assignmentsPath);
+        return "200";
     }
 }

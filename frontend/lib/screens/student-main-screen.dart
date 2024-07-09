@@ -100,7 +100,7 @@ class _StudentMainState extends State<StudentMain> {
   Widget _pages(int index) {
     List<Widget> pagesList = <Widget>[
       tasks != null ? ToDoScreen(tasks: tasks!, username: widget.username) : Center(child: CircularProgressIndicator()),
-      assignments != null ? StudentAssignmentScreen(assignments: assignments) : Center(child: CircularProgressIndicator()),
+      assignments != null ? StudentAssignmentScreen(assignments: assignments, username: widget.username) : Center(child: CircularProgressIndicator()),
       student != null ? StudentHomeScreen(student: student!) : Center(child: CircularProgressIndicator()),
       courses != null ? StudentClassScreen(courses: courses!, onToggleAddingCourse: _toggleAddingCourse) : Center(child: CircularProgressIndicator()),
       StudentNewsScreen(),
