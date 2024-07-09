@@ -73,7 +73,7 @@ public class Convertor {
             assignment.setTitle(entry.getValue().get("title"));
             assignment.setScore(Double.parseDouble(entry.getValue().get("score")));
             assignment.setType(type.get(entry.getValue().get("type")));
-            assignment.setEstimateTime(Integer.parseInt(entry.getValue().get("estimatedTime")));
+            assignment.setEstimatedTime(Integer.parseInt(entry.getValue().get("estimatedTime")));
             assignment.setDeadline(entry.getValue().get("deadline"));
             String definedTimeStr = entry.getValue().get("definedTime");
             assignment.setDefinedTime(definedTimeStr);

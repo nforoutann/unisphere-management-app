@@ -32,7 +32,7 @@ class Assignment {
     String deadlineStr = json['deadline'];
     deadlineStr = deadlineStr.substring(1, deadlineStr.length-1);
     var deadlineArray = deadlineStr.split("::");
-    
+
     DateTime deadline = DateTime(int.parse(deadlineArray[0]), int.parse(deadlineArray[1]), int.parse(deadlineArray[2]), int.parse(deadlineArray[3]) , int.parse(deadlineArray[4]));
 
     return Assignment(

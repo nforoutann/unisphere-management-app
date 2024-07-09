@@ -9,7 +9,7 @@ public class Assignment implements Serializable {
     private boolean active;
     private boolean done;
     private AssignmentType type;
-    private int estimateTime;
+    private int estimatedTime;
     private String deadline;
     private String definedTime;
     private String courseName;
@@ -46,12 +46,12 @@ public class Assignment implements Serializable {
         this.type = type;
     }
 
-    public int getEstimateTime() {
-        return estimateTime;
+    public int getEstimatedTime() {
+        return estimatedTime;
     }
 
-    public void setEstimateTime(int estimateTime) {
-        this.estimateTime = estimateTime;
+    public void setEstimatedTime(int estimatedTime) {
+        this.estimatedTime = estimatedTime;
     }
 
     public String getDeadline() {

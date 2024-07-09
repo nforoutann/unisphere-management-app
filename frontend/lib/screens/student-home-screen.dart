@@ -264,7 +264,7 @@
                         Padding(
                           padding:const EdgeInsets.only(left: 120),
                           child: Text(
-                            '${today.year} / ${today.month}   / ${today.day}',
+                            '${today.year} / ${today.month} / ${today.day}',
                             style: const TextStyle(
                               fontFamily: 'Montserrat',
                               color: Color(0xff48b2ce),

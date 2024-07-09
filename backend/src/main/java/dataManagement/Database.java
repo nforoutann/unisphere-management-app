@@ -143,7 +143,7 @@ public class Database {
         }
         return totalCredits;
     }
-    private Double getScore(String username, String which){
+    private Double getScore(String username, String which, String today){
         Double res = 0.0;
         String id = getId(username);
         String[] coursesIds = getCourseIds(username);
@@ -156,14 +156,13 @@ public class Database {
                 .filter(a -> !a.equals("{}"))
                 .map(a -> a.substring(1, a.length()-1))
                 .flatMap(a -> Stream.of(a.split("//")))
-                .filter(a -> a.endsWith("~no"))
                 .map(a -> a.split("~")[0])
+                .filter(a -> !getInstance().checkAssignmentActive(today, getInstance().getAssignmentsDataMap().get(a).get("deadline")))
                 .map(a -> getInstance().getAssignmentsDataMap().get(a).get("students"))
                 .filter(a -> !a.equals("{}"))
                 .map(a -> a.substring(1, a.length()-1))
                 .flatMap(students -> Arrays.stream(students.split("//")))
                 .filter(student -> student.startsWith(id))
-                .filter(student -> student.endsWith("yes"))
                 .map(a -> a.split("~")[1])
                 .map(a -> Double.parseDouble(a))
                 .sorted()
@@ -287,8 +286,8 @@ public class Database {
                 double totalGrade = totalGrade(username);
                 int totalCredits = getTheCredits(username);
                 List<Task> ongoingTasks = getOngoingTasksTitle(username);
-                Double minScore = getScore(username, "min");
-                Double maxScore = getScore(username, "max");
+                Double minScore = getScore(username, "min", today);
+                Double maxScore = getScore(username, "max", today);
                 int numberOfLeftAssignments = numberOfLeftAssignments(username, today);
                 int numberOfLostAssignments = numberOfLostAssignments(username, today);
 
