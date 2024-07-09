@@ -60,7 +60,7 @@ class Student extends User {
     DateTime? birthday;
     if(birthdayStr != "{}"){
       birthdayStr = birthdayStr.substring(1, birthdayStr.length-1);
-      var birthInfo = birthdayStr.split("~");
+      var birthInfo = birthdayStr.split("::");
       birthday = DateTime(int.parse(birthInfo[0]), int.parse(birthInfo[1]), int.parse(birthInfo[2]));
     }
 

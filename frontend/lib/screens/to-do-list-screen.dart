@@ -45,7 +45,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 45),
+      padding: EdgeInsets.only(bottom: 60),
       child: Stack(
         children: [
           SingleChildScrollView(

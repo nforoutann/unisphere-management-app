@@ -34,7 +34,6 @@ public class Database {
         }
         return instance;
     }
-
     private Database() {
         tables = new HashMap<>();
         tables.put("usersData", new Table(usersPath));
@@ -51,7 +50,6 @@ public class Database {
     }
 
     //basic methods
-
     public HashMap<String, HashMap<String, String>> getUsersDataMap() {
         usersDataMap = Convertor.ArrayToMap(tables.get("usersData").get(), "username");
         return usersDataMap;
@@ -83,7 +81,6 @@ public class Database {
 
 
     //users method
-
     private String getPassword(String username){
         return getInstance().getUsersDataMap().get(username).get("password");
     }
@@ -386,10 +383,59 @@ public class Database {
                 .ifPresent(res::append);
         return res.toString();
     }
+    public void createStudent(String username, String password, String name, String id, String email){
+        var user = getInstance().getUsersDataMap();
+        HashMap<String, String> littleMap = new HashMap<>();
+        littleMap.put("username", username);
+        littleMap.put("password", password);
+        littleMap.put("name", name);
+        littleMap.put("id", id);
+        littleMap.put("email", email);
+        littleMap.put("role", "student");
+        littleMap.put("currentTerm", "1");
+        littleMap.put("birthday", "{}");
+        littleMap.put("terms", "{}");
+        littleMap.put("tasks", "{}");
+        littleMap.put("nExams", "0");
+        user.put(username, littleMap);
+        getInstance().printNewData(Convertor.mapOfDataToString(user), usersPath);
+    }
+    public void createTeacher(String username, String password, String name, String code, String email){
+        var user = getInstance().getUsersDataMap();
+        HashMap<String, String> littleMap = new HashMap<>();
+        littleMap.put("username", username);
+        littleMap.put("password", password);
+        littleMap.put("name", name);
+        littleMap.put("code", code);
+        littleMap.put("email", email);
+        littleMap.put("role", "teacher");
+        littleMap.put("birthday", "{}");
+        littleMap.put("courses", "{}");
+        littleMap.put("tasks", "{}");
+        user.put(username, littleMap);
+        getInstance().printNewData(Convertor.mapOfDataToString(user), usersPath);
+    }
+    public void addBirthday(String username, String birthday){
+        var user = getInstance().getUsersDataMap();
+        user.get(username).put("birthday", birthday);
+        printNewData(Convertor.mapOfDataToString(user), usersPath);
+    }
+    public void deleteBirthday(String username){
+        var user = getInstance().getUsersDataMap();
+        user.get(username).put("birthday", "{}");
+        printNewData(Convertor.mapOfDataToString(user), usersPath);
+    }
+    public String getTeacherCodeByUsername(String username){
+        return getInstance().getUsersDataMap().get(username).get("code");
+    }
+    public void setNumberOfExams(String username, int numberOfExams){
+        var user = getInstance().getUsersDataMap();
+        user.get(username).put("nExams", String.valueOf(numberOfExams));
+        printNewData(Convertor.mapOfDataToString(user), usersPath);
+    }
 
 
     //task methods
-
     public List<Task> getTasks(String username){
         String tasksInfoStr = getInstance().getUsersDataMap().get(username).get("tasks");
         if(tasksInfoStr.equals("{}")){
@@ -526,6 +572,93 @@ public class Database {
             }
         }
     }
+    public void changePassword(String username, String newPassword){
+        var user = getInstance().getUsersDataMap();
+        user.get(username).put("password", newPassword);
+        printNewData(Convertor.mapOfDataToString(user), usersPath);
+    }
+    public void changeUsername(String username, String newUsername){
+        var user = getInstance().getUsersDataMap();
+        user.get(username).put("username", newUsername);
+        user.put(newUsername, user.get(username));
+        user.remove(username);
+        printNewData(Convertor.mapOfDataToString(user), usersPath);
+    }
+    public void changeEmail(String username, String newEmail){
+        var user = getInstance().getUsersDataMap();
+        user.get(username).put("email", newEmail);
+        printNewData(Convertor.mapOfDataToString(user), usersPath);
+    }
+    public void deleteStudent(String username){
+        String[] courseIds = getCourseIds(username);
+
+        //delete the assignments
+        var assignments = getInstance().getAssignmentsDataMap();
+        List<String> assignmentIds = Stream.of(courseIds)
+                .map(id -> getInstance().getCoursesDataMap().get(id))
+                .map(course -> course.get("assignments"))
+                .filter(a -> !a.equals("{}"))
+                .map(a -> a.substring(1, a.length()-1))
+                .flatMap(a -> Stream.of(a.split("//")))
+                .collect(Collectors.toList());
+
+        for(String assignmentId : assignmentIds){
+            String students = getInstance().getAssignmentsDataMap().get(assignmentId).get("students");
+            if(students.equals("{}")){
+                continue;
+            }
+            students = students.substring(1, students.length()-1);
+            String[] studentIds = students.split("//");
+            String studentInfo = "";
+            for(int i=0 ; i<studentIds.length ; i++){
+                if(studentIds[i].split("~")[0].equals(getId(username))){
+                    continue;
+                }
+                studentInfo = studentInfo + studentIds[i];
+                if(i != studentIds.length-1){
+                    studentInfo = studentInfo + "//";
+                }
+            }
+            if(studentInfo.endsWith("//"))
+                studentInfo = studentInfo.substring(0, studentInfo.length()-2);
+            studentInfo = "{" + studentInfo + "}";
+            assignments.get(assignmentId).put("students", studentInfo);
+        }
+        getInstance().printNewData(Convertor.mapOfDataToString(assignments), assignmentsPath);
+
+        //delete from courses
+        var courseMap = getInstance().getCoursesDataMap();
+        for(String courseId : courseMap.keySet()){
+            String students = getInstance().getCoursesDataMap().get(courseId).get("students");
+            if(students.equals("{}")){
+                continue;
+            }
+            students = students.substring(1, students.length()-1);
+            String[] studentIds = students.split("//");
+            String studentInfo = "";
+            for(int i=0 ; i<studentIds.length ; i++){
+                if(studentIds[i].split("~")[0].equals(getId(username))){
+                    continue;
+                }
+                studentInfo = studentInfo + studentIds[i];
+                if(i != studentIds.length-1){
+                    studentInfo = studentInfo + "//";
+                }
+            }
+            if(studentInfo.endsWith("//"))
+                studentInfo = studentInfo.substring(0, studentInfo.length()-2);
+            studentInfo = "{" + studentInfo + "}";
+            courseMap.get(courseId).put("students", studentInfo);
+        }
+       getInstance().printNewData(Convertor.mapOfDataToString(courseMap), coursesPath);
+
+
+        //delete from the users
+        var usersMap = getInstance().getUsersDataMap();
+        usersMap.remove(username);
+       printNewData(Convertor.mapOfDataToString(usersMap), usersPath);
+    }
+
 
     //course methods
     public List<Course> getCourses(String username){
@@ -624,6 +757,172 @@ public class Database {
 
         return "200";
     }
+    public void deleteStudentFromCourse(String username, String courseCode){
+        String currentTerm = getInstance().getUsersDataMap().get(username).get("currentTerm");
+        String[] courseIds = getCourseIds(username);
+        String newCourseData = "";
+        for(int i=0; i<courseIds.length; i++){
+            if(courseCode.equals(courseIds[i])){
+                continue;
+            }
+            newCourseData = newCourseData + courseIds[i];
+            if(i != courseIds.length - 1){
+                newCourseData = newCourseData + "//";
+            }
+        }
+        if(newCourseData.endsWith("//")){
+            newCourseData = newCourseData.substring(0, newCourseData.length()-2);
+        }
+        newCourseData = "{"+newCourseData+"}";
+        String currentTermId = getId(username)+'&'+currentTerm;
+        var termMap = getInstance().getTermsDataMap();
+        termMap.get(currentTermId).put("courses", newCourseData);
+        printNewData(Convertor.mapOfDataToString(termMap), termsPath);
+
+        //delete from course
+        var courseMap = getInstance().getCoursesDataMap();
+        String students = courseMap.get(courseCode).get("students");
+        String newStudents = "";
+        if(!students.equals("{}")){
+            students = students.substring(1, students.length()-1);
+            String[] studentsInfo = students.split("//");
+
+            for(int i=0; i<studentsInfo.length; i++){
+                if(studentsInfo[i].split("~")[0].equals(getId(username))){
+                    continue;
+                }
+                newStudents = newStudents + studentsInfo[i];
+                if(i != studentsInfo.length - 1){
+                    newStudents = newStudents + "//";
+                }
+            }
+            if(newStudents.endsWith("//")){
+                newStudents = newStudents.substring(0, newStudents.length()-2);
+            }
+            newStudents = "{" + newStudents + "}";
+            courseMap.get(courseCode).put("students", newStudents);
+            printNewData(Convertor.mapOfDataToString(courseMap), coursesPath);
+        }
+
+        //delete from assignments
+
+        var assignmentMap = getInstance().getAssignmentsDataMap();
+        String assignments = courseMap.get(courseCode).get("assignments");
+        String newAssignments;
+        if(!assignments.equals("{}")){
+            assignments = assignments.substring(1, assignments.length()-1);
+            String[] assignmentsInfo = assignments.split("//");
+            for(int i=0; i<assignmentsInfo.length; i++){
+                String StudentsInAssignments = assignmentMap.get(assignmentsInfo[i]).get("students");
+                if(!StudentsInAssignments.equals("{}")){
+                    StudentsInAssignments = StudentsInAssignments.substring(1, StudentsInAssignments.length()-1);
+                    String[] studentsInfo = StudentsInAssignments.split("//");
+                    String newStudentsData = "";
+                    for(int j=0; j<studentsInfo.length; j++){
+                        if(studentsInfo[j].split("~")[0].equals(getId(username))){
+                            continue;
+                        }
+                        newStudentsData = newStudentsData + studentsInfo[j];
+                        if(j != studentsInfo.length - 1){
+                            newStudentsData = newStudentsData + "//";
+                        }
+                    }
+                    if(newStudentsData.endsWith("//")){
+                        newStudentsData = newStudentsData.substring(0, newStudentsData.length()-2);
+                    }
+                    newStudentsData = "{" + newStudentsData + "}";
+                    assignmentMap.get(assignmentsInfo[i]).put("students", newStudentsData);
+                }
+            }
+            printNewData(Convertor.mapOfDataToString(assignmentMap), assignmentsPath);
+        }
+    }
+    public void deleteCourse(String courseId){
+        //delete from the terms
+        var termMap = getInstance().getTermsDataMap();
+        var termIds = termMap.keySet();
+        var termIdArray =  termIds.toArray();
+        for(var termId : termIdArray){
+            String id = (String) termId;
+            String courses = termMap.get(id).get("courses");
+            if(courses.equals("{}")){
+                continue;
+            }
+            courses = courses.substring(1, courses.length()-1);
+            String[] courseIds = courses.split("//");
+            String courseInfo = "";
+            for(int i=0 ; i<courseIds.length ; i++){
+                if(courseIds[i].equals(courseId)){
+                    continue;
+                }
+                courseInfo = courseInfo + courseIds[i];
+                if(i != courseIds.length - 1){
+                    courseInfo += "//";
+                }
+            }
+            if(courseInfo.endsWith("//")){
+                courseInfo = courseInfo.substring(0, courseInfo.length()-2);
+            }
+            courseInfo = "{" + courseInfo + "}";
+            termMap.get(termId).put("courses", courseInfo);
+        }
+        printNewData(Convertor.mapOfDataToString(termMap), termsPath);
+
+
+        //delete the assignments
+        var courseMap = getInstance().getCoursesDataMap();
+        String assignments = courseMap.get(courseId).get("assignments");
+        if(!assignments.equals("{}")){
+            assignments = assignments.substring(1, assignments.length()-1);
+            String[] assignmentInfo = assignments.split("//");
+            for(String each : assignmentInfo){
+                deleteAssignment(each);
+            }
+        }
+
+        //delete the main course
+        courseMap.remove(courseId);
+        printNewData(Convertor.mapOfDataToString(courseMap), coursesPath);
+
+    }
+    public void createCourse(String username, String title, String credit, String time){
+        String teacherName = getInstance().getUsersDataMap().get(username).get("name");
+        String code = getTeacherCodeByUsername(username);
+        var courseIds = getInstance().getCoursesDataMap().keySet();
+        String[] courseIdArray = Arrays.stream(courseIds.toArray()).map(a -> (String) a).toArray(String[]::new);
+        int greatest = Arrays.stream(courseIdArray)
+                .filter(a -> a.split("&")[0].equals(code))
+                .map(a -> a.split("&")[1])
+                .map(Integer::parseInt)
+                .max(Comparator.comparingInt(a -> a))
+                .orElse(0); //todo best
+        greatest++;
+        String newCourseId =  code+"&"+greatest;
+        HashMap<String, String> map = new HashMap<>();
+        map.put("teacher", teacherName);
+        map.put("assignments", "{}");
+        map.put("students", "{}");
+        map.put("best", "");
+        map.put("time", time);
+        map.put("title", title);
+        map.put("credit", credit);
+        map.put("courseId", newCourseId);
+        map.put("done", "false");
+
+        var courseMap = getInstance().getCoursesDataMap();
+        courseMap.put(newCourseId, map);
+        printNewData(Convertor.mapOfDataToString(courseMap), coursesPath);
+    }
+    public void setBestStudent(String id, String courseId){
+        var courseMap = getInstance().getCoursesDataMap();
+        courseMap.get(courseId).put("best", id);
+        printNewData(Convertor.mapOfDataToString(courseMap), coursesPath);
+    }
+    public void setDoneForCourse(String courseId){
+        var courseMap = getInstance().getCoursesDataMap();
+        courseMap.get(courseId).put("done", "true");
+        printNewData(Convertor.mapOfDataToString(courseMap), coursesPath);
+    }
 
 
     //assignments method
@@ -675,4 +974,85 @@ public class Database {
         printNewData(Convertor.mapOfDataToString(assignmentMap), assignmentsPath);
         return "200";
     }
+    public void deleteAssignment(String assignmentId){
+        var assignmentMap = getInstance().getAssignmentsDataMap();
+        assignmentMap.remove(assignmentId);
+        printNewData(Convertor.mapOfDataToString(assignmentMap), assignmentsPath);
+        String courseId = assignmentId.split("&")[0]+"&"+assignmentId.split("&")[1];
+        String assignments = getCoursesDataMap().get(courseId).get("assignments");
+        if(assignments.equals("{}")){
+            return;
+        }
+        assignments = assignments.substring(1, assignments.length()-1);
+        String[] assignmentIds = assignments.split("//");
+        String assignmentInfo = "";
+        for(int i=0 ; i<assignmentIds.length ; i++){
+            if(assignmentIds[i].equals(assignmentId)){
+                continue;
+            }
+            assignmentInfo = assignmentInfo + assignmentIds[i];
+            if(i != assignmentIds.length - 1){
+                assignmentInfo += "//";
+            }
+        }
+        if(assignmentInfo.endsWith("//")){
+            assignmentInfo = assignmentInfo.substring(0, assignmentInfo.length()-2);
+        }
+        assignmentInfo = "{" + assignmentInfo + "}";
+        var courseMap = getInstance().getCoursesDataMap();
+        courseMap.get(courseId).put("assignments", assignmentInfo);
+        printNewData(Convertor.mapOfDataToString(courseMap), coursesPath);
+    }
+    public void createAssignment(String courseCode, String title,String type , String definedTime, String description, String estimatedTime, String deadline, String score){
+        String assignments = getCoursesDataMap().get(courseCode).get("assignments");
+        var courseMap = getInstance().getCoursesDataMap();
+
+        assignments = assignments.substring(1, assignments.length()-1);
+        String[] assignmentIds = assignments.split("//");
+        int greatest =0;
+        String newAssignments = "";
+        for(int i=0 ; i<assignmentIds.length ; i++){
+            if(greatest<Integer.parseInt(assignmentIds[i].split("&")[2])){
+                greatest=Integer.parseInt(assignmentIds[i].split("&")[2]);
+            }
+            newAssignments = newAssignments + assignmentIds[i] + "//";
+        }
+        greatest++;
+        String newAssignmentId = courseCode+"&"+greatest;
+        newAssignments = newAssignments+newAssignmentId;
+        newAssignments = "{" + newAssignments + "}";
+        courseMap.get(courseCode).put("assignments", newAssignments);
+        printNewData(Convertor.mapOfDataToString(courseMap), coursesPath);
+
+        //add to the assignment
+        String students = courseMap.get(courseCode).get("students");
+        students = students.substring(1, students.length()-1);
+        String[] studentIds = students.split("//");
+        HashMap<String, String> map = new HashMap<>();
+        String studentInfo = "";
+        for(String eachStudent : studentIds){
+            studentInfo = studentInfo + eachStudent.split("~")[0] + "~null~no//";
+        }
+        studentInfo = studentInfo.substring(0, studentInfo.length()-2);
+        studentInfo = "{" + studentInfo + "}";
+        map.put("students", studentInfo);
+        map.put("definedTime", definedTime);
+        map.put("description", description);
+        map.put("estimatedTime", estimatedTime);
+        map.put("deadline", deadline);
+        map.put("score", score);
+        map.put("title", title);
+        map.put("type", type);
+        map.put("assignmentId", newAssignmentId);
+
+        var assignmentMap = getInstance().getAssignmentsDataMap();
+        assignmentMap.put(newAssignmentId, map);
+        printNewData(Convertor.mapOfDataToString(assignmentMap), assignmentsPath);
+    }
+
+
+    public static void main(String[] args) {
+        getInstance().createAssignment("1111&1", "admin","admin","admin","admin","admin","admin","admin");
+    }
+
 }
