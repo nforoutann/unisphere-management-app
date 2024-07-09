@@ -12,6 +12,8 @@ import java.util.stream.Stream;
 public class Database {
     private static Database instance;
 
+
+    //addresses
     private static final String usersPath = "src/main/java/data/users.txt";
     private static final String termsPath = "src/main/java/data/terms.txt";
     private static final String coursesPath = "src/main/java/data/courses.txt";
@@ -50,45 +52,49 @@ public class Database {
 
     //todo use ReentrantReadWriteLock for reading and writing in multithreading
 
-    public Table getTable(String tableName) {
-        return tables.get(tableName);
-    }
+    //basic methods
 
     public HashMap<String, HashMap<String, String>> getUsersDataMap() {
         usersDataMap = Convertor.ArrayToMap(tables.get("usersData").get(), "username");
         return usersDataMap;
     }
-
     public HashMap<String, HashMap<String, String>> getTermsDataMap() {
         termsDataMap = Convertor.ArrayToMap(tables.get("termsData").get(), "termId");
         return termsDataMap;
     }
-
     public HashMap<String, HashMap<String, String>> getCoursesDataMap() {
         coursesDataMap = Convertor.ArrayToMap(tables.get("coursesData").get(), "courseId");
         return coursesDataMap;
     }
-
     public HashMap<String, HashMap<String, String>> getAssignmentsDataMap() {
         assignmentsDataMap = Convertor.ArrayToMap(tables.get("assignmentsData").get(), "assignmentId");
         return assignmentsDataMap;
     }
-
     public HashMap<String, HashMap<String, String>> getNewsDataMap() {
         newsDataMap = Convertor.ArrayToMap(tables.get("newsData").get(), "title");
         return newsDataMap;
     }
+    public void printNewData(String data, String path){
+        data = data.trim();
+        try(FileWriter fw = new FileWriter(new File(path))){
+            fw.write(data);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
-    //todo change the way u use file reading in each step of getDataMap, u can for example add to the list and add to the file,, see which one is better
+
+    //users method
 
     private String getPassword(String username){
         return getInstance().getUsersDataMap().get(username).get("password");
     }
-
+    public String getId(String username){
+        return getInstance().getUsersDataMap().get(username).get("id");
+    }
     public boolean isUsernameAvailable(String username){
         return getUsersDataMap().containsKey(username);
     }
-
     public void createUser(String role, String username, String password, String name, String email){
         String result="", info="";
         switch(role.split("\\$")[0]){
@@ -110,15 +116,9 @@ public class Database {
             e.printStackTrace();
         }
     }
-
     public boolean doesUsernameMatchPassword(String username, String password){
         return getInstance().getUsersDataMap().containsKey(username) && getInstance().getUsersDataMap().get(username).get("password").equals(password);
     }
-
-    public String getId(String username){
-        return getInstance().getUsersDataMap().get(username).get("id");
-    }
-
     private List<Task> getOngoingTasksTitle(String username){
         String tasksStr= getInstance().getUsersDataMap().get(username).get("tasks");
         if(tasksStr.equals("{}")){
@@ -131,7 +131,6 @@ public class Database {
                 .map(a -> new Task(a.split("~")[0], a.split("~")[1].equals("yes") ? true : false, a.split("~")[2]))
                 .collect(Collectors.toList());
     }
-
     private int getTheCredits(String username){
         //todo different process and meaning for the students and teachers
         int totalCredits = 0;
@@ -144,7 +143,6 @@ public class Database {
         }
         return totalCredits;
     }
-
     private Double getScore(String username, String which){
         Double res = 0.0;
         String id = getId(username);
@@ -184,8 +182,56 @@ public class Database {
         }
         return null;
     }
+    private int numberOfLeftAssignments(String username, String today){ //todo ommit the active part and work with deadline
+        String[] coursesIds = getCourseIds(username);
+        if(coursesIds.length == 0){
+            return 0;
+        }
+        return Arrays.stream(coursesIds)
+                .map(id -> getInstance().getCoursesDataMap().get(id).get("assignments"))
+                .filter(assignments -> !assignments.equals("{}"))
+                .map(assignments -> assignments.substring(1, assignments.length()-1))
+                .flatMap(assignments -> Stream.of(assignments.split("//")))
+                .filter(assignment -> checkAssignmentActive(today, getInstance().getAssignmentsDataMap().get(assignment).get("deadline")))
+                .map(assignment -> getInstance().getAssignmentsDataMap().get(assignment).get("students"))
+                .filter(a -> !a.equals("{}"))
+                .map(a -> a.substring(1, a.length()-1))
+                .flatMap(a -> Stream.of(a.split("//")))
+                .filter(a -> a.split("~")[0].equals(getId(username)))
+                .filter(a -> a.endsWith("no")) //not sent
+                .toList()
+                .size();
+    }
+    public boolean checkAssignmentActive(String today, String deadline){
+        today = today.substring(1, today.length()-1);
+        String[] todayArray = today.split("::");
+        int nowYear = Integer.parseInt(todayArray[0]);
+        int nowMonth = Integer.parseInt(todayArray[1]);
+        int nowDay = Integer.parseInt(todayArray[2]);
+        int nowHour = Integer.parseInt(todayArray[3]);
+        int nowMinute = Integer.parseInt(todayArray[4]);
 
-    private int numberOfLeftAssignments(String username){ //todo ommit the active part and work with deadline
+        deadline = deadline.substring(1, deadline.length()-1);
+        String[] deadlineArray = deadline.split("::");
+        int deadlineYear = Integer.parseInt(deadlineArray[0]);
+        int deadlineMonth = Integer.parseInt(deadlineArray[1]);
+        int deadlineDay = Integer.parseInt(deadlineArray[2]);
+        int deadlineHour = Integer.parseInt(deadlineArray[3]);
+        int deadlineMinute = Integer.parseInt(deadlineArray[4]);
+
+        boolean year = deadlineYear>nowYear;
+        boolean month = (deadlineYear==nowYear &&  deadlineMonth>nowMonth);
+        boolean day = deadlineYear==nowYear && deadlineMonth==nowMonth &&  deadlineDay>nowDay;
+        boolean hour = deadlineYear==nowYear && deadlineMonth==nowMonth &&  deadlineDay==nowDay && deadlineHour>nowHour;
+        boolean minute = deadlineYear==nowYear && deadlineMonth==nowMonth &&  deadlineDay==nowDay && deadlineHour==nowHour && deadlineMinute>nowMinute;
+
+        if(year || month || day || hour || minute){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    private int numberOfLostAssignments(String username, String today){ //todo ommit the active part and work with deadline
         String[] coursesIds = getCourseIds(username);
         if(coursesIds.length == 0){
             return 0;
@@ -195,9 +241,8 @@ public class Database {
                 .filter(a -> !a.equals("{}"))
                 .map(a -> a.substring(1, a.length()-1))
                 .flatMap(a -> Stream.of(a.split("//")))
-                //.filter(a -> a.split("~")[1].equals("no")) //todo not active
-                .filter(a -> a.split("~")[1].equals("yes")) //active
                 .map(a -> a.split("~")[0])
+                .filter(a -> checkAssignmentActive(today, getInstance().getAssignmentsDataMap().get(a).get("deadline")))
                 .map(a -> getInstance().getAssignmentsDataMap().get(a).get("students"))
                 .filter(a -> !a.equals("{}"))
                 .map(a -> a.substring(1, a.length()-1))
@@ -207,29 +252,6 @@ public class Database {
                 .toList()
                 .size();
     }
-
-    private int numberOfLostAssignments(String username){ //todo ommit the active part and work with deadline
-        String[] coursesIds = getCourseIds(username);
-        if(coursesIds.length == 0){
-            return 0;
-        }
-        return Arrays.stream(coursesIds)
-                .map(a -> getInstance().getCoursesDataMap().get(a).get("assignments"))
-                .filter(a -> !a.equals("{}"))
-                .map(a -> a.substring(1, a.length()-1))
-                .flatMap(a -> Stream.of(a.split("//")))
-                .filter(a -> a.split("~")[1].equals("no")) //not active
-                .map(a -> a.split("~")[0])
-                .map(a -> getInstance().getAssignmentsDataMap().get(a).get("students"))
-                .filter(a -> !a.equals("{}"))
-                .map(a -> a.substring(1, a.length()-1))
-                .flatMap(a -> Stream.of(a.split("//")))
-                .filter(a -> a.startsWith(getId(username)))
-                .filter(a -> a.endsWith("no")) //not sent
-                .toList()
-                .size();
-    }
-
     private HashMap<String, HashMap<String, String>> getDoneAssignments(String username){
         String[] coursesIds = getCourseIds(username);
         if(coursesIds.length == 0){
@@ -237,20 +259,19 @@ public class Database {
         }
         HashMap<String, HashMap<String, String>> res = new HashMap<>();
         Arrays.stream(coursesIds)
-                .map(a -> getInstance().getCoursesDataMap().get(a).get("assignments"))
-                .filter(a -> !a.equals("{}"))
-                .map(a -> a.substring(1, a.length()-1))
-                .flatMap(a -> Stream.of(a.split("//")))
-                .map(a -> a.split("~")[0])
-                .filter(a -> Arrays.stream(
-                        getInstance().getAssignmentsDataMap().get(a).get("students").substring(1, getInstance().getAssignmentsDataMap().get(a).get("students").length()-1).split("//"))
+                .map(courseId -> getInstance().getCoursesDataMap().get(courseId).get("assignments"))
+                .filter(assignments -> !assignments.equals("{}"))
+                .map(assignments -> assignments.substring(1, assignments.length()-1))
+                .flatMap(assignments -> Stream.of(assignments.split("//")))
+                .filter(assignmentId -> Arrays.stream(
+                        getInstance().getAssignmentsDataMap().get(assignmentId).get("students").substring(1, getInstance().getAssignmentsDataMap().get(assignmentId).get("students").length()-1).split("//"))
+                        .filter(element -> !element.isEmpty())
                         .anyMatch(student -> student.split("~")[0].equals(getId(username))&&student.split("~")[2].equals("yes"))
                 )
                 .forEach(a -> res.put(a, getInstance().getAssignmentsDataMap().get(a)));
 
         return res;
     }
-
     public User getUserInfo(String username, String today){
         //todo checkTasksExpiration(username, today);
         if(getUsersDataMap().containsKey(username)){
@@ -268,8 +289,8 @@ public class Database {
                 List<Task> ongoingTasks = getOngoingTasksTitle(username);
                 Double minScore = getScore(username, "min");
                 Double maxScore = getScore(username, "max");
-                int numberOfLeftAssignments = numberOfLeftAssignments(username);
-                int numberOfLostAssignments = numberOfLostAssignments(username);
+                int numberOfLeftAssignments = numberOfLeftAssignments(username, today);
+                int numberOfLostAssignments = numberOfLostAssignments(username, today);
 
                 //make the object
                 Student student = new Student(name, username);
@@ -286,7 +307,7 @@ public class Database {
                 student.setNumberOfLeftAssignments(numberOfLeftAssignments);
                 student.setNumberOfExams(numberOfExams);
                 student.setNumberOfLostAssignments(numberOfLostAssignments);
-                student.setDoneAssignments(Convertor.mapToListOfAssignments(getDoneAssignments(username), getInstance().getCoursesDataMap()));
+                student.setDoneAssignments(Convertor.mapToListOfAssignments(getId(username) ,getDoneAssignments(username), getInstance().getCoursesDataMap(), today));
 
                 return student;
             }else{
@@ -297,7 +318,6 @@ public class Database {
         }
         return null;
     }
-
     public double totalGrade(String username){
         String id = getId(username);
         int currentTerm = Integer.parseInt(getInstance().getUsersDataMap().get(username).get("currentTerm"));
@@ -347,7 +367,6 @@ public class Database {
         }
         return totalScore/totalCredit;
     }
-
     private String[] getCourseIds(String username){
         String[] str = {};
         String id = getId(username);
@@ -360,7 +379,6 @@ public class Database {
         courses = courses.substring(1, courses.length()-1);
         return courses.split("//");
     }
-
     private String getUsername(String id){
         StringBuilder res = new StringBuilder();
         getInstance().getUsersDataMap().values().stream()
@@ -371,42 +389,8 @@ public class Database {
         return res.toString();
     }
 
-    public List<Assignment> getAssignments(String username){
-        String[] courseIds = getCourseIds(username);
-        if(courseIds.length == 0){
-            return new ArrayList<>();
-        }
-        List<String> assignmentsInfo = Arrays.stream(courseIds)
-                .map(a -> getInstance().getCoursesDataMap().get(a).get("assignments"))
-                .filter(a -> !a.equals("{}"))
-                .map(a -> a.substring(1, a.length()-1))
-                .flatMap(a -> Stream.of(a.split("//")))
-                .collect(Collectors.toList());
 
-        List<Assignment> assignments = new ArrayList<>();
-        Map<String, Boolean> map = new HashMap<>();
-        map.put("yes", true);
-        map.put("no", false);
-        for(String info : assignmentsInfo){
-            Assignment assignment = new Assignment();
-            String assignmentId = info.split("~")[0];
-            boolean active = map.get(info.split("~")[1]);
-            assignment.setAssignmentId(assignmentId);
-            assignment.setActive(active);
-            HashMap<String, String> infoMap = getInstance().getAssignmentsDataMap().get(assignmentId);
-            assignment.setTitle(infoMap.get("title"));
-            assignment.setScore(Double.parseDouble(infoMap.get("score")));
-            assignment.setType(infoMap.get("type").equals("PROJECT") ? AssignmentType.PROJECT : AssignmentType.HW);
-            String definedTime = infoMap.get("definedTime");
-            assignment.setDefinedTime(definedTime);
-            String deadline = infoMap.get("deadline");
-            assignment.setDeadline(deadline);
-            assignment.setEstimateTime(Integer.parseInt(infoMap.get("estimatedTime")));
-
-            assignments.add(assignment);
-        }
-        return assignments;
-    }
+    //task methods
 
     public List<Task> getTasks(String username){
         String tasksInfoStr = getInstance().getUsersDataMap().get(username).get("tasks");
@@ -426,22 +410,6 @@ public class Database {
         }
         return tasks;
     }
-
-    public List<Course> getCourses(String username){
-        String[] courseIds = getCourseIds(username);
-        List<Course> courses = new ArrayList<>();
-        for(String eachCourseId : courseIds){
-            HashMap<String, String> map = getInstance().getCoursesDataMap().get(eachCourseId);
-            String bestStudentId = map.get("best");
-            String teacherUsername = map.get("teacher");
-            String teacherName = getInstance().getUsersDataMap().get(teacherUsername).get("name");
-            String nameOfTheBestStudent = getInstance().getUsersDataMap().get(getUsername(bestStudentId)).get("name");
-            Course course = Convertor.mapToCourse(map, nameOfTheBestStudent, teacherName);
-            courses.add(course);
-        }
-        return courses;
-    }
-
     public void createTask(String username, String title, String time, boolean done){
         try{
             var usersMap = getInstance().getUsersDataMap();
@@ -459,7 +427,6 @@ public class Database {
             System.out.println(e.getMessage());
         }
     }
-
     public boolean setDoneTask(String username, String title, boolean done){
         var usersMap = getInstance().getUsersDataMap();
         String tasks = usersMap.get(username).get("tasks");
@@ -489,7 +456,6 @@ public class Database {
         }
         return true;
     }
-
     public boolean deleteTask(String username, String title) {
         var usersMap = getInstance().getUsersDataMap();
         String tasks = usersMap.get(username).get("tasks");
@@ -520,15 +486,6 @@ public class Database {
         printNewData(Convertor.mapOfDataToString(usersMap), usersPath);
         return true;
     }
-
-    public void printNewData(String data, String path){
-        try(FileWriter fw = new FileWriter(new File(path))){
-            fw.write(data);
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
     public void editTheTask(String username, String title, String newTitle){
         var usersMap = getInstance().getUsersDataMap();
         String tasks = usersMap.get(username).get("tasks");
@@ -545,7 +502,6 @@ public class Database {
         deleteTask(username, title);
         createTask(username, newTitle, time, done.equals("yes") ? true : false);
     }
-
     private void checkTasksExpiration(String username, String today){
         String tasks = getInstance().getUsersDataMap().get(username).get("tasks");
         if(tasks.equals("{}")){
@@ -573,6 +529,21 @@ public class Database {
         }
     }
 
+    //course methods
+    public List<Course> getCourses(String username){
+        String[] courseIds = getCourseIds(username);
+        List<Course> courses = new ArrayList<>();
+        for(String eachCourseId : courseIds){
+            HashMap<String, String> map = getInstance().getCoursesDataMap().get(eachCourseId);
+            String bestStudentId = map.get("best");
+            String teacherUsername = map.get("teacher");
+            String teacherName = getInstance().getUsersDataMap().get(teacherUsername).get("name");
+            String nameOfTheBestStudent = getInstance().getUsersDataMap().get(getUsername(bestStudentId)).get("name");
+            Course course = Convertor.mapToCourse(map, nameOfTheBestStudent, teacherName);
+            courses.add(course);
+        }
+        return courses;
+    }
     public String addStudentToCourse(String username, String courseCode){
         //check validation
         if(!getInstance().getCoursesDataMap().containsKey(courseCode)){
@@ -654,5 +625,25 @@ public class Database {
         printNewData(Convertor.mapOfDataToString(assignmentMap), assignmentsPath);
 
         return "200";
+    }
+
+
+    //assignments method
+    public List<Assignment> getAssignments(String username, String today){
+        HashMap<String, HashMap<String, String>> assignmentMap = new HashMap<>();
+        String[] courseIds = getCourseIds(username);
+        Arrays.stream(courseIds)
+                .map(courseId -> getInstance().getCoursesDataMap().get(courseId))
+                .map(course -> course.get("assignments"))
+                .filter(assignment -> !assignment.equals("{}"))
+                .map(assignments -> assignments.substring(1, assignments.length()-1))
+                .flatMap(assignments -> Stream.of(assignments.split("//")))
+                .filter(assignmentId -> Arrays.stream(
+                                getInstance().getAssignmentsDataMap().get(assignmentId).get("students").substring(1, getInstance().getAssignmentsDataMap().get(assignmentId).get("students").length()-1).split("//"))
+                        .filter(element -> !element.isEmpty())
+                        .anyMatch(student -> student.split("~")[0].equals(getId(username)))
+                ).forEach(assignment -> assignmentMap.put(assignment, getInstance().getAssignmentsDataMap().get(assignment)));
+
+        return Convertor.mapToListOfAssignments(getId(username), assignmentMap, getInstance().getCoursesDataMap(), today);
     }
 }

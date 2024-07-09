@@ -10,9 +10,9 @@ class CourseCards extends StatelessWidget {
 // Define 20 pairs of colors
   final List<List<Color>> colorPairs = [
     [Colors.blue, Colors.purple],
-    [Colors.pinkAccent, Colors.yellow],
-    [Colors.limeAccent, Color(0xff17902e)],
-    [Colors.blue, Colors.red],
+    [Color(0xffaf235b), Colors.yellow],
+    [Colors.limeAccent, Color(0xff08710b)],
+    [Colors.blue, Color(0xff85193f)],
     [Color(0xff157932), Colors.tealAccent],
     [Colors.deepPurple, Colors.indigo],
     [Colors.teal, Colors.red],

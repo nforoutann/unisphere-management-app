@@ -1,13 +1,13 @@
 package objects.serializable;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class Assignment implements Serializable {
     private String assignmentId;
     private String title;
     private double score;
     private boolean active;
+    private boolean done;
     private AssignmentType type;
     private int estimateTime;
     private String deadline;
@@ -84,5 +84,13 @@ public class Assignment implements Serializable {
 
     public void setCourseName(String courseName) {
         this.courseName = courseName;
+    }
+
+    public boolean isDone() {
+        return done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
     }
 }

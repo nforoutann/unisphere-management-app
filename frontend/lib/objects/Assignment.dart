@@ -3,6 +3,7 @@ class Assignment {
   String? title;
   double? score;
   bool? active;
+  bool? done;
   AssignmentType? assignmentType;
   DateTime? deadline;
   DateTime? definedTime;
@@ -19,24 +20,27 @@ class Assignment {
     this.definedTime,
     this.estimatedTime,
     this.courseName,
+    this.done,
   });
 
   factory Assignment.fromJson(Map<String, dynamic> json) {
     String definedTimeStr = json['definedTime'];
     definedTimeStr = definedTimeStr.substring(1, definedTimeStr.length-1);
-    var definedTimeArray = definedTimeStr.split("~");
+    var definedTimeArray = definedTimeStr.split("::");
     DateTime definedTime = DateTime(int.parse(definedTimeArray[0]), int.parse(definedTimeArray[1]), int.parse(definedTimeArray[2]));
 
     String deadlineStr = json['deadline'];
     deadlineStr = deadlineStr.substring(1, deadlineStr.length-1);
-    var deadlineArray = deadlineStr.split("~");
-    DateTime deadline = DateTime(int.parse(deadlineArray[0]), int.parse(deadlineArray[1]), int.parse(deadlineArray[2]));
+    var deadlineArray = deadlineStr.split("::");
+    
+    DateTime deadline = DateTime(int.parse(deadlineArray[0]), int.parse(deadlineArray[1]), int.parse(deadlineArray[2]), int.parse(deadlineArray[3]) , int.parse(deadlineArray[4]));
 
     return Assignment(
       assignmentId: json['assignmentId'],
       title: json['title'],
       score: json['score'],
       active: json['active'],
+      done: json['done'],
       courseName: json['courseName'],
       assignmentType: json['assignmentType'] != null
           ? parseAssignmentType(json['assignmentType'])

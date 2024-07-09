@@ -46,25 +46,38 @@ public class Convertor {
         }
     }
 
-    public static List<Assignment> mapToListOfAssignments(HashMap<String, HashMap<String, String>> map, HashMap<String, HashMap<String, String>> map2) {
+    public static List<Assignment> mapToListOfAssignments(String id, HashMap<String, HashMap<String, String>> map, HashMap<String, HashMap<String, String>> map2, String today) {
         List<Assignment> res = new ArrayList<>();
         HashMap<String, AssignmentType> type = new HashMap<>();
         type.put("HW", AssignmentType.HW);
         type.put("PROJECT", AssignmentType.PROJECT);
         for(Map.Entry<String, HashMap<String, String>> entry : map.entrySet()) {
             Assignment assignment = new Assignment();
+            boolean done = false;
+            String students = entry.getValue().get("students");
+            students = students.substring(1, students.length()-1);
+            String[] studentArray = students.split("//");
+            for(String student : studentArray) {
+                if(student.split("~")[0].equals(id)) {
+                    done = student.split("~")[2].equals("yes");
+                    break;
+                }
+            }
             String courseId = entry.getValue().get("assignmentId").split("&")[0]+"&"+entry.getValue().get("assignmentId").split("&")[1];
             String courseName = map2.get(courseId).get("title");
+            boolean active = Database.getInstance().checkAssignmentActive(today, entry.getValue().get("deadline"));
+
+            assignment.setDone(done);
             assignment.setCourseName(courseName);
             assignment.setAssignmentId(entry.getKey());
             assignment.setTitle(entry.getValue().get("title"));
             assignment.setScore(Double.parseDouble(entry.getValue().get("score")));
             assignment.setType(type.get(entry.getValue().get("type")));
             assignment.setEstimateTime(Integer.parseInt(entry.getValue().get("estimatedTime")));
-            String deadlineStr = entry.getValue().get("deadline");
-            assignment.setDeadline(deadlineStr); //todo change the Date type with LocalDate
+            assignment.setDeadline(entry.getValue().get("deadline"));
             String definedTimeStr = entry.getValue().get("definedTime");
             assignment.setDefinedTime(definedTimeStr);
+            assignment.setActive(active);
             res.add(assignment);
         }
         return res;

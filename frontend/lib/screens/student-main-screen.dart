@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:frontend/network/network-helper.dart';
+import 'package:frontend/objects/Assignment.dart';
 import 'package:frontend/objects/Course.dart';
 import 'package:frontend/objects/Student.dart';
 import 'package:frontend/screens/student-assignments-screen.dart';
@@ -36,6 +37,7 @@ class _StudentMainState extends State<StudentMain> {
   List<Task>? tasks;
   List<Course>? courses;
   bool _isAddingCourse = false; // Track the state for adding a course
+  List<Assignment>? assignments;
 
   @override
   void initState() {
@@ -78,6 +80,17 @@ class _StudentMainState extends State<StudentMain> {
     }
   }
 
+  Future<void> _fetchListAssignments() async {
+    try {
+      List<Assignment> assignmentList = await Network.getAssignments(widget.username);
+      setState(() {
+        assignments = assignmentList;
+      });
+    } catch (e) {
+      print('Error fetching courses: $e');
+    }
+  }
+
   void _toggleAddingCourse() {
     setState(() {
       _isAddingCourse = !_isAddingCourse;
@@ -87,7 +100,7 @@ class _StudentMainState extends State<StudentMain> {
   Widget _pages(int index) {
     List<Widget> pagesList = <Widget>[
       tasks != null ? ToDoScreen(tasks: tasks!, username: widget.username) : Center(child: CircularProgressIndicator()),
-      StudentAssignmentScreen(),
+      assignments != null ? StudentAssignmentScreen(assignments: assignments) : Center(child: CircularProgressIndicator()),
       student != null ? StudentHomeScreen(student: student!) : Center(child: CircularProgressIndicator()),
       courses != null ? StudentClassScreen(courses: courses!, onToggleAddingCourse: _toggleAddingCourse) : Center(child: CircularProgressIndicator()),
       StudentNewsScreen(),
@@ -170,7 +183,9 @@ class _StudentMainState extends State<StudentMain> {
   void _onItemTapped(int index) {
     setState(() {
       _currentIndex = index;
-      if (index == 2) {
+      if(index == 1){
+        _fetchListAssignments();
+      }else if (index == 2) {
         _fetchStudent();
       } else if (index == 0) {
         _fetchListTasks();

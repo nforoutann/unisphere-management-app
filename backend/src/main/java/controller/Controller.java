@@ -1,10 +1,7 @@
 package controller;
 
 import dataManagement.Database;
-import objects.serializable.CourseListWrapper;
-import objects.serializable.Student;
-import objects.serializable.Task;
-import objects.serializable.TaskListWrapper;
+import objects.serializable.*;
 
 import java.util.List;
 
@@ -48,17 +45,10 @@ public class Controller {
                 break;
             case "GET: userInfo":
                 username = request.split("\\$")[1];
-                String year = request.split("\\$")[2];
-                String month = request.split("\\$")[3];
-                String day = request.split("\\$")[4];
-                String time = year+"::"+month+"::"+day;
+                String time = request.split("\\$")[2];
                 res = Database.getInstance().getUserInfo(username, time); //the res is user now
                 Student student = (Student) res;
                 System.out.println("the users name is: "+((Student) res).getName());
-                break;
-            case "POST assignments":
-                username = request.split("\\$")[1];
-                //todo
                 break;
             case "POST: doneTask":
                 username = request.split("\\$")[1];
@@ -94,6 +84,12 @@ public class Controller {
                 username = request.split("\\$")[1];
                 String CourseCode = request.split("\\$")[2];
                 res = Database.getInstance().addStudentToCourse(username, CourseCode);
+                break;
+            case "GET: getAssignments":
+                username = request.split("\\$")[1];
+                time = request.split("\\$")[2];
+                List<Assignment> list = Database.getInstance().getAssignments(username, time);
+                res = new AssignmentListWrapper(list);
                 break;
             default:
                 res = "404";

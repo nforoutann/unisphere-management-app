@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:async';
+import 'package:frontend/objects/Assignment.dart';
 import 'package:frontend/objects/Course.dart';
 import 'package:frontend/objects/Student.dart';
 import 'package:frontend/objects/Task.dart';
@@ -12,10 +13,9 @@ class Network {
   static Future<Student> getStudent(String username) async {
     Completer<Student> completer = Completer<Student>();
     DateTime now = DateTime.now();
-
+    String today = '{${now.year}::${now.month}::${now.day}::${now.hour}::${now.minute}}';
     try {
-      String command = 'GET: userInfo\$${username}\$${now.year}\$${now
-          .month}\$${now.day}\u0000';
+      String command = 'GET: userInfo\$${username}\$${today}\u0000';
       print('Sending command: $command');
 
       Socket socket = await Socket.connect(ipAddress, 8080);
@@ -162,7 +162,7 @@ class Network {
     return completer.future;
   }
 
-  static Future<void> creatTask(String username, String title, String time, bool done) async {
+  static Future<void> createTask(String username, String title, String time, bool done) async {
     String command = 'POST: createTask\$${username}\$${title}\$${time}\$${done
         ? "yes"
         : "no"}\u0000';
@@ -270,6 +270,52 @@ class Network {
     print("----------   network response is:  { $response }");
 
     return responseCompleter.future;
+  }
+
+  static Future<List<Assignment>> getAssignments(String username) async{
+    Completer<List<Assignment>> completer = Completer<List<Assignment>>();
+    DateTime now = DateTime.now();
+    String today = '{${now.year}::${now.month}::${now.day}::${now.hour}::${now.minute}}';
+
+    try {
+      String command = 'GET: getAssignments\$${username}\$${today}\u0000';
+      print('Sending command: $command');
+
+      Socket socket = await Socket.connect(ipAddress,
+          8080); // Replace 'your_server_ip_address' with the actual IP address
+      print('Connected to network');
+
+      socket.write(command);
+
+      // Listen for response from server
+      socket.listen((List<int> data) {
+        try {
+          String jsonString = utf8.decode(
+              data); // Convert received byte data to string
+          List<dynamic> jsonList = jsonDecode(
+              jsonString); // Parse JSON string to list
+
+          // Parse each item in the list as a Task
+          List<Assignment> assignments = jsonList.map((json) => Assignment.fromJson(json))
+              .toList();
+
+          socket.close(); // Properly close socket connection
+          completer.complete(assignments); // Complete the future with the list of tasks
+        } catch (e) {
+          print('Error parsing data from server: $e');
+          completer.completeError(e); // Complete the future with an error
+        }
+      }, onError: (e) {
+        print('Error receiving data from server: $e');
+        completer.completeError(e); // Complete the future with an error
+      });
+    } catch (e) {
+      print('Error connecting to network: $e');
+      completer.completeError(
+          e); // Complete the future with an error if connection fails
+    }
+
+    return completer.future;
   }
 
 }

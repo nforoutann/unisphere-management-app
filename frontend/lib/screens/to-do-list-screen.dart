@@ -36,7 +36,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
       done: false, // Assuming new tasks are initially not done
     );
     String timeStr = '{${time.year}::${time.month}::${time.day}::${time.hour}::${time.minute}}';
-    Network.creatTask(widget.username, title,timeStr , false);
+    Network.createTask(widget.username, title,timeStr , false);
     setState(() {
       ongoingTasks.add(newTask);
     });
