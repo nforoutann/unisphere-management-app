@@ -653,11 +653,17 @@ public class Database {
         if(uploaded){
             students = students.substring(1, students.length()-1);
             String[] studentIds = students.split("//");
+            int i = 1;
+            int size = studentIds.length;
             for(String eachStudent : studentIds){
                 if(eachStudent.split("~")[0].equals(getId(username))){
-                    newStudents = newStudents + "//" + getId(username) + "~" + "null" + "yes" + "}";
+                    newStudents =  newStudents + getId(username)  + "~null~yes";
                 } else {
-                    newStudents = newStudents + "//" + eachStudent;
+                    newStudents = newStudents  + eachStudent;
+                }
+                if(i != size){
+                    i++;
+                    newStudents = newStudents + "//";
                 }
             }
 

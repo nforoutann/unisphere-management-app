@@ -10,13 +10,13 @@ class AssignmentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 9, bottom: 6),
+      padding: EdgeInsets.only(top: 8, bottom: 6),
       child: Center(
         child: InkWell(
           onTap: onTap,
           child: Container(
-            width: 350,
-            height: 100,
+            width: 370,
+            height: 95,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: colors, // Change to desired colors

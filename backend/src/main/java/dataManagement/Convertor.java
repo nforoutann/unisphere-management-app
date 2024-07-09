@@ -54,12 +54,14 @@ public class Convertor {
         for(Map.Entry<String, HashMap<String, String>> entry : map.entrySet()) {
             Assignment assignment = new Assignment();
             boolean done = false;
+            String score = "null";
             String students = entry.getValue().get("students");
             students = students.substring(1, students.length()-1);
             String[] studentArray = students.split("//");
             for(String student : studentArray) {
                 if(student.split("~")[0].equals(id)) {
                     done = student.split("~")[2].equals("yes");
+                    score = student.split("~")[1];
                     break;
                 }
             }
@@ -71,7 +73,7 @@ public class Convertor {
             assignment.setCourseName(courseName);
             assignment.setAssignmentId(entry.getKey());
             assignment.setTitle(entry.getValue().get("title"));
-            assignment.setScore(entry.getValue().get("score"));
+            assignment.setScore(score);
             assignment.setType(type.get(entry.getValue().get("type")));
             assignment.setDescription(entry.getValue().get("description"));
             assignment.setEstimatedTime(Integer.parseInt(entry.getValue().get("estimatedTime")));

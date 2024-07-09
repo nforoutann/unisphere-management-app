@@ -45,7 +45,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 50),
+      padding: EdgeInsets.only(bottom: 45),
       child: Stack(
         children: [
           SingleChildScrollView(
@@ -166,7 +166,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
                   final containerHeight = screenHeight / 2;
 
                   return Transform.translate(
-                    offset: Offset(0, 230), // Slide up from the bottom
+                    offset: Offset(0, 220), // Slide up from the bottom
                     child: Container(
                       height: containerHeight,
                       child: Stack(

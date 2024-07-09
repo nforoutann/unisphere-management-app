@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/objects/Assignment.dart';
 import 'package:frontend/widgets/assignment-card.dart';
-import 'package:frontend/widgets/login-signup-button.dart';
-import 'package:frontend/widgets/show-assignment-info.dart';
+import 'package:frontend/widgets/assignment-window.dart';
 
 class StudentAssignmentScreen extends StatefulWidget {
   final String username;
@@ -13,6 +12,7 @@ class StudentAssignmentScreen extends StatefulWidget {
   @override
   State<StudentAssignmentScreen> createState() => _StudentAssignmentScreenState();
 }
+
 class _StudentAssignmentScreenState extends State<StudentAssignmentScreen> {
   bool _isViewingAssignment = false;
   Assignment? _selectedAssignment;
@@ -47,6 +47,7 @@ class _StudentAssignmentScreenState extends State<StudentAssignmentScreen> {
                             _selectedAssignment = ongoingAssignments[index];
                             _isViewingAssignment = true;
                           });
+                          _showAssignmentDialog(context, _selectedAssignment!);
                         },
                       );
                     },
@@ -64,6 +65,7 @@ class _StudentAssignmentScreenState extends State<StudentAssignmentScreen> {
                             _selectedAssignment = expiredAssignments[index];
                             _isViewingAssignment = true;
                           });
+                          _showAssignmentDialog(context, _selectedAssignment!);
                         },
                       );
                     },
@@ -72,32 +74,40 @@ class _StudentAssignmentScreenState extends State<StudentAssignmentScreen> {
               ),
             ),
           ),
-          if (_isViewingAssignment)
-            Positioned.fill(
-              child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _isViewingAssignment = false;
-                  });
-                },
-                child: Container(
-                  color: Colors.black.withOpacity(0.5),
-                ),
-              ),
-            ),
-          if (_isViewingAssignment && _selectedAssignment != null)
-            ShowAssignment(
-              assignment: _selectedAssignment!,
-              username: widget.username,
-              isViewing: _isViewingAssignment, // Pass the current state
-              onClose: () { // Add a callback to update _isViewingAssignment
-                setState(() {
-                  _isViewingAssignment = false;
-                });
-              },
-            ),
         ],
       ),
+    );
+  }
+
+  void _showAssignmentDialog(BuildContext context, Assignment assignment) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Padding(
+          padding: EdgeInsets.symmetric(vertical: 130, horizontal: 20),
+          child: Stack(
+            children: [
+              // Bottom layer
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  color: Colors.white,
+                ),
+              ),
+              // Top layer
+              Container(
+                margin: EdgeInsets.all(10),
+                padding: EdgeInsets.only(top: 10, right: 550, bottom: 100, left: 550),
+                decoration: BoxDecoration(
+                  color: Color(0xFF171717),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+              ),
+              AssignmentWindow(assignment: assignment, username: widget.username,), // Pass the selected assignment
+            ],
+          ),
+        );
+      },
     );
   }
 }
