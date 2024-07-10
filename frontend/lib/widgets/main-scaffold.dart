@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/objects/Student.dart';
+import 'package:frontend/screens/studnet-profile-info.dart';
 
 class MyScaffold extends StatelessWidget{
-  MyScaffold({super.key, this.child, this.navigationBar, required this.text, this.firstButton, this.secondButton});
+  MyScaffold({super.key, this.child, this.navigationBar, required this.text, this.firstButton, this.secondButton, this.student});
   Widget? child;
   Widget? navigationBar;
   Color backgroundColor = Color(0xFF171717);
   String? text;
   Widget? firstButton;
   Widget? secondButton;
+  Student? student;
 
 
   @override
@@ -32,7 +35,10 @@ class MyScaffold extends StatelessWidget{
               backgroundColor: WidgetStateProperty.all(Colors.indigoAccent),
             ),
             onPressed: () {
-              //todo
+              Navigator.push(
+                context,
+              MaterialPageRoute(builder: (context) => ProfileScreen(student: student,))
+              );
             },
           ),
         ),
@@ -46,8 +52,7 @@ class MyScaffold extends StatelessWidget{
         backgroundColor: backgroundColor,
         elevation: 0,
         actions: [
-          if(firstButton!=null) firstButton!,
-          if(secondButton!=null) Padding(padding: EdgeInsets.only(right: 15) ,child: secondButton!),
+
         ],
       ),
       backgroundColor: backgroundColor,

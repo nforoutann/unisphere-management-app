@@ -577,6 +577,11 @@ public class Database {
         user.get(username).put("password", newPassword);
         printNewData(Convertor.mapOfDataToString(user), usersPath);
     }
+    public void changeName(String username, String newName){
+        var users = getInstance().getUsersDataMap();
+        users.get(username).put("name", newName);
+        printNewData(Convertor.mapOfDataToString(users), usersPath);
+    }
     public void changeUsername(String username, String newUsername){
         var user = getInstance().getUsersDataMap();
         user.get(username).put("username", newUsername);
@@ -1069,8 +1074,9 @@ public class Database {
     }
 
 
-    public static void main(String[] args) {
-        getInstance().setScore("nazanin", "1111&2&1", "18");
+    public List<News> getNews(){
+        var newsData = getInstance().getNewsDataMap();
+        return Convertor.mapToListOfNews(newsData);
     }
 
 }

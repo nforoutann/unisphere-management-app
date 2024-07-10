@@ -15,20 +15,23 @@ public class Controller {
                 String role = request.split("\\$")[1];
                 String name = request.split("\\$")[2];
                 String username = request.split("\\$")[3];
-                String email, password, studentId;
+                String email, password, studentId="", code="";
+                email = request.split("\\$")[5];
+                password = request.split("\\$")[6];
                 if(role.equals("student")){
                     studentId = request.split("\\$")[4];
                     role = "student"+"$"+studentId;
-                    email = request.split("\\$")[5];
-                    password = request.split("\\$")[6];
                 } else{
-                    email = request.split("\\$")[4];
-                    password = request.split("\\$")[5];
+                   code = request.split("\\$")[4];
                 }
                 if(Database.getInstance().isUsernameAvailable(username)){
                     res = "409";
                 } else{
-                    Database.getInstance().createUser(role, username, password, name, email);
+                    if(role.equals("student")){
+                        Database.getInstance().createStudent(username, password, name, studentId, email);
+                    }else{
+                        Database.getInstance().createTeacher(username, password, name, code, email);
+                    }
                     res = "200";
                 }
                 break;
@@ -99,6 +102,29 @@ public class Controller {
                 done = request.split("\\$")[5].equals("yes");
                 res = Database.getInstance().editAssignment(username, assignmentId, estimatedTime, description, done);
                 res = "200";
+                break;
+            case "GET: getNews":
+                List<News> news = Database.getInstance().getNews();
+                res = new NewsListWrapper(news);
+                break;
+            case "POST: changeUsername":
+                username = request.split("\\$")[1];
+                String newUsername = request.split("\\$")[2];
+                Database.getInstance().changeUsername(username, newUsername);
+                break;
+            case "POST: changePassword":
+                username = request.split("\\$")[1];
+                String newPassword = request.split("\\$")[2];
+                Database.getInstance().changePassword(username, newPassword);
+                break;
+            case "POST: changeName":
+                username = request.split("\\$")[1];
+                String newName = request.split("\\$")[2];
+                Database.getInstance().changeName(username, newName);
+                break;
+            case "POST: deleteStudent":
+                username = request.split("\\$")[1];
+                Database.getInstance().deleteStudent(username);
                 break;
             default:
                 res = "404";

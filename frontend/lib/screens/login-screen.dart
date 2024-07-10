@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/network/network-helper.dart';
+import 'package:frontend/objects/Student.dart';
 import 'package:frontend/screens/signup-screen.dart';
 import 'package:frontend/widgets/custom-scaffold.dart';
 import 'package:frontend/widgets/login-signup-button.dart';
@@ -160,12 +161,30 @@ class _LoginScreenState extends State<LoginScreen> {
                               _usernameCheck = true;
                               _passwordCheck = true;
                               // todo createStudent(_usernameController.text, ipAddress);
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => StudentMain(username: _usernameController.text)
-                                ),
-                              );
+                              String username = _usernameController.text; // Assuming _usernameController is a TextEditingController
+                              Network.getStudent(username).then((student) {
+                                // This code runs when student data is successfully fetched
+                                print('Fetched student: ${student.name}');
+
+                                // Navigate to the next screen with student data
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => StudentMain(
+                                      username: _usernameController.text,
+                                      student: student,
+                                    ),
+                                  ),
+                                );
+                              }).catchError((error) {
+                                // Handle error if student fetching fails
+                                print('Error fetching student: $error');
+                                if (error is String && error == '409') {
+                                  Messages.error(context, Color(0xffa8183e), 'Password Is Incorrect');
+                                  _usernameCheck = true; // Ensure _usernameCheck is properly handled in your code
+                                }
+                              });
+
                             } else if(result == '409'){
                               Messages.error(context ,Color(0xffa8183e), 'Password Is Incorrect');
                               _usernameCheck = true;

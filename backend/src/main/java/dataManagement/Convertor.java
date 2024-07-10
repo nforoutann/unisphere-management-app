@@ -3,6 +3,7 @@ package dataManagement;
 import objects.serializable.Assignment;
 import objects.serializable.AssignmentType;
 import objects.serializable.Course;
+import objects.serializable.News;
 
 import java.util.*;
 
@@ -82,6 +83,18 @@ public class Convertor {
             assignment.setDefinedTime(definedTimeStr);
             assignment.setActive(active);
             res.add(assignment);
+        }
+        return res;
+    }
+
+    public static List<News> mapToListOfNews(HashMap<String, HashMap<String, String>> map){
+        List<News> res = new ArrayList<>();
+        for(Map.Entry<String, HashMap<String, String>> entry : map.entrySet()) {
+            News news = new News();
+            news.setTitle(entry.getValue().get("title"));
+            news.setContext(entry.getValue().get("context"));
+            news.setTag(entry.getValue().get("tag"));
+            res.add(news);
         }
         return res;
     }

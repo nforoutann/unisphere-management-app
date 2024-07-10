@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:async';
 import 'package:frontend/objects/Assignment.dart';
 import 'package:frontend/objects/Course.dart';
+import 'package:frontend/objects/News.dart';
 import 'package:frontend/objects/Student.dart';
 import 'package:frontend/objects/Task.dart';
 import 'package:frontend/widgets/messages.dart';
@@ -319,7 +320,6 @@ class Network {
   }
 
   static Future<void> editAssignment(String username, String assignmentId, String estimatedTime, String description, bool uploaded) async {
-    print('hello');
     String command = 'POST: editAssignment\$${username}\$${assignmentId}\$${estimatedTime}\$${description}\$${uploaded ? "yes" : "no"}\u0000';
     String response = "";
     Completer<String> responseCompleter = Completer<String>();
@@ -359,5 +359,173 @@ class Network {
     print("----------   network response is:  { $response }");
   }
 
+  static Future<List<News>> getNews() async {
+    Completer<List<News>> completer = Completer<List<News>>();
+
+    try {
+      String command = 'GET: getNews\u0000';
+      print('Sending command: $command');
+
+      Socket socket = await Socket.connect(ipAddress,
+          8080); // Replace 'your_server_ip_address' with the actual IP address
+      print('Connected to network');
+
+      socket.write(command);
+
+      // Listen for response from server
+      socket.listen((List<int> data) {
+        try {
+          String jsonString = utf8.decode(
+              data); // Convert received byte data to string
+          List<dynamic> jsonList = jsonDecode(
+              jsonString); // Parse JSON string to list
+
+          // Parse each item in the list as a Task
+          List<News> news = jsonList.map((json) => News.fromJson(json))
+              .toList();
+
+          socket.close(); // Properly close socket connection
+          completer.complete(
+              news); // Complete the future with the list of tasks
+        } catch (e) {
+          print('Error parsing data from server: $e');
+          completer.completeError(e); // Complete the future with an error
+        }
+      }, onError: (e) {
+        print('Error receiving data from server: $e');
+        completer.completeError(e); // Complete the future with an error
+      });
+    } catch (e) {
+      print('Error connecting to network: $e');
+      completer.completeError(
+          e); // Complete the future with an error if connection fails
+    }
+
+    return completer.future;
+  }
+
+  static Future<void> changeUsername(String username, String newUsername) async{
+    String command = 'POST: changeUsername\$${username}\$${newUsername}\u0000';
+    String response = "";
+    Completer<String> responseCompleter = Completer<String>();
+
+    await Socket.connect(ipAddress, 8080).then((serverSocket) {
+      serverSocket.write(command);
+      serverSocket.flush();
+      serverSocket.listen((socketResponse) {
+        response = String.fromCharCodes(socketResponse);
+        responseCompleter.complete(response);
+        serverSocket.destroy(); // Close the socket after receiving the response
+      }, onDone: () {
+        if (!responseCompleter.isCompleted) {
+          responseCompleter.completeError("Socket closed without response");
+        }
+      }, onError: (error) {
+        responseCompleter.completeError(error);
+      });
+    }).catchError((error) {
+      responseCompleter.completeError(error);
+    });
+
+    try {
+      response = await responseCompleter.future;
+    } catch (e) {
+      print("Error receiving response: $e");
+    }
+    print("----------   network response is:  { $response }");
+  }
+
+  static Future<void> changePassword(String username, String password) async{
+    String command = 'POST: changePassword\$${username}\$${password}\u0000';
+    String response = "";
+    Completer<String> responseCompleter = Completer<String>();
+
+    await Socket.connect(ipAddress, 8080).then((serverSocket) {
+      serverSocket.write(command);
+      serverSocket.flush();
+      serverSocket.listen((socketResponse) {
+        response = String.fromCharCodes(socketResponse);
+        responseCompleter.complete(response);
+        serverSocket.destroy(); // Close the socket after receiving the response
+      }, onDone: () {
+        if (!responseCompleter.isCompleted) {
+          responseCompleter.completeError("Socket closed without response");
+        }
+      }, onError: (error) {
+        responseCompleter.completeError(error);
+      });
+    }).catchError((error) {
+      responseCompleter.completeError(error);
+    });
+
+    try {
+      response = await responseCompleter.future;
+    } catch (e) {
+      print("Error receiving response: $e");
+    }
+    print("----------   network response is:  { $response }");
+  }
+
+  static Future<void> changeName(String username, String name) async{
+    String command = 'POST: changeName\$${username}\$${name}\u0000';
+    String response = "";
+    Completer<String> responseCompleter = Completer<String>();
+
+    await Socket.connect(ipAddress, 8080).then((serverSocket) {
+      serverSocket.write(command);
+      serverSocket.flush();
+      serverSocket.listen((socketResponse) {
+        response = String.fromCharCodes(socketResponse);
+        responseCompleter.complete(response);
+        serverSocket.destroy(); // Close the socket after receiving the response
+      }, onDone: () {
+        if (!responseCompleter.isCompleted) {
+          responseCompleter.completeError("Socket closed without response");
+        }
+      }, onError: (error) {
+        responseCompleter.completeError(error);
+      });
+    }).catchError((error) {
+      responseCompleter.completeError(error);
+    });
+
+    try {
+      response = await responseCompleter.future;
+    } catch (e) {
+      print("Error receiving response: $e");
+    }
+    print("----------   network response is:  { $response }");
+  }
+
+  static Future<void> deleteStudent(String username) async{
+    String command = 'POST: deleteStudent\$${username}\u0000';
+    String response = "";
+    Completer<String> responseCompleter = Completer<String>();
+
+    await Socket.connect(ipAddress, 8080).then((serverSocket) {
+      serverSocket.write(command);
+      serverSocket.flush();
+      serverSocket.listen((socketResponse) {
+        response = String.fromCharCodes(socketResponse);
+        responseCompleter.complete(response);
+        serverSocket.destroy(); // Close the socket after receiving the response
+      }, onDone: () {
+        if (!responseCompleter.isCompleted) {
+          responseCompleter.completeError("Socket closed without response");
+        }
+      }, onError: (error) {
+        responseCompleter.completeError(error);
+      });
+    }).catchError((error) {
+      responseCompleter.completeError(error);
+    });
+
+    try {
+      response = await responseCompleter.future;
+    } catch (e) {
+      print("Error receiving response: $e");
+    }
+    print("----------   network response is:  { $response }");
+  }
 
 }

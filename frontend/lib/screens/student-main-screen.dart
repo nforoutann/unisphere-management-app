@@ -3,6 +3,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:frontend/network/network-helper.dart';
 import 'package:frontend/objects/Assignment.dart';
 import 'package:frontend/objects/Course.dart';
+import 'package:frontend/objects/News.dart';
 import 'package:frontend/objects/Student.dart';
 import 'package:frontend/screens/student-assignments-screen.dart';
 import 'package:frontend/screens/student-classes-screen.dart';
@@ -24,8 +25,9 @@ void main() {
 
 class StudentMain extends StatefulWidget {
   final String username;
+  Student? student;
 
-  StudentMain({required this.username});
+  StudentMain({required this.username, this.student});
 
   @override
   _StudentMainState createState() => _StudentMainState();
@@ -38,6 +40,7 @@ class _StudentMainState extends State<StudentMain> {
   List<Course>? courses;
   bool _isAddingCourse = false; // Track the state for adding a course
   List<Assignment>? assignments;
+  List<News>? news;
 
   @override
   void initState() {
@@ -91,6 +94,17 @@ class _StudentMainState extends State<StudentMain> {
     }
   }
 
+  Future<void> _fetchListNews() async {
+    try {
+      List<News> news = await Network.getNews();
+      setState(() {
+        this.news = news;
+      });
+    } catch (e) {
+      print('Error fetching courses: $e');
+    }
+  }
+
   void _toggleAddingCourse() {
     setState(() {
       _isAddingCourse = !_isAddingCourse;
@@ -103,7 +117,7 @@ class _StudentMainState extends State<StudentMain> {
       assignments != null ? StudentAssignmentScreen(assignments: assignments, username: widget.username) : Center(child: CircularProgressIndicator()),
       student != null ? StudentHomeScreen(student: student!) : Center(child: CircularProgressIndicator()),
       courses != null ? StudentClassScreen(courses: courses!, onToggleAddingCourse: _toggleAddingCourse) : Center(child: CircularProgressIndicator()),
-      StudentNewsScreen(),
+      news != null ? StudentNewsScreen(list: news!) : Center(child: CircularProgressIndicator())
     ];
 
     if (index == 3) {
@@ -191,6 +205,8 @@ class _StudentMainState extends State<StudentMain> {
         _fetchListTasks();
       } else if (index == 3) {
         _fetchListCourses();
+      } else if(index == 4){
+        _fetchListNews();
       }
     });
   }
@@ -202,6 +218,7 @@ class _StudentMainState extends State<StudentMain> {
     return MyScaffold(
       text: texts[_currentIndex],
       child: _pages(_currentIndex),
+      student: student,
       navigationBar: CurvedNavigationBar(
         index: _currentIndex,
         height: 60,

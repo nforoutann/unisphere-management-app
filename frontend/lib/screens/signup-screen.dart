@@ -370,31 +370,44 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return regExp.hasMatch(id);
   }
 
-  Future<String> _signUp() async { //todo move to network helper
+  Future<void> _signUp() async {
     String command = "";
-    if(_selectedRoleIndex == 0){
+    if (_selectedRoleIndex != 0) {
       command = 'GET: SignUpChecker\$student\$${_nameController.text}\$${_usernameController.text}\$${_idController.text}\$${_emailController.text}\$${_passwordController.text}\u0000';
-    } else{
-      command = 'GET: SignUpChecker\$teacher\$${_nameController.text}\$${_usernameController.text}\$${_emailController.text}\$${_passwordController.text}\u0000';
+    } else {
+      command = 'GET: SignUpChecker\$teacher\$${_nameController.text}\$${_usernameController.text}\$${_departmentController.text}\$${_emailController.text}\$${_passwordController.text}\u0000';
     }
-    await Socket.connect("192.168.0.104", 8080).then((serverSocket) {
-      serverSocket
-          .write(command);
+
+    try {
+      final serverSocket = await Socket.connect("192.168.1.8", 8080);
+      serverSocket.write(command);
       serverSocket.flush();
+
       serverSocket.listen((socketResponse) {
         setState(() {
           response = String.fromCharCodes(socketResponse);
         });
-      });
-    });
-    print("----------   network response is:  { $response }");
 
-    if (response == "409") {
-      //409 means conflict so the username is already used
-      _usernameCheck = false;
-    } else if (response == "200") {
-      _usernameCheck = true;
+        print("---------- network response is: { $response }");
+
+        if (response == "409") {
+          _error(Color(0xffa8183e), "Username is already used");
+        } else if (response == "200") {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (e) => LoginScreen()),
+          );
+        } else {
+          _error(Color(0xffa8183e), "Unknown error occurred");
+        }
+      }).onDone(() {
+        serverSocket.destroy();
+      });
+
+    } catch (e) {
+      print("Error connecting to the server: $e");
+      _error(Color(0xffa8183e), "Could not connect to the server");
     }
-    return response;
   }
+
 }
