@@ -181,7 +181,7 @@ class AssignmentWindow extends StatelessWidget {
                     Align(
                       child: TextField(
                         controller: descriptionController,
-                        maxLines: 4,
+                        maxLines: 3,
                         decoration: InputDecoration(
                           hintText: '${assignment.description}',
                           hintStyle: TextStyle(color: Colors.white70),

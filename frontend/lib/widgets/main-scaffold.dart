@@ -52,7 +52,8 @@ class MyScaffold extends StatelessWidget{
         backgroundColor: backgroundColor,
         elevation: 0,
         actions: [
-
+          firstButton!=null ? firstButton! : Container(),
+          secondButton!=null ? secondButton! : Container(),
         ],
       ),
       backgroundColor: backgroundColor,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/objects/Assignment.dart';
+import 'package:frontend/objects/date-hour.dart';
 import 'package:frontend/widgets/assignment-card.dart';
 import 'package:frontend/widgets/assignment-window.dart';
 
@@ -84,7 +85,7 @@ class _StudentAssignmentScreenState extends State<StudentAssignmentScreen> {
       context: context,
       builder: (BuildContext context) {
         return Padding(
-          padding: EdgeInsets.symmetric(vertical: 130, horizontal: 20),
+          padding: EdgeInsets.symmetric(vertical: 155, horizontal: 20),
           child: Stack(
             children: [
               // Bottom layer

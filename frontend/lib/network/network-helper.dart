@@ -6,7 +6,6 @@ import 'package:frontend/objects/Course.dart';
 import 'package:frontend/objects/News.dart';
 import 'package:frontend/objects/Student.dart';
 import 'package:frontend/objects/Task.dart';
-import 'package:frontend/widgets/messages.dart';
 
 class Network {
   static String ipAddress = "192.168.1.8";
@@ -26,24 +25,20 @@ class Network {
 
       // Listen for response from server
       socket.listen((List<int> data) {
-        String jsonString = utf8.decode(
-            data); // Convert received byte data to string
-        Map<String, dynamic> jsonMap = jsonDecode(
-            jsonString); // Parse JSON string to map
+        String jsonString = utf8.decode(data); // Convert received byte data to string
+        Map<String, dynamic> jsonMap = jsonDecode(jsonString); // Parse JSON string to map
 
         Student student = Student.fromJson(jsonMap);
 
         socket.close(); // Properly close socket connection
-        completer.complete(
-            student); // Complete the future with the student object
+        completer.complete(student); // Complete the future with the student object
       }, onError: (e) {
         print('Error receiving data from server: $e');
         completer.completeError(e); // Complete the future with an error
       });
     } catch (e) {
       print('Error connecting to network: $e');
-      completer.completeError(
-          e); // Complete the future with an error if connection fails
+      completer.completeError(e); // Complete the future with an error if connection fails
     }
 
     return completer.future;

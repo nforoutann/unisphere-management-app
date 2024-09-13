@@ -1,4 +1,4 @@
-teacher>mahdi,,assignments>{3333&1&1},,students>{4023~18.2},,best>4022,,time>{TUESDAY=9:30~11:00//MONDAY=13:00~15:30},,title>the basics of programming,,credit>3,,courseId>3333&3,,done>false
+teacher>mahdi,,assignments>{3333&1&1},,students>{4023~18.2//4022~0},,best>4022,,time>{TUESDAY=9:30~11:00//MONDAY=13:00~15:30},,title>the basics of programming,,credit>3,,courseId>3333&3,,done>false
 teacher>mahdi,,assignments>{3333&2&1},,students>{4022~18.12},,best>4022,,time>{TUESDAY=9:30~11:00//MONDAY=13:00~15:30},,title>english,,credit>2,,courseId>3333&2,,done>false
 teacher>mahdi,,assignments>{3333&1&1},,students>{4022~19.5},,best>4022,,time>{TUESDAY=9:30~11:00//MONDAY=13:00~15:30},,title>the basics of programming,,credit>3,,courseId>3333&1,,done>false
 teacher>foroutan,,assignments>{1111&2&1//3333&2&1},,students>{4022~18.5},,best>4022,,time>{TUESDAY=9:30~11:00//MONDAY=13:00~15:30},,title>electrical circuits,,credit>2,,courseId>1111&2,,done>false

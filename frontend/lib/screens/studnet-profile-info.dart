@@ -130,7 +130,11 @@ class ProfileScreen extends StatelessWidget {
                               ),
                               actions: <Widget>[
                                 TextButton(
-                                  child: Text('Update Username'),
+                                  child: Text('Update Username', style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Montserrat',
+                                  ),),
                                   onPressed: () {
                                     if(username.isNotEmpty)
                                       Network.changeUsername(student!.username, username);
@@ -138,7 +142,11 @@ class ProfileScreen extends StatelessWidget {
                                   },
                                 ),
                                 TextButton(
-                                  child: Text('Update Password'),
+                                  child: Text('Update Password', style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Montserrat',
+                                  ),),
                                   onPressed: () {
                                     if(password.isNotEmpty)
                                       Network.changePassword(student!.username, password);
@@ -147,7 +155,11 @@ class ProfileScreen extends StatelessWidget {
                                   },
                                 ),
                                 TextButton(
-                                  child: Text('Update Name'),
+                                  child: Text('Update Name', style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Montserrat',
+                                  ),),
                                   onPressed: () {
                                     if(name.isNotEmpty){
                                       Network.changeName(student!.username, name);
@@ -164,7 +176,7 @@ class ProfileScreen extends StatelessWidget {
                         backgroundColor: MaterialStateProperty.all<Color>(Color(0xffcb229d)),
                         fixedSize: MaterialStateProperty.all<Size>(Size(200, 50)),
                       ),
-                      child: Text("Change Info", style: TextStyle(color: Colors.white),),
+                      child: Text("Change Info", style: TextStyle(color: Colors.white, fontFamily: 'Montserrat'),),
                     ),
                     SizedBox(height: 20,),
                     ElevatedButton(
@@ -201,7 +213,7 @@ class ProfileScreen extends StatelessWidget {
                         backgroundColor: MaterialStateProperty.all<Color>(Color(0xffc31560)),
                         fixedSize: MaterialStateProperty.all<Size>(Size(200, 50)),
                       ),
-                      child: Text("Delete Account", style: TextStyle(color: Colors.white),),
+                      child: Text("Delete Account", style: TextStyle(color: Colors.white, fontFamily: 'Montserrat'),),
                     ),
                     SizedBox(height: 20,),
                   ],
