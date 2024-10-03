@@ -8,7 +8,7 @@ import 'package:frontend/objects/Student.dart';
 import 'package:frontend/objects/Task.dart';
 
 class Network {
-  static String ipAddress = "192.168.1.8";
+  static String ipAddress = "192.168.124.66";
 
   static Future<Student> getStudent(String username) async {
     Completer<Student> completer = Completer<Student>();
@@ -129,18 +129,15 @@ class Network {
       // Listen for response from server
       socket.listen((List<int> data) {
         try {
-          String jsonString = utf8.decode(
-              data); // Convert received byte data to string
-          List<dynamic> jsonList = jsonDecode(
-              jsonString); // Parse JSON string to list
+          String jsonString = utf8.decode(data); // Convert received byte data to string
+          List<dynamic> jsonList = jsonDecode(jsonString); // Parse JSON string to list
 
           // Parse each item in the list as a Task
           List<Task> tasks = jsonList.map((json) => Task.fromJson(json))
               .toList();
 
           socket.close(); // Properly close socket connection
-          completer.complete(
-              tasks); // Complete the future with the list of tasks
+          completer.complete(tasks); // Complete the future with the list of tasks
         } catch (e) {
           print('Error parsing data from server: $e');
           completer.completeError(e); // Complete the future with an error
@@ -151,8 +148,7 @@ class Network {
       });
     } catch (e) {
       print('Error connecting to network: $e');
-      completer.completeError(
-          e); // Complete the future with an error if connection fails
+      completer.completeError(e); // Complete the future with an error if connection fails
     }
 
     return completer.future;

@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:delightful_toast/delight_toast.dart';
 import 'package:delightful_toast/toast/components/toast_card.dart';
 import 'package:delightful_toast/toast/utils/enums.dart';
@@ -7,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:frontend/screens/login-screen.dart';
 import 'package:frontend/widgets/custom-scaffold.dart';
 import 'package:frontend/widgets/login-signup-button.dart';
-import 'dart:io';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -24,12 +22,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _departmentController = TextEditingController();
 
-  bool _usernameCheck = false;
   bool _isPasswordVisible = false;
   int _selectedRoleIndex = 0;
   String response="";
-
-  final List<String> _roles = ['Student', 'Teacher'];
 
   @override
   void dispose() {
@@ -62,7 +57,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
             ),
           Padding(
-            padding: EdgeInsets.only(top: isKeyboardOpen ? 5 : 45), // Adjusted the padding to move the column higher
+            padding: EdgeInsets.only(top: isKeyboardOpen ? 0 : 45), // Adjusted the padding to move the column higher
             child: Container(
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
@@ -76,12 +71,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(top: isKeyboardOpen ? 13 : 58), // Adjusted the padding to move the column higher
+            padding: EdgeInsets.only(top: isKeyboardOpen ? 8 : 58), // Adjusted the padding to move the column higher
             child: Container(
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(40),
-                  topRight: Radius.circular(40),
+                  topLeft: Radius.circular(35),
+                  topRight: Radius.circular(35),
                 ),
                 color: Color(0xFF171717),
               ),
@@ -96,19 +91,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SizedBox(height: isKeyboardOpen ? 30 : 70), // Adjusted the height to move the column higher
-                        _buildSegmentedButton(),
+                        SizedBox(height: isKeyboardOpen ? 20 : 60), // Adjusted the height to move the column higher
                         const SizedBox(height: 20),
                         _buildTextField(_nameController, 'Name', Icons.account_circle),
                         const SizedBox(height: 10),
                         _buildTextField(_usernameController, 'Username', Icons.person),
                         const SizedBox(height: 10),
-                        if (_selectedRoleIndex == 0)...{
-                          _buildTextField(_idController, 'Student ID', Icons.school),
-                        }else...{
-                          _buildTextField(_idController, "Teacher's Code", Icons.vpn_key),
-                          //todo check being unique
-                        },
+                        _buildTextField(_idController, 'Student ID', Icons.school),
                         const SizedBox(height: 10),
                         _buildTextField(_emailController, 'Email', Icons.email),
                         const SizedBox(height: 10),
@@ -195,33 +184,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  Widget _buildSegmentedButton() {
-    return ToggleButtons(
-      borderColor: Colors.indigo,
-      fillColor: Colors.indigo,
-      borderWidth: 2,
-      selectedBorderColor: Colors.white,
-      selectedColor: Colors.white,
-      borderRadius: BorderRadius.circular(15),
-      children: _roles.map((role) {
-        return  Padding(
-          padding:  EdgeInsets.symmetric(horizontal: 16.0),
-          child: Text(
-              role,
-              style: TextStyle(fontSize: 16,
-            color: Colors.white,
-                fontFamily: 'Montserrat',
-          )),
-        );
-      }).toList(),
-      onPressed: (int index) {
-        setState(() {
-          _selectedRoleIndex = index;
-        });
-      },
-      isSelected: List.generate(_roles.length, (index) => _selectedRoleIndex == index),
-    );
-  }
 
   Widget _buildTextField(TextEditingController controller, String label, IconData icon) {
     return SizedBox(
