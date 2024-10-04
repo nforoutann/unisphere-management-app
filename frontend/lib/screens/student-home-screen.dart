@@ -246,7 +246,7 @@
                     Row(
                       children: [
                         const Padding(
-                          padding: EdgeInsets.only(left: 30),
+                          padding: EdgeInsets.only(left: 27),
                           child: Align(
                             alignment: Alignment.topLeft,
                             child: Text(
@@ -310,13 +310,24 @@
                                 child: ListTile(
                                   title: Padding(
                                     padding: EdgeInsets.only(left: 1, right: 1),
-                                    child: Text(
-                                      '${widget.student!.ongoingTasks[index].title}',
-                                      style: const TextStyle(
-                                        fontFamily: 'Montserrat',
-                                        color: Colors.black,
-                                      ),
-                                    ),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '${widget.student!.ongoingTasks[index].title}',
+                                          style: const TextStyle(
+                                            fontFamily: 'Montserrat',
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        Text(
+                                          '${widget.student!.ongoingTasks[index].time.hour<10 ? '0'+widget.student!.ongoingTasks[index].time.hour.toString() : widget.student!.ongoingTasks[index].time.hour}:${widget.student!.ongoingTasks[index].time.minute<10 ? '0'+widget.student!.ongoingTasks[index].time.minute.toString() : widget.student!.ongoingTasks[index].time.minute}',
+                                          style: TextStyle(
+                                              fontSize: 14
+                                          ),
+                                        )
+                                      ],
+                                    )
                                   ),
                                 ),
                               ),

@@ -17,18 +17,14 @@ class _StudentNewsScreenState extends State<StudentNewsScreen> {
   @override
   void initState() {
     super.initState();
-    // Extract unique tags from the news list
     tags = widget.list.map((news) => news.tag).toSet().toList();
-    // Optional: Set the initial selected tag to the first tag
-    if (tags.isNotEmpty) {
-      selectedTag = tags[0];
-    }
+    tags.insert(0, 'All');
+    selectedTag = 'All';
   }
 
   @override
   Widget build(BuildContext context) {
-    // Filter news list based on the selected tag
-    List<News> filteredNews = selectedTag == null
+    List<News> filteredNews = selectedTag == 'All'
         ? widget.list
         : widget.list.where((news) => news.tag == selectedTag).toList();
 
@@ -72,7 +68,7 @@ class _StudentNewsScreenState extends State<StudentNewsScreen> {
             itemCount: filteredNews.length,
             itemBuilder: (context, index) {
               return Container(
-                margin: EdgeInsets.all(10),
+                margin: EdgeInsets.only(right: 10, left: 10 ,bottom: 7, top: 8),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
@@ -92,7 +88,7 @@ class _StudentNewsScreenState extends State<StudentNewsScreen> {
                       Text(
                         filteredNews[index].title,
                         style: TextStyle(
-                          fontSize:23,
+                          fontSize: 23,
                           fontWeight: FontWeight.w800,
                           color: Colors.black,
                           fontStyle: FontStyle.italic,
@@ -103,7 +99,7 @@ class _StudentNewsScreenState extends State<StudentNewsScreen> {
                         filteredNews[index].context,
                         style: TextStyle(
                           color: Colors.black,
-                          fontSize: 16
+                          fontSize: 16,
                         ),
                       ),
                     ],

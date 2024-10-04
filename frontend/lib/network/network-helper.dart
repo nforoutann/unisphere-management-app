@@ -310,8 +310,8 @@ class Network {
     return completer.future;
   }
 
-  static Future<void> editAssignment(String username, String assignmentId, String estimatedTime, String description, bool uploaded) async {
-    String command = 'POST: editAssignment\$${username}\$${assignmentId}\$${estimatedTime}\$${description}\$${uploaded ? "yes" : "no"}\u0000';
+  static Future<void> editAssignment(String username, String assignmentId, String description, bool uploaded) async {
+    String command = 'POST: editAssignment\$${username}\$${assignmentId}\$${description}\$${uploaded ? "yes" : "no"}\u0000';
     String response = "";
     Completer<String> responseCompleter = Completer<String>();
     print(command);

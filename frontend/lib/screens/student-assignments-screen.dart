@@ -85,7 +85,7 @@ class _StudentAssignmentScreenState extends State<StudentAssignmentScreen> {
       context: context,
       builder: (BuildContext context) {
         return Padding(
-          padding: EdgeInsets.symmetric(vertical: 155, horizontal: 20),
+          padding: EdgeInsets.symmetric(vertical: 170, horizontal: 20),
           child: Stack(
             children: [
               // Bottom layer
@@ -98,7 +98,6 @@ class _StudentAssignmentScreenState extends State<StudentAssignmentScreen> {
               // Top layer
               Container(
                 margin: EdgeInsets.all(10),
-                padding: EdgeInsets.only(top: 10, right: 550, bottom: 100, left: 550),
                 decoration: BoxDecoration(
                   color: Color(0xFF171717),
                   borderRadius: BorderRadius.circular(15),

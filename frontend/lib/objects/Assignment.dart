@@ -7,7 +7,6 @@ class Assignment {
   AssignmentType? assignmentType;
   DateTime? deadline;
   DateTime? definedTime;
-  int? estimatedTime;
   String? courseName;
   String? description;
 
@@ -20,7 +19,6 @@ class Assignment {
     this.assignmentType,
     this.deadline,
     this.definedTime,
-    this.estimatedTime,
     this.courseName,
     this.done,
     this.description
@@ -51,7 +49,6 @@ class Assignment {
           : null,
       deadline: deadline, // Assuming deadline is in ISO 8601 format
       definedTime: definedTime, // Assuming definedTime is in ISO 8601 format
-      estimatedTime: json['estimatedTime'],
     );
   }
 

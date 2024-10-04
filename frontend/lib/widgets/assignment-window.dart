@@ -122,51 +122,6 @@ class AssignmentWindow extends StatelessWidget {
               SizedBox(height: 10,),
               Align(
                 alignment: Alignment(-1, 0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        'Estimated Time: ',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18),
-                      ),
-                      flex: 1,
-                    ),
-                    SizedBox(width: 10),
-                    Expanded(
-                      child: TextField(
-                        controller: estimatedController,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          hintText: '${assignment.estimatedTime} Hours',
-                          hintStyle: TextStyle(color: Colors.white70),
-                          contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(15)),
-                            borderSide: BorderSide(color: Colors.white),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                          ),
-                        ),
-                        style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontSize: 18,
-                          fontStyle: FontStyle.italic,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 10,),
-              Align(
-                alignment: Alignment(-1, 0),
                 child: Column(
                   children: [
                     Align(
@@ -284,8 +239,7 @@ class AssignmentWindow extends StatelessWidget {
                           await Network.editAssignment(
                             username,
                             assignment.assignmentId!,
-                            estimatedController.text.isEmpty ? assignment.estimatedTime.toString() : estimatedController.text,
-                            descriptionController.text.isEmpty ? assignment.estimatedTime.toString() : descriptionController.text,
+                            descriptionController.text.isEmpty ? assignment.description.toString() : descriptionController.text,
                             uploaded,
                           );
                         },
