@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/welcome-screen.dart';
+import 'package:frontend/widgets/login-signup-button.dart';
 import '../objects/Student.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   final Student? student;
   ProfileScreen({super.key, this.student});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
   bool defaultPic = true;
-  String picLink = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaQeMovPaX_94Cg4UGBU-5a70WR1eXhHRz-w&s';
+  String picLink = '';
+  //https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaQeMovPaX_94Cg4UGBU-5a70WR1eXhHRz-w&s
+
+  TextEditingController link = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +36,7 @@ class ProfileScreen extends StatelessWidget {
         ),
         backgroundColor: Colors.transparent,
       ),
-      body: Container(
+      body: SingleChildScrollView(
         child: Column(
           children: [
             SizedBox(
@@ -55,11 +65,11 @@ class ProfileScreen extends StatelessWidget {
                               color: Colors.white,
                             )
                                 : ClipOval(
-                              child: Image.network(
-                                picLink,
-                                fit: BoxFit.cover,
-                                width: 200,
-                                height: 200,
+                                  child: Image.network(
+                                  picLink,
+                                  fit: BoxFit.cover,
+                                  width: 200,
+                                  height: 200,
                               ),
                             ),
                           ),
@@ -74,13 +84,108 @@ class ProfileScreen extends StatelessWidget {
                     child: Container(
                       height: 40,
                       width: 40,
-                      decoration: BoxDecoration(
+                      decoration:const BoxDecoration(
                           color: Colors.indigo,
                           borderRadius: BorderRadius.all(Radius.circular(50))
                       ),
                       child: Center(
                         child: IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Dialog(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  child: Container(
+                                    padding: EdgeInsets.all(10),  // Padding is applied here
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,  // Background color
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Container(
+                                      height: 280,  // Adjust height as needed
+                                      decoration: const BoxDecoration(
+                                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                                        color: Color(0xFF171717),  // This ensures white space inside
+                                      ),
+                                      child: Container(
+                                        padding: EdgeInsets.all(20),
+                                        child: Column(
+                                          children: [
+                                            const Text(
+                                              'Change Avatar',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 23,
+                                                fontFamily: 'Montserrat',
+                                                fontStyle: FontStyle.italic
+                                              ),
+                                            ),
+                                            const SizedBox(height: 20,),
+                                            TextFormField(
+                                              controller: link,
+                                              decoration: const InputDecoration(
+                                                labelText: 'Enter The Link Of The Pic',
+                                                labelStyle: TextStyle(
+                                                  fontFamily: 'Montserrat'
+                                                ),
+                                                border: OutlineInputBorder(),
+                                              ),
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontFamily: 'Montserrat',
+                                              ),
+                                            ),
+                                            const SizedBox(height: 40,),
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                MyElevatedButton(
+                                                    onPressed: (){
+                                                      setState(() {
+                                                        defaultPic = true;
+                                                      });
+                                                      Navigator.of(context).pop();
+                                                    },
+                                                  width: 130,
+                                                    child: const Text(
+                                                      'Default',
+                                                      style: TextStyle(
+                                                          color: Colors.white
+                                                      ),
+                                                    ),
+                                                ),
+                                                MyElevatedButton(
+                                                  width: 130,
+                                                    onPressed: (){
+                                                      setState(() {
+                                                        picLink = link.text;
+                                                        defaultPic = false;
+                                                        Navigator.of(context).pop();
+                                                      });
+
+                                                    },
+                                                    child: const Text(
+                                                        'Apply',
+                                                      style: TextStyle(
+                                                        color: Colors.white
+                                                      ),
+                                                    )
+                                                )
+                                              ],
+                                            ),
+                                          ],
+                                        )
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+
                           icon: Icon(Icons.edit, color: Colors.white),
                           iconSize: 20,
                           padding: EdgeInsets.all(0), // No padding
@@ -91,13 +196,13 @@ class ProfileScreen extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             Center(
               child: Text(
-                student!.name.toUpperCase(),
-                style: TextStyle(
+                widget.student!.name.toUpperCase(),
+                style: const TextStyle(
                     color: Colors.white,
                     fontSize: 25,
                     fontFamily: 'Montserrat',
@@ -105,7 +210,7 @@ class ProfileScreen extends StatelessWidget {
                 ),
               ),
             ),
-            Center(
+            const Center(
               child: Text(
                 'student',
                 style: TextStyle(
@@ -115,18 +220,18 @@ class ProfileScreen extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Container(
               width: 220,
               height: 45,
               child: ElevatedButton(
-                  style: ButtonStyle(
+                  style: const ButtonStyle(
                       backgroundColor: WidgetStatePropertyAll(Colors.indigo)
                   ),
                   onPressed: (){},
-                  child: Text(
+                  child: const Text(
                     'Edit Info',
                     style: TextStyle(
                         color: Colors.white,
@@ -147,24 +252,25 @@ class ProfileScreen extends StatelessWidget {
               child: Column(
                 children: [
                   Row(
+                    mainAxisAlignment:MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
                         children: [
                           Container(
-                            child: Icon(
-                              Icons.school,
-                              color: Colors.indigo,
-                              size: 30,
-                            ),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.all(Radius.circular(50)),
                               color: Colors.indigo.withOpacity(0.3),
                             ),
                             height: 55,
                             width: 55,
+                            child: const Icon(
+                              Icons.school,
+                              color: Colors.indigo,
+                              size: 30,
+                            ),
                           ),
-                          SizedBox(width: 10,),
-                          Text(
+                          const SizedBox(width: 10,),
+                          const Text(
                             'Student ID: ',
                             style: TextStyle(
                                 color: Colors.white,
@@ -175,36 +281,36 @@ class ProfileScreen extends StatelessWidget {
                         ],
                       ),
                       Text(
-                        ' ${student!.id}',
-                        style: TextStyle(
+                        ' ${widget.student!.id}',
+                        style: const TextStyle(
                             color: Colors.white,
                             fontSize: 15,
                             fontFamily: 'Montserrat'
                         ),
                       ),
                     ],
-                    mainAxisAlignment:MainAxisAlignment.spaceBetween,
                   ),
                   SizedBox(height: 20,),
                   Row(
+                    mainAxisAlignment:MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
                         children: [
                           Container(
-                            child: Icon(
-                              Icons.schedule,
-                              color: Colors.indigo,
-                              size: 30,
-                            ),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.all(Radius.circular(50)),
                               color: Colors.indigo.withOpacity(0.3),
                             ),
                             height: 55,
                             width: 55,
+                            child: const Icon(
+                              Icons.schedule,
+                              color: Colors.indigo,
+                              size: 30,
+                            ),
                           ),
-                          SizedBox(width: 10,),
-                          Text(
+                          const SizedBox(width: 10,),
+                          const Text(
                             'Curent Term: ',
                             style: TextStyle(
                                 color: Colors.white,
@@ -215,36 +321,36 @@ class ProfileScreen extends StatelessWidget {
                         ],
                       ),
                       Text(
-                        ' ${student!.currentTerm}',
-                        style: TextStyle(
+                        ' ${widget.student!.currentTerm}',
+                        style: const TextStyle(
                             color: Colors.white,
                             fontSize: 15,
                             fontFamily: 'Montserrat'
                         ),
                       ),
                     ],
-                    mainAxisAlignment:MainAxisAlignment.spaceBetween,
                   ),
                   SizedBox(height: 20,),
                   Row(
+                    mainAxisAlignment:MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
                         children: [
                           Container(
-                            child: Icon(
-                              Icons.format_list_numbered,
-                              color: Colors.indigo,
-                              size: 30,
-                            ),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.all(Radius.circular(50)),
                               color: Colors.indigo.withOpacity(0.3),
                             ),
                             height: 55,
                             width: 55,
+                            child: const Icon(
+                              Icons.format_list_numbered,
+                              color: Colors.indigo,
+                              size: 30,
+                            ),
                           ),
-                          SizedBox(width: 10,),
-                          Text(
+                          const SizedBox(width: 10,),
+                          const Text(
                             'Number Of Units: ',
                             style: TextStyle(
                                 color: Colors.white,
@@ -255,36 +361,36 @@ class ProfileScreen extends StatelessWidget {
                         ],
                       ),
                       Text(
-                        ' ${student!.credits}',
-                        style: TextStyle(
+                        ' ${widget.student!.credits}',
+                        style: const TextStyle(
                             color: Colors.white,
                             fontSize: 15,
                             fontFamily: 'Montserrat'
                         ),
                       ),
                     ],
-                    mainAxisAlignment:MainAxisAlignment.spaceBetween,
                   ),
-                  SizedBox(height: 20,),
+                  const SizedBox(height: 20,),
                   Row(
+                    mainAxisAlignment:MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
                         children: [
                           Container(
-                            child: Icon(
-                              Icons.grade,
-                              color: Colors.indigo,
-                              size: 30,
-                            ),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.all(Radius.circular(50)),
                               color: Colors.indigo.withOpacity(0.3),
                             ),
                             height: 55,
                             width: 55,
+                            child: const Icon(
+                              Icons.grade,
+                              color: Colors.indigo,
+                              size: 30,
+                            ),
                           ),
-                          SizedBox(width: 10,),
-                          Text(
+                          const SizedBox(width: 10,),
+                          const Text(
                             'Total Grade: ',
                             style: TextStyle(
                                 color: Colors.white,
@@ -295,15 +401,14 @@ class ProfileScreen extends StatelessWidget {
                         ],
                       ),
                       Text(
-                        ' ${student!.totalGrade}',
-                        style: TextStyle(
+                        ' ${widget.student!.totalGrade}',
+                        style: const TextStyle(
                             color: Colors.white,
                             fontSize: 15,
                             fontFamily: 'Montserrat'
                         ),
                       ),
                     ],
-                    mainAxisAlignment:MainAxisAlignment.spaceBetween,
                   ),
                 ],
               ),
@@ -325,7 +430,7 @@ class ProfileScreen extends StatelessWidget {
                   );
                 },
 
-                child: Text(
+                child: const Text(
                   'Log Out',
                   style: TextStyle(
                       color: Color(0xFFF40011),
@@ -341,3 +446,4 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 }
+
