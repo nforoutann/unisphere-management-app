@@ -25,10 +25,10 @@ class ToDoCard extends StatelessWidget {
           ),
           Positioned(
             right: 5,
+            top: 5,
             child: Stack(
               children: [
                 Row(
-                  mainAxisSize: MainAxisSize.min,
                   children: [
                     IconButton(
                       onPressed: () async {
@@ -52,16 +52,6 @@ class ToDoCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                Positioned(
-                  bottom: -5,
-                  right: 30,
-                  child: Text(
-                    '${task.time.hour<10 ? '0'+task.time.hour.toString() : task.time.hour}:${task.time.minute<10 ? '0'+task.time.minute.toString() : task.time.minute}',
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                    ),
-                  ),
-                )
               ]
             ),
           ),

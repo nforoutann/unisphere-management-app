@@ -24,6 +24,7 @@ class DoneTaskCard extends StatelessWidget{
           ),
           Positioned(
             right: 5,
+            top: 5,
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [

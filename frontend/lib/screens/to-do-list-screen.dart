@@ -59,7 +59,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
                   itemCount: ongoingTasks.length,
                   itemBuilder: (context, index) {
                     return Padding(
-                      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 4),
+                      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 5),
                       child: ToDoCard(
                         onDone: () {
                           setState(() {
@@ -78,13 +78,25 @@ class _ToDoScreenState extends State<ToDoScreen> {
                         child: ListTile(
                           title: Padding(
                             padding: const EdgeInsets.only(left: 1, right: 1),
-                            child: Text(
-                              ongoingTasks[index].title,
-                              style: const TextStyle(
-                                fontFamily: 'Montserrat',
-                                color: Colors.black,
-                              ),
-                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  ongoingTasks[index].title,
+                                  style: const TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w900,
+                                  ),
+                                ),
+                                Text(
+                                  '${ongoingTasks[index].time.hour<10 ? '0'+ongoingTasks[index].time.hour.toString() : ongoingTasks[index].time.hour}:${ongoingTasks[index].time.minute<10 ? '0'+ongoingTasks[index].time.minute.toString() : ongoingTasks[index].time.minute}',
+                                  style: TextStyle(
+                                    fontSize: 14
+                                  ),
+                                )
+                              ],
+                            )
                           ),
                         ),
                       ),
@@ -111,7 +123,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
                   itemCount: doneTasks.length,
                   itemBuilder: (context, index) {
                     return Padding(
-                      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 4),
+                      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 5),
                       child: DoneTaskCard(
                         username: widget.username,
                         task: doneTasks[index],
@@ -123,14 +135,26 @@ class _ToDoScreenState extends State<ToDoScreen> {
                         child: ListTile(
                           title: Padding(
                             padding: const EdgeInsets.only(left: 1, right: 1),
-                            child: Text(
-                              doneTasks[index].title,
-                              style: const TextStyle(
-                                fontFamily: 'Montserrat',
-                                color: Colors.black,
-                                decoration: TextDecoration.lineThrough,
-                              ),
-                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  doneTasks[index].title,
+                                  style: const TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      color: Colors.black,
+                                      decoration: TextDecoration.lineThrough,
+                                      fontWeight: FontWeight.w900
+                                  ),
+                                ),
+                                Text(
+                                  '${doneTasks[index].time.hour<10 ? '0'+doneTasks[index].time.hour.toString() : doneTasks[index].time.hour}:${doneTasks[index].time.minute<10 ? '0'+doneTasks[index].time.minute.toString() : doneTasks[index].time.minute}',
+                                  style: TextStyle(
+                                      fontSize: 14
+                                  ),
+                                )
+                              ],
+                            )
                           ),
                         ),
                       ),
