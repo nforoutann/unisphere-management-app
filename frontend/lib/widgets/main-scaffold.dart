@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/objects/Student.dart';
-import 'package:frontend/screens/studnet-profile-info.dart';
+import 'package:frontend/screens/student-profile.dart';
 
 class MyScaffold extends StatelessWidget{
   MyScaffold({super.key, this.child, this.navigationBar, required this.text, this.firstButton, this.secondButton, this.student});

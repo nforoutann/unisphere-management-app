@@ -1,7 +1,3 @@
-/*
-
-//todo the main signup screen
-
 import 'dart:io';
 
 import 'package:delightful_toast/delight_toast.dart';
@@ -415,6 +411,3 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
 }
-
-
-*/

@@ -8,7 +8,7 @@ import 'package:frontend/objects/Student.dart';
 import 'package:frontend/objects/Task.dart';
 
 class Network {
-  static String ipAddress = "192.168.124.66";
+  static String ipAddress = "192.168.220.66";
 
   static Future<Student> getStudent(String username) async {
     Completer<Student> completer = Completer<Student>();

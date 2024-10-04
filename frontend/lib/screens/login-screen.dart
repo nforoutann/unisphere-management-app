@@ -17,7 +17,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  String ipAddress = "192.168.124.66";
+  String ipAddress = "192.168.1.8";
   bool _isPasswordVisible = false;
   String response="";
   bool _usernameCheck=false;

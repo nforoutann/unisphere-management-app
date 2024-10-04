@@ -435,7 +435,7 @@
     @override
     Widget build(BuildContext context) {
       return Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(10)),
           gradient: LinearGradient(
             colors: [Color(0xff5538b7), Colors.blue], // Change to desired colors
@@ -446,7 +446,7 @@
         child: Card(
           surfaceTintColor: Colors.indigo,
           elevation: 10,
-          shadowColor: Colors.cyanAccent,
+          shadowColor: Colors.cyan,
           color: Colors.transparent,
           child: Padding(
             padding: EdgeInsets.all(5),
