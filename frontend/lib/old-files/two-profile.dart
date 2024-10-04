@@ -138,9 +138,10 @@ class ProfileScreen extends StatelessWidget {
                   )
               ),
             ),
+            SizedBox(height: 30,),
             Container(
               margin: EdgeInsets.all(30),
-              padding: EdgeInsets.only(left: 20, top: 20, right: 30, bottom: 20),
+              padding: EdgeInsets.only(left: 30, top: 20, right: 30, bottom: 20),
               decoration: BoxDecoration(
                   color: Color(0xFF242426),
                   borderRadius: BorderRadius.all(Radius.circular(10))
@@ -149,31 +150,13 @@ class ProfileScreen extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Row(
-                        children: [
-                          Container(
-                            child: Icon(
-                              Icons.school,
-                              color: Colors.indigo,
-                              size: 30,
-                            ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(50)),
-                              color: Colors.indigo.withOpacity(0.3),
-                            ),
-                            height: 55,
-                            width: 55,
-                          ),
-                          SizedBox(width: 10,),
-                          Text(
-                            'Student ID: ',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
-                                fontFamily: 'Montserrat'
-                            ),
-                          ),
-                        ],
+                      Text(
+                        'Student ID: ',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontFamily: 'Montserrat'
+                        ),
                       ),
                       Text(
                         ' ${student!.id}',
@@ -186,34 +169,18 @@ class ProfileScreen extends StatelessWidget {
                     ],
                     mainAxisAlignment:MainAxisAlignment.spaceBetween,
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(height: 10,),
+                  Divider(color: Colors.indigo,),
+                  SizedBox(height: 10,),
                   Row(
                     children: [
-                      Row(
-                        children: [
-                          Container(
-                            child: Icon(
-                              Icons.schedule,
-                              color: Colors.indigo,
-                              size: 30,
-                            ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(50)),
-                              color: Colors.indigo.withOpacity(0.3),
-                            ),
-                            height: 55,
-                            width: 55,
-                          ),
-                          SizedBox(width: 10,),
-                          Text(
-                            'Curent Term: ',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
-                                fontFamily: 'Montserrat'
-                            ),
-                          ),
-                        ],
+                      Text(
+                        'Curent Term: ',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontFamily: 'Montserrat'
+                        ),
                       ),
                       Text(
                         ' ${student!.currentTerm}',
@@ -226,34 +193,18 @@ class ProfileScreen extends StatelessWidget {
                     ],
                     mainAxisAlignment:MainAxisAlignment.spaceBetween,
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(height: 10,),
+                  Divider(color: Colors.indigo,),
+                  SizedBox(height: 10,),
                   Row(
                     children: [
-                      Row(
-                        children: [
-                          Container(
-                            child: Icon(
-                              Icons.format_list_numbered,
-                              color: Colors.indigo,
-                              size: 30,
-                            ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(50)),
-                              color: Colors.indigo.withOpacity(0.3),
-                            ),
-                            height: 55,
-                            width: 55,
-                          ),
-                          SizedBox(width: 10,),
-                          Text(
-                            'Number Of Units: ',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
-                                fontFamily: 'Montserrat'
-                            ),
-                          ),
-                        ],
+                      Text(
+                        'Number Of Units: ',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontFamily: 'Montserrat'
+                        ),
                       ),
                       Text(
                         ' ${student!.credits}',
@@ -266,34 +217,18 @@ class ProfileScreen extends StatelessWidget {
                     ],
                     mainAxisAlignment:MainAxisAlignment.spaceBetween,
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(height: 10,),
+                  Divider(color: Colors.indigo,),
+                  SizedBox(height: 10,),
                   Row(
                     children: [
-                      Row(
-                        children: [
-                          Container(
-                            child: Icon(
-                              Icons.grade,
-                              color: Colors.indigo,
-                              size: 30,
-                            ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(50)),
-                              color: Colors.indigo.withOpacity(0.3),
-                            ),
-                            height: 55,
-                            width: 55,
-                          ),
-                          SizedBox(width: 10,),
-                          Text(
-                            'Total Grade: ',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
-                                fontFamily: 'Montserrat'
-                            ),
-                          ),
-                        ],
+                      Text(
+                        'Total Grade: ',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontFamily: 'Montserrat'
+                        ),
                       ),
                       Text(
                         ' ${student!.totalGrade}',
@@ -309,6 +244,7 @@ class ProfileScreen extends StatelessWidget {
                 ],
               ),
             ),
+            SizedBox(height: 20,),
             Container(
               width: 120,
               height: 45,
@@ -325,7 +261,6 @@ class ProfileScreen extends StatelessWidget {
                         (Route<dynamic> route) => false, // Removes all previous routes
                   );
                 },
-
                 child: Text(
                   'Log Out',
                   style: TextStyle(

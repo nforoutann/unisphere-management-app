@@ -140,7 +140,7 @@ class ProfileScreen extends StatelessWidget {
             ),
             Container(
               margin: EdgeInsets.all(30),
-              padding: EdgeInsets.only(left: 20, top: 20, right: 30, bottom: 20),
+              padding: EdgeInsets.only(left: 30, top: 20, right: 30, bottom: 20),
               decoration: BoxDecoration(
                   color: Color(0xFF242426),
                   borderRadius: BorderRadius.all(Radius.circular(10))
@@ -149,34 +149,22 @@ class ProfileScreen extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Row(
-                        children: [
-                          Container(
-                            child: Icon(
-                              Icons.school,
-                              color: Colors.indigo,
-                              size: 30,
-                            ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(50)),
-                              color: Colors.indigo.withOpacity(0.3),
-                            ),
-                            height: 55,
-                            width: 55,
-                          ),
-                          SizedBox(width: 10,),
-                          Text(
-                            'Student ID: ',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
-                                fontFamily: 'Montserrat'
-                            ),
-                          ),
-                        ],
+                      Container(
+                        child: Icon(
+                          Icons.school,
+                          color: Colors.indigo,
+                          size: 30,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(50)),
+                          color: Colors.indigo.withOpacity(0.3),
+                        ),
+                        height: 55,
+                        width: 55,
                       ),
+                      SizedBox(width: 10,),
                       Text(
-                        ' ${student!.id}',
+                        'Student ID: ${student!.id}',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 15,
@@ -189,34 +177,22 @@ class ProfileScreen extends StatelessWidget {
                   SizedBox(height: 20,),
                   Row(
                     children: [
-                      Row(
-                        children: [
-                          Container(
-                            child: Icon(
-                              Icons.schedule,
-                              color: Colors.indigo,
-                              size: 30,
-                            ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(50)),
-                              color: Colors.indigo.withOpacity(0.3),
-                            ),
-                            height: 55,
-                            width: 55,
-                          ),
-                          SizedBox(width: 10,),
-                          Text(
-                            'Curent Term: ',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
-                                fontFamily: 'Montserrat'
-                            ),
-                          ),
-                        ],
+                      Container(
+                        child: Icon(
+                          Icons.schedule,
+                          color: Colors.indigo,
+                          size: 30,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(50)),
+                          color: Colors.indigo.withOpacity(0.3),
+                        ),
+                        height: 55,
+                        width: 55,
                       ),
+                      SizedBox(width: 10,),
                       Text(
-                        ' ${student!.currentTerm}',
+                        'Current Term: ${student!.currentTerm}',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 15,
@@ -229,34 +205,22 @@ class ProfileScreen extends StatelessWidget {
                   SizedBox(height: 20,),
                   Row(
                     children: [
-                      Row(
-                        children: [
-                          Container(
-                            child: Icon(
-                              Icons.format_list_numbered,
-                              color: Colors.indigo,
-                              size: 30,
-                            ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(50)),
-                              color: Colors.indigo.withOpacity(0.3),
-                            ),
-                            height: 55,
-                            width: 55,
-                          ),
-                          SizedBox(width: 10,),
-                          Text(
-                            'Number Of Units: ',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
-                                fontFamily: 'Montserrat'
-                            ),
-                          ),
-                        ],
+                      Container(
+                        child: Icon(
+                          Icons.format_list_numbered ,
+                          color: Colors.indigo,
+                          size: 30,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(50)),
+                          color: Colors.indigo.withOpacity(0.3),
+                        ),
+                        height: 55,
+                        width: 55,
                       ),
+                      SizedBox(width: 10,),
                       Text(
-                        ' ${student!.credits}',
+                        'Number Of Units: ${student!.credits}',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 15,
@@ -269,34 +233,22 @@ class ProfileScreen extends StatelessWidget {
                   SizedBox(height: 20,),
                   Row(
                     children: [
-                      Row(
-                        children: [
-                          Container(
-                            child: Icon(
-                              Icons.grade,
-                              color: Colors.indigo,
-                              size: 30,
-                            ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(50)),
-                              color: Colors.indigo.withOpacity(0.3),
-                            ),
-                            height: 55,
-                            width: 55,
-                          ),
-                          SizedBox(width: 10,),
-                          Text(
-                            'Total Grade: ',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
-                                fontFamily: 'Montserrat'
-                            ),
-                          ),
-                        ],
+                      Container(
+                        child: Icon(
+                          Icons.grade,
+                          color: Colors.indigo,
+                          size: 30,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(50)),
+                          color: Colors.indigo.withOpacity(0.3),
+                        ),
+                        height: 55,
+                        width: 55,
                       ),
+                      SizedBox(width: 10,),
                       Text(
-                        ' ${student!.totalGrade}',
+                        'The Total Grade: ${student!.totalGrade}',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 15,
@@ -305,7 +257,7 @@ class ProfileScreen extends StatelessWidget {
                       ),
                     ],
                     mainAxisAlignment:MainAxisAlignment.spaceBetween,
-                  ),
+                  )
                 ],
               ),
             ),
