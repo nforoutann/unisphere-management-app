@@ -82,7 +82,7 @@ class ProfileScreen extends StatelessWidget {
                       child: Center(
                         child: IconButton(
                           onPressed: () {},
-                          icon: Icon(Icons.edit, color: Colors.black),
+                          icon: Icon(Icons.edit, color: Colors.white),
                           iconSize: 20,
                           padding: EdgeInsets.all(0), // No padding
                         ),
@@ -164,7 +164,7 @@ class ProfileScreen extends StatelessWidget {
                       ),
                       SizedBox(width: 10,),
                       Text(
-                        'Student ID: ',
+                        'Student ID: ${student!.id}',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 15,
