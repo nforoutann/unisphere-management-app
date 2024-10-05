@@ -14,7 +14,7 @@ This project is currently under active development, and many features are not ye
 ### Login and Signup:
 -  User authentication
 
-![welcome-login-signup](frontend/githubAssets/welcome-login-signup.jpg)
+![welcome-login-signup](frontend/githubAssets/welcome-login-signup.png)
 
 ### Home:
 - The main screen that contains the summary of tasks
