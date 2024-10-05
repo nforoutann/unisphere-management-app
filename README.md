@@ -3,7 +3,7 @@
 
 This is a Task Manager designed specifically for students to help manage their assignments, classes, and tasks effectively. The project is currently under active development and is not yet complete. Below is an outline of the current progress and planned features.
 
-## Project Status: Work In Progress!!
+## 🚧 Project Status: Work In Progress!!
 This project is currently under active development, and many features are not yet fully implemented. I'm working on improving it and adding new functionality. Stay tuned for updates!
 
 ## Overview And Features
