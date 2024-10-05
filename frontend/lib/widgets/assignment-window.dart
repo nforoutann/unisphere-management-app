@@ -4,14 +4,22 @@ import 'package:frontend/objects/Assignment.dart';
 
 import 'login-signup-button.dart';
 
-class AssignmentWindow extends StatelessWidget {
+class AssignmentWindow extends StatefulWidget {
   final Assignment assignment;
   final String username;
   AssignmentWindow({super.key, required this.assignment, required this.username});
 
+  @override
+  State<AssignmentWindow> createState() => _AssignmentWindowState();
+}
+
+class _AssignmentWindowState extends State<AssignmentWindow> {
   TextEditingController estimatedController = TextEditingController();
+
   TextEditingController descriptionController = TextEditingController();
+
   TextEditingController noteController = TextEditingController();
+
   bool uploaded = false;
 
   String deadlineDifference(DateTime deadline) {
@@ -85,7 +93,7 @@ class AssignmentWindow extends StatelessWidget {
                                 fontSize: 16),
                           ),
                           TextSpan(
-                            text: assignment.title,
+                            text: widget.assignment.title,
                             style: TextStyle(
                                 color: Colors.white70,
                                 fontSize: 16),
@@ -108,7 +116,7 @@ class AssignmentWindow extends StatelessWidget {
                                 fontSize: 16),
                           ),
                           TextSpan(
-                            text: deadlineDifference(assignment.deadline!),
+                            text: deadlineDifference(widget.assignment.deadline!),
                             style: TextStyle(
                                 color: Colors.white70,
                                 fontSize: 16),
@@ -138,7 +146,7 @@ class AssignmentWindow extends StatelessWidget {
                         controller: descriptionController,
                         maxLines: 3,
                         decoration: InputDecoration(
-                          hintText: '${assignment.description}',
+                          hintText: '${widget.assignment.description}',
                           hintStyle: TextStyle(color: Colors.white70),
                           contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
                           border: OutlineInputBorder(
@@ -178,7 +186,7 @@ class AssignmentWindow extends StatelessWidget {
                             fontFamily: 'Montserrat'),
                       ),
                       TextSpan(
-                        text: '${assignment.score == "null" ? "Not Applied Yes" : assignment.score}',
+                        text: '${widget.assignment.score == "null" ? "Not Applied Yet" : widget.assignment.score}',
                         style: TextStyle(
                             color: Colors.white70,
                             fontSize: 16,
@@ -228,8 +236,8 @@ class AssignmentWindow extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 15,),
-              if (deadlineDifference(assignment.deadline!) != 'Deadline Passed!')
+              SizedBox(height: 20,),
+              if (deadlineDifference(widget.assignment.deadline!) != 'Deadline Passed!')
                 Row(
                   children: [
                     MyElevatedButton(
@@ -237,11 +245,14 @@ class AssignmentWindow extends StatelessWidget {
                         height: 30,
                         onPressed: () async {
                           await Network.editAssignment(
-                            username,
-                            assignment.assignmentId!,
-                            descriptionController.text.isEmpty ? assignment.description.toString() : descriptionController.text,
+                            widget.username,
+                            widget.assignment.assignmentId!,
+                            descriptionController.text.isEmpty ? widget.assignment.description.toString() : descriptionController.text,
                             uploaded,
                           );
+                          setState((){
+                            Navigator.of(context).pop();
+                          });
                         },
                         child: Text(
                           'Submit',
@@ -253,8 +264,10 @@ class AssignmentWindow extends StatelessWidget {
                     SizedBox(width: 5,),
                     IconButton(
                       onPressed: () {
+                        setState(() {
+                          uploaded = true;
+                        });
                         // Add upload functionality here and update the uploaded flag
-                        uploaded = true;
                       },
                       icon: Icon(Icons.cloud_upload, color: Colors.cyan,),
                     )

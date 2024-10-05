@@ -144,7 +144,7 @@
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 12),
                 // Second row of cards
                 Row(
                   children: [
@@ -236,7 +236,7 @@
               ],
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 8),
           // Ongoing tasks section
           Expanded(
             child: Container(
@@ -345,7 +345,7 @@
           Flexible(
             child: Column(
               children: [
-                const SizedBox(height: 28),
+                const SizedBox(height: 25),
                 const Align(
                   alignment: Alignment(-0.7, -1),
                   child: Text(

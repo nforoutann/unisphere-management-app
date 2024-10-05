@@ -60,7 +60,7 @@ class _StudentAssignmentScreenState extends State<StudentAssignmentScreen> {
                     itemBuilder: (context, index) {
                       return AssignmentCard(
                         assignment: expiredAssignments[index],
-                        colors: [Color(0xff898c21), Color(0xff900f5b)],
+                        colors: [Color(0xFF43431D), Color(0xFF491221)],
                         onTap: () {
                           setState(() {
                             _selectedAssignment = expiredAssignments[index];
@@ -97,7 +97,7 @@ class _StudentAssignmentScreenState extends State<StudentAssignmentScreen> {
               ),
               // Top layer
               Container(
-                margin: EdgeInsets.all(10),
+                margin: EdgeInsets.all(6),
                 decoration: BoxDecoration(
                   color: Color(0xFF171717),
                   borderRadius: BorderRadius.circular(15),

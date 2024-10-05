@@ -5,7 +5,7 @@ class AssignmentCard extends StatelessWidget {
   final Assignment? assignment;
   List<Color> colors;
   final VoidCallback? onTap;
-  AssignmentCard({super.key, required this.assignment, this.colors =const [Color(0xff18d092), Color(0xff400cd0)], this.onTap});
+    AssignmentCard({super.key, required this.assignment, this.colors =const [Color(0xFF0A593C), Color(0xFF0A1D59)], this.onTap});
 
   @override
   Widget build(BuildContext context) {

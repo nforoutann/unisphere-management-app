@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/welcome-screen.dart';
+import 'package:frontend/widgets/ChangePassword.dart';
 import 'package:frontend/widgets/login-signup-button.dart';
 import '../objects/Student.dart';
 
@@ -8,12 +9,14 @@ class ProfileScreen extends StatefulWidget {
   ProfileScreen({super.key, this.student});
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  State<ProfileScreen> createState() => _ProfileScreenState(student: student!);
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
   bool defaultPic = true;
   String picLink = '';
+  Student student;
+  _ProfileScreenState({required this.student});
   //https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaQeMovPaX_94Cg4UGBU-5a70WR1eXhHRz-w&s
 
   TextEditingController link = TextEditingController();
@@ -90,7 +93,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       child: Center(
                         child: IconButton(
-                          onPressed: () {
+                          onPressed: () { //todo
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
@@ -99,7 +102,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     borderRadius: BorderRadius.circular(6),
                                   ),
                                   child: Container(
-                                    padding: EdgeInsets.all(10),  // Padding is applied here
+                                    padding: EdgeInsets.all(5),  // Padding is applied here
                                     decoration: BoxDecoration(
                                       color: Colors.white,  // Background color
                                       borderRadius: BorderRadius.circular(10),
@@ -111,9 +114,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         color: Color(0xFF171717),  // This ensures white space inside
                                       ),
                                       child: Container(
-                                        padding: EdgeInsets.all(20),
+                                        padding: EdgeInsets.all(25),
                                         child: Column(
                                           children: [
+                                            SizedBox(height: 10,),
                                             const Text(
                                               'Change Avatar',
                                               style: TextStyle(
@@ -185,7 +189,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               },
                             );
                           },
-
+                          //todo send the link of the online image
                           icon: Icon(Icons.edit, color: Colors.white),
                           iconSize: 20,
                           padding: EdgeInsets.all(0), // No padding
@@ -196,9 +200,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ],
               ),
             ),
-            const SizedBox(
-              height: 30,
-            ),
+            const SizedBox(height: 20),
             Center(
               child: Text(
                 widget.student!.name.toUpperCase(),
@@ -220,9 +222,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
+            const SizedBox(height: 20,),
             Container(
               width: 220,
               height: 45,
@@ -230,7 +230,43 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   style: const ButtonStyle(
                       backgroundColor: WidgetStatePropertyAll(Colors.indigo)
                   ),
-                  onPressed: (){},
+                  onPressed: (){
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context){
+                          return Dialog(
+                            child: Container(
+                              width: 200,
+                              height: 200,
+                              padding: EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.all(Radius.circular(6))
+                              ),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Color(0xFF171717),
+                                ),
+                                child: Center(
+                                  child: Container(
+                                    padding: EdgeInsets.all(10),
+                                    child: Text(
+                                      'Ask Admin To Change Your Info. \n You Cannot Change Your Info By Your Own.',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'Montserrat',
+                                        fontSize: 13
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        }
+                    );
+                  },
                   child: const Text(
                     'Edit Info',
                     style: TextStyle(
@@ -413,32 +449,63 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ],
               ),
             ),
-            Container(
-              width: 120,
-              height: 45,
-              child: ElevatedButton(
-                style: ButtonStyle(
-                    backgroundColor: WidgetStatePropertyAll(Colors.red.withOpacity(0.2))
-                ),
-                onPressed: () {
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => welcomeScreen(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 170,
+                  height: 60,
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor: WidgetStatePropertyAll(Colors.red.withOpacity(0.2))
                     ),
-                        (Route<dynamic> route) => false, // Removes all previous routes
-                  );
-                },
-
-                child: const Text(
-                  'Log Out',
-                  style: TextStyle(
-                      color: Color(0xFFF40011),
-                      fontSize: 16,
-                      fontFamily: 'Montserrat'
+                    onPressed: () {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => welcomeScreen(),
+                        ),
+                            (Route<dynamic> route) => false, // Removes all previous routes
+                      );
+                    },
+                    child: const Text(
+                      'Log Out',
+                      style: TextStyle(
+                          color: Color(0xFFF40011),
+                          fontSize: 16,
+                          fontFamily: 'Montserrat'
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                SizedBox(width: 15),
+                Container(
+                  width: 170,
+                  height: 60,
+                  child: ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor: WidgetStatePropertyAll(Colors.indigo.withOpacity(0.4)),
+                          shape: WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(50))))
+                      ),
+                      onPressed: (){
+                        showDialog(
+                            context: context,
+                          builder: (BuildContext context){
+                            return ChangePassword(student: student);
+                          }
+                        );
+                      },
+                      child: Text(
+                        'Edit Password',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontFamily: 'Montserrat'
+                        ),
+                      )
+                  ),
+                ),
+              ],
             ),
           ],
         ),

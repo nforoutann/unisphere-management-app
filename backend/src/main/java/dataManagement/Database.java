@@ -966,10 +966,9 @@ public class Database {
 
         return Convertor.mapToListOfAssignments(getId(username), assignmentMap, getInstance().getCoursesDataMap(), today);
     }
-    public String editAssignment(String username, String assignmentId, String estimatedTime, String description, boolean uploaded){
+    public String editAssignment(String username, String assignmentId, String description, boolean uploaded){
         var assignmentMap = getInstance().getAssignmentsDataMap();
-        assignmentMap.get(assignmentId).put("estimatedTime", estimatedTime);
-        assignmentMap.get(assignmentId).put("description", description);
+        assignmentMap.get(assignmentId).put("description", description); //todo check what does this do deleted this for estimated time
         String newStudents = "";
         String students = assignmentMap.get(assignmentId).get("students");
         if(uploaded){

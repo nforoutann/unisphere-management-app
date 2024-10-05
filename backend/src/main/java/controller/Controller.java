@@ -95,12 +95,12 @@ public class Controller {
                 res = new AssignmentListWrapper(list);
                 break;
             case "POST: editAssignment":
+                System.out.println(request);
                 username = request.split("\\$")[1];
                 String assignmentId = request.split("\\$")[2];
-                String estimatedTime = request.split("\\$")[3];
-                String description = request.split("\\$")[4];
-                done = request.split("\\$")[5].equals("yes");
-                res = Database.getInstance().editAssignment(username, assignmentId, estimatedTime, description, done);
+                String description = request.split("\\$")[3];
+                done = request.split("\\$")[4].equals("yes");
+                res = Database.getInstance().editAssignment(username, assignmentId, description, done);
                 res = "200";
                 break;
             case "GET: getNews":
